@@ -24,6 +24,11 @@ jobs:
       #      ssm_parameter_list: |
       #       sandboxDomainUri,
       #       sandboxHostingBucketName
+      - uses: "aws-actions/configure-aws-credentials@v1"
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_CICD_WEB_APP }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_CICD_WEB_APP }}
+          aws-region: "eu-central-1"
       - uses: "marvinpinto/action-inject-ssm-secrets@latest"
         with:
           ssm_parameter: "sandboxDomainUri"
