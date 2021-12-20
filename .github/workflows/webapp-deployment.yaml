@@ -14,21 +14,15 @@ jobs:
   build-and-release:
     runs-on: ubuntu-latest
     steps:
-      # - name: aws-ssm-to-env
-      #   uses: bomb-on/aws-ssm-to-env@master
-      #   env:
-      #     AWS_REGION: "eu-central-1"
-      #     AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID_CICD_WEB_APP }}
-      #     AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY_CICD_WEB_APP }}
-      #   with:
-      #      ssm_parameter_list: |
-      #       sandboxDomainUri,
-      #       sandboxHostingBucketName
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
       - uses: "aws-actions/configure-aws-credentials@v1"
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_CICD_WEB_APP }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_CICD_WEB_APP }}
           aws-region: "eu-central-1"
+
       - uses: "marvinpinto/action-inject-ssm-secrets@latest"
         with:
           ssm_parameter: "sandboxDomainUri"
@@ -40,8 +34,7 @@ jobs:
           ssm_parameter: "sandboxHostingBucketName"
           env_variable_name: "sandboxHostingBucketName"
       - run: echo "${{ env.sandboxHostingBucketName }}"
-      # - name: Checkout repository
-      #   uses: actions/checkout@v2
+
       # - name: Initialize Node 16.x
       #   uses: actions/setup-node@v1
       #   with:
