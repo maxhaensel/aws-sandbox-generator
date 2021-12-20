@@ -27,13 +27,13 @@ jobs:
         with:
           ssm_parameter: "sandboxDomainUri"
           env_variable_name: "sandboxDomainUri"
-      - run: echo "${{ env.sandboxDomainUri }}"
+
 
       - uses: "marvinpinto/action-inject-ssm-secrets@latest"
         with:
           ssm_parameter: "sandboxHostingBucketName"
           env_variable_name: "sandboxHostingBucketName"
-      - run: echo "${{ env.sandboxHostingBucketName }}"
+      - run: env
 
       # - name: Initialize Node 16.x
       #   uses: actions/setup-node@v1
