@@ -1,0 +1,27 @@
+name: 'Frontend - Quality Check'
+
+on:
+  pull_request:
+    branches: [main]
+    paths: [frontend/**]
+
+defaults:
+  run:
+    working-directory: frontend
+
+jobs:
+  qualtiy-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Initialize Node 16.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: 16.x
+      - name: Install
+        run: yarn install
+      - name: Lint
+        run: yarn lint
+      - name: Lint
+        run: yarn test:ci

@@ -1,0 +1,47 @@
+name: 'Frontend - Quality Check'
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: [frontend/**]
+
+defaults:
+  run:
+    working-directory: frontend
+
+jobs:
+  qualtiy-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: aws-ssm-to-env
+        uses: bomb-on/aws-ssm-to-env@master
+        env:
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        with:
+           ssm_parameter_list: |
+            sandboxDomainUri,
+            sandboxHostingBucketName
+      - run:  env
+      # - name: Checkout repository
+      #   uses: actions/checkout@v2
+      # - name: Initialize Node 16.x
+      #   uses: actions/setup-node@v1
+      #   with:
+      #     node-version: 16.x
+      # - name: Install
+      #   run: yarn install
+      # - name: Build
+      #   run: yarn build
+      # - uses: jakejarvis/s3-sync-action@master
+      #   name: Upload App to S3 Bucket
+      #   with:
+      #     args: --follow-symlinks --delete --cache-control max-age=3600
+      #   env:
+      #     AWS_S3_BUCKET: ${{ env.AWS_S3_BUCKET_NAME }}
+      #     AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      #     AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      #     AWS_REGION: 'eu-central-1'
+      #     SOURCE_DIR: frontend/public
