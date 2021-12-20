@@ -1,4 +1,4 @@
-name: 'Frontend - Quality Check'
+name: 'Frontend - Build an Release'
 
 on:
   workflow_dispatch:
@@ -11,19 +11,23 @@ defaults:
     working-directory: frontend
 
 jobs:
-  qualtiy-check:
+  build-and-release:
     runs-on: ubuntu-latest
     steps:
-      - name: aws-ssm-to-env
-        uses: bomb-on/aws-ssm-to-env@master
-        env:
-          AWS_REGION: ${{ secrets.AWS_REGION }}
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      # - name: aws-ssm-to-env
+      #   uses: bomb-on/aws-ssm-to-env@master
+      #   env:
+      #     AWS_REGION: "eu-central-1"
+      #     AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID_CICD_WEB_APP }}
+      #     AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY_CICD_WEB_APP }}
+      #   with:
+      #      ssm_parameter_list: |
+      #       sandboxDomainUri,
+      #       sandboxHostingBucketName
+      - uses: "marvinpinto/action-inject-ssm-secrets@latest"
         with:
-           ssm_parameter_list: |
-            sandboxDomainUri,
-            sandboxHostingBucketName
+          ssm_parameter: "sandboxDomainUri"
+          env_variable_name: "sandboxDomainUri"
       - run:  env
       # - name: Checkout repository
       #   uses: actions/checkout@v2
