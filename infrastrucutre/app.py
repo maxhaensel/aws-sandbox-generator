@@ -27,6 +27,7 @@ class AWSSandboxHandler(core.Stack):
     def __init__(self, scope: core.Construct, id: str, **kwargs) -> None:
         super().__init__(scope, id, **kwargs)
 
+        test = iam.User(self, "test-user-iac")
         cicd_user_iac = iam.User(self, "cicd-user-iac")
 
         cicd_user_iac.add_managed_policy(iam.ManagedPolicy.from_aws_managed_policy_name("AdministratorAccess"))
