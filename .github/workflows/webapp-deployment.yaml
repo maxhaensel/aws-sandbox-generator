@@ -44,7 +44,7 @@ jobs:
       - name: Build
         run: yarn build
         env:
-          REACT_APP_SANDBOX_DOMAIN_URI: ${{ env.sandboxDomainUri }}
+          REACT_APP_SANDBOX_DOMAIN_URI: ${{ env.SANDBOXDOMAINURI }}
 
       - uses: jakejarvis/s3-sync-action@master
         name: Upload App to S3 Bucket
