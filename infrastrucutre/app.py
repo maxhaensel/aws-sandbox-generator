@@ -5,18 +5,18 @@
 # with examples from the CDK Developer's Guide, which are in the process of
 # being updated to use `cdk`.  You may delete this import if you don't need it.
 from aws_cdk import core
-
-from cdk.cdk_stack import CdkStack
 from aws_cdk import (
     aws_iam as iam,
-    aws_s3 as s3,
     aws_events as events,
     aws_lambda as lambda_,
     aws_apigateway as apigw,
     aws_dynamodb as dynamodb,
     aws_events_targets as targets,
+    aws_ssm as ssm,
 )
 from aws_cdk.aws_lambda_event_sources import DynamoEventSource
+
+from hosting import AWSSandBoxHosting
 
 env_EU = core.Environment(account="172920935848", region="eu-central-1")
 
@@ -26,6 +26,10 @@ app = core.App()
 class AWSSandboxHandler(core.Stack):
     def __init__(self, scope: core.Construct, id: str, **kwargs) -> None:
         super().__init__(scope, id, **kwargs)
+
+        cicd_user_iac = iam.User(self, "cicd-user-iac")
+
+        cicd_user_iac.add_managed_policy(iam.ManagedPolicy.from_aws_managed_policy_name("AdministratorAccess"))
 
         table = dynamodb.Table(
             self,
@@ -49,11 +53,26 @@ class AWSSandboxHandler(core.Stack):
 
         table.grant_read_write_data(endpoint_lambda)
 
-        api = apigw.LambdaRestApi(self, "Endpoint", handler=endpoint_lambda, proxy=False)
+        api = apigw.LambdaRestApi(
+            self,
+            "Endpoint",
+            handler=endpoint_lambda,
+            proxy=False,
+            default_cors_preflight_options=apigw.CorsOptions(
+                allow_origins=apigw.Cors.ALL_ORIGINS, allow_methods=apigw.Cors.ALL_METHODS
+            ),
+        )
 
         items = api.root.add_resource("sandbox")
-        items.add_method("GET")  # GET /sandbox
+        items.add_method("POST")  # POST /sandbox
 
+        ssm_sandbox_domain_uri = ssm.StringParameter(
+            self,
+            "sandboxDomainUri",
+            description="Name of the API URI",
+            parameter_name="sandboxDomainUri",
+            string_value=api.url,
+        )
         # Grant Access to SSO, Remove Access to SSO, Nuke Account
         SSO_Nuke_handler_lambda = lambda_.Function(
             self,
@@ -114,6 +133,11 @@ class AWSSandboxHandler(core.Stack):
             schedule=events.Schedule.cron(minute="0", hour="0", month="*", week_day="*", year="*"),
         )
         rule.add_target(targets.LambdaFunction(sheduler_sandbox_access_lambda))
+
+        """
+        create Web-App-Hosting 
+        """
+        hosting = AWSSandBoxHosting(self, "Hosting", ssm_sandbox_domain_uri=ssm_sandbox_domain_uri)
 
 
 AWSSandboxHandler(app, "AWSSandbox", env=env_EU)
