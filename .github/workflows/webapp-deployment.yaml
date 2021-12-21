@@ -54,6 +54,9 @@ jobs:
       - name: path
         run: cd build
 
+      - name: ls
+        run: ls
+
       # - uses: jakejarvis/s3-sync-action@master
       #   name: Upload App to S3 Bucket
       #   with:
