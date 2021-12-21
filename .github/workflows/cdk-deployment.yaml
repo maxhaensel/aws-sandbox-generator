@@ -19,10 +19,11 @@ jobs:
           uses: youyo/aws-cdk-github-actions@v2
           with:
             cdk_subcommand: 'deploy'
-            actions_comment: false
+            actions_comment: true
             cdk_args: '--require-approval never'
             working_dir: "infrastrucutre"
           env:
             AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID_CICD_IAC }}
             AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY_CICD_IAC }}
             AWS_DEFAULT_REGION: 'eu-central-1'
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

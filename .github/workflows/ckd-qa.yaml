@@ -25,3 +25,4 @@ jobs:
             AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID_CICD_IAC }}
             AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY_CICD_IAC }}
             AWS_DEFAULT_REGION: 'eu-central-1'
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
