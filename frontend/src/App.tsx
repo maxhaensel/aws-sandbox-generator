@@ -1,61 +1,70 @@
-import React from "react";
-import pexonLogo from "./assets/pexon.webp";
+import React from 'react'
+import pexonLogo from './assets/pexon.webp'
 
 function App() {
-  const [user, setUser] = React.useState({ mail: "", valid: false });
-  const [status, setStatus] = React.useState({ message: "", display: false });
+  const [user, setUser] = React.useState({ mail: '', valid: false })
+  const [status, setStatus] = React.useState({ message: '', display: false })
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const mail = e.currentTarget.value;
-    const reg = new RegExp(/\w+\.\w+@pexon-consulting\.de/gm);
+    const mail = e.currentTarget.value
+    const reg = new RegExp(/\w+\.\w+@pexon-consulting\.de/gm)
 
-    const valid = reg.test(mail);
+    const valid = reg.test(mail)
 
-    setUser({ mail, valid });
-  };
+    setUser({ mail, valid })
+  }
 
   const resetStatus = () => {
-    setStatus({ message: "", display: false });
-  };
+    setStatus({ message: '', display: false })
+  }
 
   const submitRequest = () => {
-    const URL =
-      "https://i7bgppkdt9.execute-api.eu-central-1.amazonaws.com/prod/sandbox";
-    const response = fetch(`${URL}?name=${user.mail}`, {
-      method: "POST",
-      mode: "cors",
-      headers: { "Content-Type": "application/json" },
-    });
+    const URL = process.env.REACT_APP_SANDBOX_DOMAIN_URI
+
+    if (URL === undefined) {
+      setStatus({
+        message: 'Da ist etwas schief gegangen!',
+        display: true,
+      })
+      return
+    }
+
+    const response = fetch(`${URL}sandbox?name=${user.mail}`, {
+      method: 'POST',
+      mode: 'cors',
+      headers: { 'Content-Type': 'application/json' },
+    })
     response
-      .then((data) => data.json())
-      .then((data) => {
+      .then(data => data.json())
+      .then(data => {
         setStatus({
           message: `${data.message}, ${data.sandbox}`,
           display: true,
-        });
+        })
       })
-      .catch((e) => {
+      .catch(e => {
         setStatus({
-          message: "Da ist etwas schief gegangen!",
+          message: 'Da ist etwas schief gegangen!',
           display: true,
-        });
-      });
+        })
+      })
 
-    setUser({ mail: "", valid: false });
-  };
+    setUser({ mail: '', valid: false })
+  }
 
   React.useEffect(() => {
     if (status.display === true) {
       const timer = setTimeout(() => {
-        resetStatus();
-      }, 5000);
-      return () => clearTimeout(timer);
+        resetStatus()
+      }, 5000)
+      return () => clearTimeout(timer)
     }
-  }, [status, setStatus]);
+  }, [status, setStatus])
 
   return (
     <div className="flex justify-center mt-32">
       <div className="m-16">
+        <h1>{JSON.stringify(process.env.REACT_APP_SANDBOX_DOMAIN_URI)}</h1>
         <img src={pexonLogo} alt="pexon-logo" width={300}></img>
 
         <input
@@ -72,7 +81,7 @@ function App() {
         <button
           disabled={!user.valid}
           className={`mt-4 ${
-            user.valid ? "bg-blue-500 hover:bg-blue-700" : "bg-gray-300"
+            user.valid ? 'bg-blue-500 hover:bg-blue-700' : 'bg-gray-300'
           } text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline`}
           onClick={submitRequest}
         >
@@ -90,7 +99,7 @@ function App() {
         )}
       </div>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
