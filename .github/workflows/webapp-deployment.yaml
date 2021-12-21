@@ -34,15 +34,20 @@ jobs:
           ssm_parameter: "sandboxHostingBucketName"
           env_variable_name: "sandboxHostingBucketName"
 
-      - name: Initialize Node 16.x
-        uses: actions/setup-node@v1
-        with:
-          node-version: 16.x
-      - name: Install
-        run: yarn install
-      - name: Build
-        run: yarn build
-      - uses: jakejarvis/s3-sync-action@master
+      - name: pwd
+        run: pwd
+
+      - name: ls -a
+        run: ls -a
+      # - name: Initialize Node 16.x
+      #   uses: actions/setup-node@v1
+      #   with:
+      #     node-version: 16.x
+      # - name: Install
+      #   run: yarn install
+      # - name: Build
+      #   run: yarn build
+      # - uses: jakejarvis/s3-sync-action@master
         name: Upload App to S3 Bucket
         with:
           args: --follow-symlinks --delete --cache-control max-age=3600
