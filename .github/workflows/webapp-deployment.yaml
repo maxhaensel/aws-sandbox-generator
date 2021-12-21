@@ -34,9 +34,6 @@ jobs:
           ssm_parameter: "sandboxHostingBucketName"
           env_variable_name: "sandboxHostingBucketName"
 
-      - name: pwd
-        run: echo "${{ env.SANDBOXDOMAINURI }}"
-
       - name: Initialize Node 16.x
         uses: actions/setup-node@v1
         with:
@@ -48,13 +45,22 @@ jobs:
       - name: Build
         run: yarn build
 
-      - uses: jakejarvis/s3-sync-action@master
-        name: Upload App to S3 Bucket
-        with:
-          args: --follow-symlinks --delete --cache-control max-age=3600
-        env:
-          AWS_S3_BUCKET: ${{ env.SANDBOXHOSTINGBUCKETNAME }}
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID_CICD_WEB_APP }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY_CICD_WEB_APP }}
-          AWS_REGION: 'eu-central-1'
-          SOURCE_DIR: build
+      - name: path
+        run: ls
+
+      - name: path
+        run: pwd
+
+      - name: path
+        run: cd build
+
+      # - uses: jakejarvis/s3-sync-action@master
+      #   name: Upload App to S3 Bucket
+      #   with:
+      #     args: --follow-symlinks --delete --cache-control max-age=3600
+      #   env:
+      #     AWS_S3_BUCKET: ${{ env.SANDBOXHOSTINGBUCKETNAME }}
+      #     AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID_CICD_WEB_APP }}
+      #     AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY_CICD_WEB_APP }}
+      #     AWS_REGION: 'eu-central-1'
+      #     SOURCE_DIR: build
