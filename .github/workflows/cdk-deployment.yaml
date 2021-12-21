@@ -1,7 +1,7 @@
-name: 'IaC - Quality Check'
+name: 'IaC - Build an Release'
 
 on:
-  pull_request:
+  push:
     branches: [main]
     paths: [infrastrucutre/**]
 
@@ -18,8 +18,9 @@ jobs:
         - name: cdk diff
           uses: youyo/aws-cdk-github-actions@v2
           with:
-            cdk_subcommand: 'diff'
-            actions_comment: true
+            cdk_subcommand: 'deploy'
+            actions_comment: false
+            cdk_args: '--require-approval never'
             working_dir: "infrastrucutre"
           env:
             AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID_CICD_IAC }}

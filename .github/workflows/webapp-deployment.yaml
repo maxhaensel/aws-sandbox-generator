@@ -1,7 +1,6 @@
 name: 'Frontend - Build an Release'
 
 on:
-  workflow_dispatch:
   push:
     branches: [main]
     paths: [frontend/**]
