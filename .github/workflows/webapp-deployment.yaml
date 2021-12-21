@@ -35,11 +35,11 @@ jobs:
           env_variable_name: "sandboxHostingBucketName"
 
       - name: pwd
-        run: echo "$env.SANDBOXDOMAINURI"
+        run: echo "${{ env.SANDBOXDOMAINURI }}"
 
 
       - name: pwd
-        run: echo "$env.SANDBOXHOSTINGBUCKETNAME"
+        run: echo "${{ env.SANDBOXHOSTINGBUCKETNAME }}"
 
       - name: ls -a
         run: ls -a
