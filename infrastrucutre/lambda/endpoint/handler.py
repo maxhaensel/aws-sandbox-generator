@@ -28,6 +28,9 @@ def handler(event, context):
         return internal_server_error("error")
     try:
         pexonian = event["queryStringParameters"]["name"]
+        # format: 2022-01-07
+        lease_time = event["queryStringParameters"]["lease_time"]
+        year, month, day = lease_time.split("-")
     except:
         return internal_server_error(f"no queryStringParameters provided")
 
@@ -47,7 +50,7 @@ def handler(event, context):
                 ":assigned_to": pexonian,
                 ":available": "false",
                 ":assigned_since": datetime.now().isoformat(),
-                ":assigned_until": (datetime.now() + timedelta(hours=duration_of_lease_in_days * 24)).isoformat(),
+                ":assigned_until": datetime(year, month, day).isoformat(),
             },
         )
         return {
