@@ -1,0 +1,16 @@
+schema {
+  query: Query
+  mutation: Mutation
+}
+
+type leaseASandBoxResponse {
+  message: String
+  sandbox: String
+}
+
+type Query {
+  helloWorld: String!
+}
+type Mutation {
+  leaseASandBox(Email: String!): leaseASandBoxResponse
+}
