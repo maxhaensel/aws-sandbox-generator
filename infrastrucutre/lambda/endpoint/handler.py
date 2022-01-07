@@ -50,7 +50,7 @@ def handler(event, context):
                 ":assigned_to": pexonian,
                 ":available": "false",
                 ":assigned_since": datetime.now().isoformat(),
-                ":assigned_until": datetime(year, month, day).isoformat(),
+                ":assigned_until": datetime(int(year), int(month), int(day)).isoformat(),
             },
         )
         return {
