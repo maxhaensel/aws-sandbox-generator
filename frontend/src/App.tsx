@@ -2,16 +2,29 @@ import React from 'react'
 import pexonLogo from './assets/pexon.webp'
 
 function App() {
-  const [user, setUser] = React.useState({ mail: '', valid: false })
+  const [user, setUser] = React.useState({
+    mail: '',
+    valid_mail: false,
+    lease_time: new Date(new Date().setMonth(new Date().getMonth() + 1))
+      .toISOString()
+      .slice(0, 10),
+    valid_lease_time: true,
+  })
   const [status, setStatus] = React.useState({ message: '', display: false })
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const mail = e.currentTarget.value
-    const reg = new RegExp(/\w+\.\w+@pexon-consulting\.de/gm)
+    if (e.target.id === 'mail') {
+      const mail = e.currentTarget.value
+      const reg = new RegExp(/\w+\.\w+@pexon-consulting\.de/gm)
+      const valid_mail = reg.test(mail)
+      setUser(user => ({ ...user, mail, valid_mail }))
+    }
 
-    const valid = reg.test(mail)
-
-    setUser({ mail, valid })
+    if (e.target.id === 'lease_time') {
+      const lease_time = e.currentTarget.value
+      const valid_lease_time = lease_time !== '' ? true : false
+      setUser(user => ({ ...user, lease_time, valid_lease_time }))
+    }
   }
 
   const resetStatus = () => {
@@ -29,11 +42,14 @@ function App() {
       return
     }
 
-    const response = fetch(`${URL}sandbox?name=${user.mail}`, {
-      method: 'POST',
-      mode: 'cors',
-      headers: { 'Content-Type': 'application/json' },
-    })
+    const response = fetch(
+      `${URL}sandbox?name=${user.mail}&lease_time=${user.lease_time}`,
+      {
+        method: 'POST',
+        mode: 'cors',
+        headers: { 'Content-Type': 'application/json' },
+      },
+    )
     response
       .then(data => data.json())
       .then(data => {
@@ -49,7 +65,12 @@ function App() {
         })
       })
 
-    setUser({ mail: '', valid: false })
+    setUser({
+      mail: '',
+      valid_mail: false,
+      lease_time: '',
+      valid_lease_time: false,
+    })
   }
 
   React.useEffect(() => {
@@ -61,33 +82,57 @@ function App() {
     }
   }, [status, setStatus])
 
+  const renderMailInput = () => (
+    <>
+      <label htmlFor="mail" className="mt-2 text-sm text-gray-500">
+        Gib hier deine Pexon-Mail-Adresse ein um eine Sandbox zu provisonieren
+      </label>
+      <input
+        id="mail"
+        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+        onChange={onChange}
+        value={user.mail}
+      ></input>
+    </>
+  )
+
+  const renderLeaseInput = () => (
+    <>
+      <label htmlFor="lease_time" className="mt-2 text-sm text-gray-500">
+        Wähle den Zeitraum, maximal 3 Monate
+      </label>
+      <input
+        id="lease_time"
+        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+        onChange={onChange}
+        value={user.lease_time}
+        type={'date'}
+        min={new Date().toISOString().slice(0, 10)}
+        max={new Date(new Date().setMonth(new Date().getMonth() + 3))
+          .toISOString()
+          .slice(0, 10)}
+      ></input>
+    </>
+  )
+
   return (
     <div className="flex justify-center mt-32">
       <div className="m-16">
-        <h1>{JSON.stringify(process.env.REACT_APP_SANDBOX_DOMAIN_URI)}</h1>
         <img src={pexonLogo} alt="pexon-logo" width={300}></img>
-
-        <input
-          id="mail"
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          onChange={onChange}
-          value={user.mail}
-        ></input>
-        <label htmlFor="mail" className="mt-2 text-sm text-gray-500">
-          Gebe hier deine Pexon-Mail-Adresse ein um eine Sandbox zu
-          provisonieren
-        </label>
+        {renderMailInput()}
+        {renderLeaseInput()}
         <br />
         <button
-          disabled={!user.valid}
+          disabled={!(user.valid_mail && user.valid_lease_time)}
           className={`mt-4 ${
-            user.valid ? 'bg-blue-500 hover:bg-blue-700' : 'bg-gray-300'
+            user.valid_mail && user.valid_lease_time
+              ? 'bg-blue-500 hover:bg-blue-700'
+              : 'bg-gray-300'
           } text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline`}
           onClick={submitRequest}
         >
           Reqeust Sandbox
         </button>
-
         {status.display && (
           <div
             className="mt-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
