@@ -21,13 +21,9 @@ jobs:
       - run: go version
       - run: go install github.com/jteeuwen/go-bindata/...@latest
       - run: go mod vendor
-      - run: go generate ./schema 
-      - run: GOARCH=amd64 GOOS=linux go build main.go
-      - run: zip -9 main.zip main
-      - uses: actions/download-artifact@v2
-        with:
-          name: graph-ql-api-codecov
-          path: ./lambda-functions/graph-ql-api/coverage.out
+      - run: go generate ./schema
+      - run: go test ./...  -coverprofile=coverage.out -covermode=atomic
+      - run: go tool cover -html=coverage.out -o cover.html
       - uses: codecov/codecov-action@v2
         with:
           token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
@@ -36,8 +32,14 @@ jobs:
           flags: unittests # optional
           name: codecov-graphql-endpoint # optional
           fail_ci_if_error: true # optional (default = false)
-
-      - uses: actions/upload-artifact@v2
-        with:
-          name: graph-ql-api-binary-zip
-          path: ./lambda-functions/graph-ql-api/main.zip
+      - run: GOARCH=amd64 GOOS=linux go build main.go
+      - run: zip -9 main.zip main
+      - name: Upload file to bucket
+        uses: zdurham/s3-upload-github-action@master
+        env:
+          FILE: ./main.zip
+          AWS_REGION: eu-central-1
+          S3_BUCKET: cdktoolkit-stagingbucket-1rbmmxnlvi129
+          S3_KEY: lambda/main.zip
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID_CICD_IAC }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY_CICD_IAC }}
