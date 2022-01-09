@@ -27,6 +27,7 @@ jobs:
       - name: codecov
         id: codecov
         run: echo "::set-output name=codecov::$(go tool cover -func=coverage.out)"
+      - run: echo "${{ steps.codecov.outputs.codecov }}"
       - uses: actions/github-script@v5
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
@@ -35,5 +36,5 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: ${{ steps.codecov.outputs.codecov }}
+              body: "${{ steps.codecov.outputs.codecov }}"
             })
