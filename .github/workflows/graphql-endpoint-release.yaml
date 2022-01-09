@@ -1,9 +1,9 @@
 name: 'graphql-endpoint - Build an Release'
 
 on:
-  pull_request:
+  push:
     branches: [main]
-    #paths: [lambda-functions/graph-ql-api/**]
+    paths: [lambda-functions/graph-ql-api/**]
 
 defaults:
   run:

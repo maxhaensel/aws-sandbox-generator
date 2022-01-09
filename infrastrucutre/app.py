@@ -139,7 +139,8 @@ class AWSSandboxHandler(core.Stack):
         create Web-App-Hosting 
         """
         hosting = AWSSandBoxHosting(self, "Hosting", ssm_sandbox_domain_uri=ssm_sandbox_domain_uri)
-        # AWSLambdaGoGraphql(self, "Graphql-Testing")
+
+        AWSLambdaGoGraphql(self, "graph-ql-endpoint")
 
 
 AWSSandboxHandler(app, "AWSSandbox", env=env_EU)
