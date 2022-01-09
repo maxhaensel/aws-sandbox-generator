@@ -35,5 +35,5 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: steps.codecov.outputs.codecov
+              body: ${{ steps.codecov.outputs.codecov }}
             })
