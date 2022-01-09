@@ -1,0 +1,27 @@
+name: 'graphql-endpoint - Quality Check'
+
+on:
+  push:
+    branches: [feature/go-graphql]
+    paths: [lambda-functions/graph-ql-api/**]
+
+defaults:
+  run:
+    working-directory: lambda-functions/graph-ql-api
+
+jobs:
+  qualtiy-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - uses: actions/setup-go@v2
+        with:
+            go-version: '^1.17.6' # The Go version to download (if necessary) and use.
+      - run: go version
+      - run: go get -u github.com/jteeuwen/go-bindata/...
+      - run: go mod vendor
+      - run: go generate ./schema 
+      - run: go test ./...  -coverprofile=coverage.out 
+      - run: go tool cover -html=coverage.out -o cover.html
+      - run: go tool cover -func=coverage.out

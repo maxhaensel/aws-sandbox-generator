@@ -3,14 +3,36 @@ schema {
   mutation: Mutation
 }
 
+type sandbox {
+  account_id: String!
+  account_name: String!
+  available: String
+  assigned_until: String
+  assigned_since: String
+  assigned_to: String
+}
+
 type leaseASandBoxResponse {
-  message: String
-  sandbox: String
+  message: String!
+  sandbox: sandbox!
+}
+
+type createNewSandboxResponse {
+  sandbox: sandbox!
+}
+
+type listSandboxesResponse {
+  sandboxes: [sandbox]
 }
 
 type Query {
-  helloWorld: String!
+  listSandboxes: listSandboxesResponse
 }
+
 type Mutation {
-  leaseASandBox(Email: String!): leaseASandBoxResponse
+  leaseASandBox(Email: String!, Lease_time: String!): leaseASandBoxResponse
+  createNewSandbox(
+    account_id: String!
+    account_name: String!
+  ): createNewSandboxResponse!
 }
