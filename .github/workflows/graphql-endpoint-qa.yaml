@@ -26,10 +26,8 @@ jobs:
       - run: go tool cover -html=coverage.out -o cover.html
       - name: codecov
         id: codecov
-        run: |
-          cov=$(go tool cover -func=coverage.out)
-          echo "::set-output name=codecov::$($cov)"
-      - run: echo "${{ steps.codecov.outputs.codecov }}"
+        run: go tool cover -func=coverage.out > cov.txt
+      - run: cat cov.txt
       - uses: actions/github-script@v5
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
@@ -38,5 +36,6 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: "${{ steps.codecov.outputs.codecov }}"
+               # body: "$(cat cov.txt)"
+              # body: "${{ steps.codecov.outputs.codecov }}"
             })
