@@ -28,6 +28,7 @@ jobs:
         id: codecov
         run: go tool cover -func=coverage.out > cov.txt
       - run: cat cov.txt
+      - run: ls -la
       - uses: codecov/codecov-action@v2
         with:
           token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
