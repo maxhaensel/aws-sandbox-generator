@@ -36,4 +36,4 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           name: graph-ql-api-codecov
-          path: coverage.out
+          path: ./lambda-functions/graph-ql-api/coverage.out
