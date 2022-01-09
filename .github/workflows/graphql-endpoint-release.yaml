@@ -10,7 +10,7 @@ defaults:
     working-directory: lambda-functions/graph-ql-api
 
 jobs:
-  qualtiy-check:
+  build-and-release:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -37,7 +37,7 @@ jobs:
       - name: Upload file to bucket
         uses: zdurham/s3-upload-github-action@master
         env:
-          FILE: ./main.zip
+          FILE: ./lambda-functions/graph-ql-api/main.zip
           AWS_REGION: eu-central-1
           S3_BUCKET: cdktoolkit-stagingbucket-1rbmmxnlvi129
           S3_KEY: lambda/main.zip
