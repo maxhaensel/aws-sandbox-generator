@@ -24,15 +24,12 @@ jobs:
       - run: go generate ./schema 
       - run: go test ./...  -coverprofile=coverage.out 
       - run: go tool cover -html=coverage.out -o cover.html
-      - name: codecov
-        id: codecov
-        run: go tool cover -func=coverage.out > cov.txt
-      - run: cat cov.txt
-      - run: ls -la
+ 
       - uses: codecov/codecov-action@v2
         with:
           token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
-          directory: ./lambda-functions/graph-ql-api
+          # directory: ./lambda-functions/graph-ql-api/
+          working-directory: ./lambda-functions/graph-ql-api/
           files: ./coverage.out # optional
           flags: unittests # optional
           name: codecov-graphql-endpoint # optional
