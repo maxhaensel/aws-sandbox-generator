@@ -1,0 +1,43 @@
+name: 'graphql-endpoint - Build an Release'
+
+on:
+  pull_request:
+    branches: [main]
+    #paths: [lambda-functions/graph-ql-api/**]
+
+defaults:
+  run:
+    working-directory: lambda-functions/graph-ql-api
+
+jobs:
+  qualtiy-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - uses: actions/setup-go@v2
+        with:
+            go-version: '^1.17.6' # The Go version to download (if necessary) and use.
+      - run: go version
+      - run: go install github.com/jteeuwen/go-bindata/...@latest
+      - run: go mod vendor
+      - run: go generate ./schema 
+      - run: GOARCH=amd64 GOOS=linux go build main.go
+      - run: zip -9 main.zip main
+      - uses: actions/download-artifact@v2
+        with:
+          name: graph-ql-api-codecov
+          path: ./lambda-functions/graph-ql-api/coverage.out
+      - uses: codecov/codecov-action@v2
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
+          working-directory: ./lambda-functions/graph-ql-api/
+          files: ./coverage.out # optional
+          flags: unittests # optional
+          name: codecov-graphql-endpoint # optional
+          fail_ci_if_error: true # optional (default = false)
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: graph-ql-api-binary-zip
+          path: ./lambda-functions/graph-ql-api/main.zip
