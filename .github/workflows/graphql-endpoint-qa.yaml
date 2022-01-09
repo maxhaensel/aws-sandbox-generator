@@ -32,7 +32,7 @@ jobs:
       - uses: codecov/codecov-action@v2
         with:
           token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
-          files: ./coverage.out # optional
+          files: lambda-functions/graph-ql-api/coverage.out # optional
           flags: unittests # optional
           name: codecov-graphql-endpoint # optional
           fail_ci_if_error: true # optional (default = false)
