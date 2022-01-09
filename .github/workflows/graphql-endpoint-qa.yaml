@@ -24,4 +24,16 @@ jobs:
       - run: go generate ./schema 
       - run: go test ./...  -coverprofile=coverage.out 
       - run: go tool cover -html=coverage.out -o cover.html
-      - run: go tool cover -func=coverage.out
+      - name: codecov
+        id: codecov
+        run: echo "::set-output name=codecov::$(go tool cover -func=coverage.out)"
+      - uses: actions/github-script@v5
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: steps.codecov.outputs.codecov
+            })
