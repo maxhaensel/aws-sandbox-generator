@@ -1,8 +1,8 @@
 name: 'graphql-endpoint - Quality Check'
 
 on:
-  push:
-    branches: [feature/go-graphql]
+  pull_request:
+    branches: [main]
     # paths: [lambda-functions/graph-ql-api/**]
 
 defaults:
