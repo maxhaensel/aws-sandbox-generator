@@ -28,7 +28,15 @@ jobs:
         id: codecov
         run: go tool cover -func=coverage.out > cov.txt
       - run: cat cov.txt
-      - uses: actions/github-script@v5
+      - uses: codecov/codecov-action@v2
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
+          files: ./coverage.out # optional
+          flags: unittests # optional
+          name: codecov-graphql-endpoint # optional
+          fail_ci_if_error: true # optional (default = false)
+          verbose: true # optional (default = false)
+      # - uses: actions/github-script@v5
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
