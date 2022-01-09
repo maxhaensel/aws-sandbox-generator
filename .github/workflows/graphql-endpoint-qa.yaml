@@ -32,8 +32,8 @@ jobs:
           flags: unittests # optional
           name: codecov-graphql-endpoint # optional
           fail_ci_if_error: true # optional (default = false)
+      - run: ls -la
       - uses: actions/upload-artifact@v2
         with:
           name: graph-ql-api-codecov
-          working-directory: ./lambda-functions/graph-ql-api/
-          path: ./coverage.out
+          path: coverage.out
