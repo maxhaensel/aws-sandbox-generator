@@ -12,16 +12,20 @@ from aws_cdk import (
 
 
 class AWSLambdaGoGraphql(cdk.Construct):
-    def __init__(self, scope: cdk.Construct, construct_id: str) -> None:
+    def __init__(self, scope: cdk.Construct, construct_id: str, table: dynamodb.Table) -> None:
         super().__init__(scope, construct_id)
 
-        table = dynamodb.Table(
-            self,
-            "graphql_endpoint_table",
-            partition_key=dynamodb.Attribute(name="account_id", type=dynamodb.AttributeType.STRING),
-            billing_mode=dynamodb.BillingMode.PAY_PER_REQUEST,
-            table_name="sandbox-account-status",
-            removalPolicy=cdk.RemovalPolicy.DESTROY,
+        # table = dynamodb.Table(
+        #     self,
+        #     "graphql_endpoint_table",
+        #     partition_key=dynamodb.Attribute(name="account_id", type=dynamodb.AttributeType.STRING),
+        #     billing_mode=dynamodb.BillingMode.PAY_PER_REQUEST,
+        #     table_name="sandbox-account-status",
+        #     removal_policy=cdk.RemovalPolicy.DESTROY,
+        # )
+
+        s3Bucket = s3.Bucket.from_bucket_name(
+            self, id="cdktoolkit-stagingbucket", bucket_name="cdktoolkit-stagingbucket-1rbmmxnlvi129"
         )
 
         endpoint_lambda = lambda_.Function(
@@ -29,8 +33,8 @@ class AWSLambdaGoGraphql(cdk.Construct):
             "graphql_go_lambda",
             architecture=lambda_.Architecture.X86_64,
             runtime=lambda_.Runtime.GO_1_X,
-            code=lambda_.Code.from_bucket("cdktoolkit-stagingbucket-1rbmmxnlvi129", "lambda/main.zip"),
-            handler="handler.handler",
+            code=lambda_.Code.from_bucket(s3Bucket, "lambda/main.zip"),
+            handler="main",
             timeout=cdk.Duration.seconds(30),
             memory_size=128,
             environment={"dynamodb_table": table.table_name},

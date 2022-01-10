@@ -140,7 +140,7 @@ class AWSSandboxHandler(core.Stack):
         """
         hosting = AWSSandBoxHosting(self, "Hosting", ssm_sandbox_domain_uri=ssm_sandbox_domain_uri)
 
-        AWSLambdaGoGraphql(self, "graph-ql-endpoint")
+        AWSLambdaGoGraphql(self, "graph-ql-endpoint", table)
 
 
 AWSSandboxHandler(app, "AWSSandbox", env=env_EU)

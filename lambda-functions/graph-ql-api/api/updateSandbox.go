@@ -4,6 +4,8 @@ import (
 	"context"
 	"fmt"
 	"lambda/aws-sandbox/graph-ql-api/models"
+	"log"
+	"os"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/feature/dynamodb/attributevalue"
@@ -12,6 +14,14 @@ import (
 )
 
 func UpdateSandBoxItem(ctx context.Context, svc *dynamodb.Client, sandbox models.SandboxItem) (*models.SandboxItem, error) {
+
+	table := os.Getenv("dynamodb_table")
+
+	if len(table) == 0 {
+		err := fmt.Errorf("env-variable dynamodb_table is empty")
+		log.Print(fmt.Errorf("ERROR: failed to find table-name %v", err))
+		return nil, err
+	}
 
 	// sandboxItem := struct {
 	// 	Account_id string `dynamodbav:"account_id"`
@@ -53,7 +63,7 @@ func UpdateSandBoxItem(ctx context.Context, svc *dynamodb.Client, sandbox models
 
 	input := &dynamodb.UpdateItemInput{
 		UpdateExpression:          updateExpression,
-		TableName:                 aws.String("test"),
+		TableName:                 aws.String(table),
 		ExpressionAttributeValues: expr,
 		Key:                       key,
 		ReturnValues:              "ALL_NEW",
