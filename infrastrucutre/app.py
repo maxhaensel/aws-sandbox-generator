@@ -17,6 +17,7 @@ from aws_cdk import (
 from aws_cdk.aws_lambda_event_sources import DynamoEventSource
 
 from hosting import AWSSandBoxHosting
+from mockGoLambda import AWSLambdaGoGraphql
 
 env_EU = core.Environment(account="172920935848", region="eu-central-1")
 
@@ -138,6 +139,8 @@ class AWSSandboxHandler(core.Stack):
         create Web-App-Hosting 
         """
         hosting = AWSSandBoxHosting(self, "Hosting", ssm_sandbox_domain_uri=ssm_sandbox_domain_uri)
+
+        AWSLambdaGoGraphql(self, "graph-ql-endpoint", table)
 
 
 AWSSandboxHandler(app, "AWSSandbox", env=env_EU)

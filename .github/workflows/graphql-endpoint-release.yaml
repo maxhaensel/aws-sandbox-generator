@@ -1,0 +1,45 @@
+name: 'graphql-endpoint - Build an Release'
+
+on:
+  push:
+    branches: [main]
+    paths: [lambda-functions/graph-ql-api/**]
+
+defaults:
+  run:
+    working-directory: lambda-functions/graph-ql-api
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - uses: actions/setup-go@v2
+        with:
+            go-version: '^1.17.6' # The Go version to download (if necessary) and use.
+      - run: go version
+      - run: go install github.com/jteeuwen/go-bindata/...@latest
+      - run: go mod vendor
+      - run: go generate ./schema
+      - run: go test ./...  -coverprofile=coverage.out -covermode=atomic
+      - run: go tool cover -html=coverage.out -o cover.html
+      - uses: codecov/codecov-action@v2
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
+          working-directory: ./lambda-functions/graph-ql-api/
+          files: ./coverage.out # optional
+          flags: unittests # optional
+          name: codecov-graphql-endpoint # optional
+          fail_ci_if_error: true # optional (default = false)
+      - run: GOARCH=amd64 GOOS=linux go build main.go
+      - run: zip -9 main.zip main
+      - name: Upload file to bucket
+        uses: zdurham/s3-upload-github-action@master
+        env:
+          FILE: ./lambda-functions/graph-ql-api/main.zip
+          AWS_REGION: eu-central-1
+          S3_BUCKET: cdktoolkit-stagingbucket-1rbmmxnlvi129
+          S3_KEY: lambda/main.zip
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID_CICD_IAC }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY_CICD_IAC }}

@@ -1,0 +1,34 @@
+name: 'graphql-endpoint - Quality Check'
+
+on:
+  pull_request:
+    branches: [main]
+    # paths: [lambda-functions/graph-ql-api/**]
+
+defaults:
+  run:
+    working-directory: lambda-functions/graph-ql-api
+
+jobs:
+  qualtiy-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - uses: actions/setup-go@v2
+        with:
+            go-version: '^1.17.6' # The Go version to download (if necessary) and use.
+      - run: go version
+      - run: go install github.com/jteeuwen/go-bindata/...@latest
+      - run: go mod vendor
+      - run: go generate ./schema 
+      - run: go test ./...  -coverprofile=coverage.out -covermode=atomic
+      - run: go tool cover -html=coverage.out -o cover.html
+      - uses: codecov/codecov-action@v2
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
+          working-directory: ./lambda-functions/graph-ql-api/
+          files: ./coverage.out # optional
+          flags: unittests # optional
+          name: codecov-graphql-endpoint # optional
+          fail_ci_if_error: true # optional (default = false)
