@@ -13,7 +13,11 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb/types"
 )
 
-func UpdateSandBoxItem(ctx context.Context, svc *dynamodb.Client, sandbox models.SandboxItem) (*models.SandboxItem, error) {
+type DynamoAPIUpdate interface {
+	UpdateItem(ctx context.Context, params *dynamodb.UpdateItemInput, optFns ...func(*dynamodb.Options)) (*dynamodb.UpdateItemOutput, error)
+}
+
+func UpdateSandBoxItem(ctx context.Context, svc DynamoAPIUpdate, sandbox models.SandboxItem) (*models.SandboxItem, error) {
 
 	table := os.Getenv("dynamodb_table")
 
