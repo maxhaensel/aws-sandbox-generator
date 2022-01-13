@@ -26,7 +26,7 @@ jobs:
             working-directory: ./infrastrucutre/
             files: ./coverage.xml # optional
             flags: unittests # optional
-            name: webapp # optional
+            name: infrastrucutre # optional
             fail_ci_if_error: true # optional (default = false)
         - name: cdk deploy
           uses: youyo/aws-cdk-github-actions@v2

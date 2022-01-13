@@ -3,7 +3,7 @@ name: 'graphql-endpoint - Quality Check'
 on:
   pull_request:
     branches: [main]
-    # paths: [lambda-functions/graph-ql-api/**]
+    paths: [lambda-functions/graph-ql-api/**]
 
 defaults:
   run:
