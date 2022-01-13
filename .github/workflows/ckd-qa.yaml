@@ -4,6 +4,8 @@ on:
   pull_request:
     branches: [main]
     paths: [infrastrucutre/**]
+  workflow_dispatch:
+    
 
 defaults:
   run:
@@ -15,6 +17,16 @@ jobs:
     steps:
         - name: Checkout repository
           uses: actions/checkout@v2
+        - run: pip install -r requirements-dev.txt -r requirements.txt
+        - run: pytest --cov=./ --cov-report=xml
+        - uses: codecov/codecov-action@v2
+          with:
+            token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
+            working-directory: ./infrastrucutre/
+            files: ./coverage.xml # optional
+            flags: unittests # optional
+            name: webapp # optional
+            fail_ci_if_error: true # optional (default = false)
         - name: cdk diff
           uses: youyo/aws-cdk-github-actions@v2
           with:
