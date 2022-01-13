@@ -15,26 +15,32 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-      - uses: actions/setup-go@v2
+      - name: init go
+        uses: actions/setup-go@v2
         with:
             go-version: '^1.17.6' # The Go version to download (if necessary) and use.
-      - run: go version
-      - run: go install github.com/jteeuwen/go-bindata/...@latest
-      - run: go mod vendor
-      - run: go generate ./schema
-      - run: go test ./...  -coverprofile=coverage.out -covermode=atomic
-      - run: go tool cover -html=coverage.out -o cover.html
-      - uses: codecov/codecov-action@v2
+      - name: install go-bindata
+        run: go install github.com/jteeuwen/go-bindata/...@latest
+      - name: go vendor
+        run: go mod vendor
+      - name: generate graphql-schema
+        run: go generate ./schema 
+      - name: run unittests
+        run: go test ./...  -coverprofile=coverage.out -covermode=atomic
+      - name: update code-coverage
+        uses: codecov/codecov-action@v2
         with:
           token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
           working-directory: ./lambda-functions/graph-ql-api/
           files: ./coverage.out # optional
           flags: unittests # optional
           name: codecov-graphql-endpoint # optional
-          fail_ci_if_error: true # optional (default = false)
-      - run: GOARCH=amd64 GOOS=linux go build main.go
-      - run: zip -9 main.zip main
-      - name: Upload file to bucket
+          fail_ci_if_error: true # optional (default = false)      
+      - name: build project
+        run: GOARCH=amd64 GOOS=linux go build main.go
+      - name: zip binary
+        run: zip -9 main.zip main
+      - name: Upload file to s3-bucket
         uses: zdurham/s3-upload-github-action@master
         env:
           FILE: ./lambda-functions/graph-ql-api/main.zip

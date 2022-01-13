@@ -15,17 +15,18 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-      - name: Initialize Node 16.x
+      - name: initialize Node 16.x
         uses: actions/setup-node@v1
         with:
           node-version: 16.x
-      - name: Install
+      - name: install all dependency
         run: yarn install
-      - name: Lint
+      - name: lint all files
         run: yarn lint
-      - name: Lint
+      - name: run test
         run: yarn test:ci
-      - uses: codecov/codecov-action@v2
+      - name: update code-coverage
+        uses: codecov/codecov-action@v2
         with:
           token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
           working-directory: ./frontend/
