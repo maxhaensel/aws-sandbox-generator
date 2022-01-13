@@ -17,7 +17,7 @@ jobs:
     steps:
         - name: Checkout repository
           uses: actions/checkout@v2
-        - run: pip install -r requirements-dev.txt -r requirements.txt
+        - run: pip install -r requirements-dev.txt
         - run: pytest --cov=./ --cov-report=xml
         - uses: codecov/codecov-action@v2
           with:
