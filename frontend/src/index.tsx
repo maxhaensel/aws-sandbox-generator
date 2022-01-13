@@ -5,9 +5,7 @@ import App from './App'
 import reportWebVitals from './reportWebVitals'
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client'
 
-const URL =
-  process.env.REACT_APP_SANDBOX_DOMAIN_URI ||
-  'https://p1g64cgkm8.execute-api.eu-central-1.amazonaws.com/prod/'
+const URL = process.env.REACT_APP_SANDBOX_DOMAIN_URI
 
 const client = new ApolloClient({
   uri: `${URL}graphql`,
