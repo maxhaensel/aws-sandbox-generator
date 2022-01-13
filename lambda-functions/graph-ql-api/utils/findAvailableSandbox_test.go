@@ -16,6 +16,16 @@ func TestFindAvailableSandbox(t *testing.T) {
 		Available:  "false",
 	}
 
+	item_available_false_string_1 := models.SandboxItem{
+		Account_id: "123",
+		Available:  "not-a-bool",
+	}
+
+	item_available_false_string_2 := models.SandboxItem{
+		Account_id: "123",
+		Available:  "123",
+	}
+
 	var tests = []struct {
 		testname string
 		items    []models.SandboxItem
@@ -24,13 +34,23 @@ func TestFindAvailableSandbox(t *testing.T) {
 		{"test1", []models.SandboxItem{item_available, item_available}, true},
 		{"test2", []models.SandboxItem{item_available, item_not_available}, true},
 		{"test3", []models.SandboxItem{item_not_available, item_not_available}, false},
+		{"test4", []models.SandboxItem{item_available_false_string_1}, false},
+		{"test5", []models.SandboxItem{item_available_false_string_2}, false},
+		{"test5", []models.SandboxItem{}, false},
+		{"test5", []models.SandboxItem{}, false},
 	}
 
 	for i, tt := range tests {
 		t.Run(tt.testname, func(t *testing.T) {
-			_, Available, _ := utils.FindAvailableSandbox(tt.items)
-			if Available != tt.result {
-				t.Errorf("error in item %d expect %t got %t", i+1, Available, tt.result)
+			sandbox, _ := utils.FindAvailableSandbox(tt.items)
+
+			var k bool = false
+			if sandbox != nil {
+				k = true
+			}
+
+			if k != tt.result {
+				t.Errorf("error in item %d expect %v got %v", i+1, *sandbox, tt.result)
 			}
 		})
 	}

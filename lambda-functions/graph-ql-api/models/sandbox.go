@@ -31,11 +31,9 @@ func (r *SandBoxResolver) Message() string {
 func (r *SandBoxResolver) Sandbox() *SandBoxItemResolver {
 	return &r.U.Sandbox
 }
-
 func (r *CreateNewSandboxResponse) Sandbox() *SandBoxItemResolver {
 	return &r.U.Sandbox
 }
-
 func (r *ListSandboxeResponse) Sandboxes() *[]*SandBoxItemResolver {
 	return &r.U.Sandboxes
 }

@@ -15,7 +15,20 @@ jobs:
     steps:
         - name: Checkout repository
           uses: actions/checkout@v2
-        - name: cdk diff
+        - name: install all dependency
+          run: pip install -r requirements-dev.txt
+        - name: run unittests
+          run: pytest --cov=./ --cov-report=xml
+        - name: update code-coverage
+          uses: codecov/codecov-action@v2
+          with:
+            token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
+            working-directory: ./infrastrucutre/
+            files: ./coverage.xml # optional
+            flags: unittests # optional
+            name: webapp # optional
+            fail_ci_if_error: true # optional (default = false)
+        - name: cdk deploy
           uses: youyo/aws-cdk-github-actions@v2
           with:
             cdk_subcommand: 'deploy'

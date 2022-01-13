@@ -37,13 +37,13 @@ func (*Resolver) LeaseASandBox(ctx context.Context, args struct {
 
 	items := api.ScanSandboxTable(ctx, svc)
 
-	sandbox, available, err := utils.FindAvailableSandbox(items)
+	sandbox, err := utils.FindAvailableSandbox(items)
 
 	if err != nil {
 		return nil, err
 	}
 
-	if !available {
+	if sandbox != nil {
 		return &models.SandBoxResolver{U: models.SandBoxResponse{
 			Message: "no Sandbox Available",
 		}}, nil

@@ -1,26 +1,22 @@
 package utils
 
 import (
+	"fmt"
 	"lambda/aws-sandbox/graph-ql-api/models"
 	"strconv"
 )
 
-func FindAvailableSandbox(items []models.SandboxItem) (*models.SandboxItem, bool, error) {
-	result := []models.SandboxItem{}
+func FindAvailableSandbox(items []models.SandboxItem) (*models.SandboxItem, error) {
 
 	for _, item := range items {
 		b, err := strconv.ParseBool(item.Available)
 		if err != nil {
-			return &models.SandboxItem{}, false, err
+			return nil, err
 		}
 		if b {
-			result = append(result, item)
+			return &item, nil
 		}
 	}
+	return nil, fmt.Errorf("")
 
-	if len(result) > 0 {
-		return &result[0], true, nil
-	} else {
-		return nil, false, nil
-	}
 }

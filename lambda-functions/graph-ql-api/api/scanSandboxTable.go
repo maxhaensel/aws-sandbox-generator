@@ -12,7 +12,11 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb"
 )
 
-func ScanSandboxTable(ctx context.Context, svc *dynamodb.Client) []models.SandboxItem {
+type DynamoAPI interface {
+	Scan(ctx context.Context, params *dynamodb.ScanInput, optFns ...func(*dynamodb.Options)) (*dynamodb.ScanOutput, error)
+}
+
+func ScanSandboxTable(ctx context.Context, svc DynamoAPI) []models.SandboxItem {
 
 	items := []models.SandboxItem{}
 
@@ -26,7 +30,6 @@ func ScanSandboxTable(ctx context.Context, svc *dynamodb.Client) []models.Sandbo
 
 	scanInput := dynamodb.ScanInput{
 		TableName: aws.String(table),
-		//TableName: aws.String("AWSSandbox-TableCD117FA1-GIBW29BSQT2O"),
 	}
 
 	scan, err := svc.Scan(ctx, &scanInput)
@@ -39,7 +42,7 @@ func ScanSandboxTable(ctx context.Context, svc *dynamodb.Client) []models.Sandbo
 	err = attributevalue.UnmarshalListOfMaps(scan.Items, &items)
 
 	if err != nil {
-		log.Panicln(fmt.Errorf("ERROR: failed to unmarshal Dynamodb Scan Items, %v", err))
+		log.Print(fmt.Errorf("ERROR: failed to unmarshal Dynamodb Scan Items, %v", err))
 		return items
 	}
 

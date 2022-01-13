@@ -17,7 +17,7 @@ from aws_cdk import (
 from aws_cdk.aws_lambda_event_sources import DynamoEventSource
 
 from hosting import AWSSandBoxHosting
-from mockGoLambda import AWSLambdaGoGraphql
+from lambda_graphql_endpoint import AWSLambdaGoGraphql
 
 env_EU = core.Environment(account="172920935848", region="eu-central-1")
 
@@ -67,13 +67,6 @@ class AWSSandboxHandler(core.Stack):
         items = api.root.add_resource("sandbox")
         items.add_method("POST")  # POST /sandbox
 
-        ssm_sandbox_domain_uri = ssm.StringParameter(
-            self,
-            "sandboxDomainUri",
-            description="Name of the API URI",
-            parameter_name="sandboxDomainUri",
-            string_value=api.url,
-        )
         # Grant Access to SSO, Remove Access to SSO, Nuke Account
         SSO_Nuke_handler_lambda = lambda_.Function(
             self,
@@ -136,11 +129,14 @@ class AWSSandboxHandler(core.Stack):
         rule.add_target(targets.LambdaFunction(sheduler_sandbox_access_lambda))
 
         """
+        create Graphql-Endpoint
+        """
+        lambda_go_graphql = AWSLambdaGoGraphql(self, "graph-ql-endpoint", table)
+
+        """
         create Web-App-Hosting 
         """
-        hosting = AWSSandBoxHosting(self, "Hosting", ssm_sandbox_domain_uri=ssm_sandbox_domain_uri)
-
-        AWSLambdaGoGraphql(self, "graph-ql-endpoint", table)
+        hosting = AWSSandBoxHosting(self, "Hosting", ssm_sandbox_domain_uri=lambda_go_graphql.ssm_sandbox_domain_uri)
 
 
 AWSSandboxHandler(app, "AWSSandbox", env=env_EU)

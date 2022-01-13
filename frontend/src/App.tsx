@@ -1,5 +1,7 @@
+import { gql, useMutation } from '@apollo/client'
 import React from 'react'
 import pexonLogo from './assets/pexon.webp'
+import SsoLogin from './components/sso-login'
 
 function App() {
   const [user, setUser] = React.useState({
@@ -10,7 +12,27 @@ function App() {
       .slice(0, 10),
     valid_lease_time: true,
   })
-  const [status, setStatus] = React.useState({ message: '', display: false })
+  const [status, setStatus] = React.useState({
+    message: '',
+    display: false,
+    successfully: false,
+  })
+
+  const [leaseASandBoxRequest, { data, loading, error }] = useMutation(gql`
+    mutation LeaseASandBox($email: String!, $lease_time: String!) {
+      leaseASandBox(Email: $email, Lease_time: $lease_time) {
+        message
+        sandbox {
+          account_id
+          account_name
+          assigned_until
+          assigned_since
+          assigned_to
+          available
+        }
+      }
+    }
+  `)
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.id === 'mail') {
@@ -28,42 +50,16 @@ function App() {
   }
 
   const resetStatus = () => {
-    setStatus({ message: '', display: false })
+    setStatus({ message: '', display: false, successfully: false })
   }
 
   const submitRequest = () => {
-    const URL = process.env.REACT_APP_SANDBOX_DOMAIN_URI
-
-    if (URL === undefined) {
-      setStatus({
-        message: 'Da ist etwas schief gegangen!',
-        display: true,
-      })
-      return
-    }
-
-    const response = fetch(
-      `${URL}sandbox?name=${user.mail}&lease_time=${user.lease_time}`,
-      {
-        method: 'POST',
-        mode: 'cors',
-        headers: { 'Content-Type': 'application/json' },
+    leaseASandBoxRequest({
+      variables: {
+        email: user.mail,
+        lease_time: user.lease_time,
       },
-    )
-    response
-      .then(data => data.json())
-      .then(data => {
-        setStatus({
-          message: `${data.message}, ${data.sandbox}`,
-          display: true,
-        })
-      })
-      .catch(e => {
-        setStatus({
-          message: 'Da ist etwas schief gegangen!',
-          display: true,
-        })
-      })
+    })
 
     setUser({
       mail: '',
@@ -72,15 +68,6 @@ function App() {
       valid_lease_time: false,
     })
   }
-
-  React.useEffect(() => {
-    if (status.display === true) {
-      const timer = setTimeout(() => {
-        resetStatus()
-      }, 5000)
-      return () => clearTimeout(timer)
-    }
-  }, [status, setStatus])
 
   const renderMailInput = () => (
     <>
@@ -115,6 +102,34 @@ function App() {
     </>
   )
 
+  React.useEffect(() => {
+    if (status.display === true) {
+      const timer = setTimeout(() => {
+        resetStatus()
+      }, 5000)
+      return () => clearTimeout(timer)
+    }
+  }, [status, setStatus])
+
+  React.useEffect(() => {
+    if (loading === false && data) {
+      const successfully =
+        data.leaseASandBox.message !== 'no Sandbox Available' ? true : false
+      setStatus({
+        message: `${data.leaseASandBox.message}`,
+        display: true,
+        successfully,
+      })
+    }
+    if (error) {
+      setStatus({
+        message: 'Da ist etwas schief gegangen!',
+        display: true,
+        successfully: false,
+      })
+    }
+  }, [data, loading, error])
+
   return (
     <div className="flex justify-center mt-32">
       <div className="m-16">
@@ -135,13 +150,23 @@ function App() {
         </button>
         {status.display && (
           <div
-            className="mt-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
+            className={`mt-4 bg-${
+              status.successfully ? 'green' : 'red'
+            }-100 border border-${
+              status.successfully ? 'green' : 'red'
+            }-400 text-${
+              status.successfully ? 'green' : 'red'
+            }-700 px-4 py-3 rounded relative`}
             role="alert"
           >
-            <strong className="font-bold">Holy smokes!</strong>
+            <strong className="font-bold">
+              {status.successfully ? 'Erfolgreich' : 'Fehler'}
+            </strong>
             <span className="block sm:inline">{status.message}</span>
           </div>
         )}
+        <div className="mt-8"></div>
+        <SsoLogin></SsoLogin>
       </div>
     </div>
   )

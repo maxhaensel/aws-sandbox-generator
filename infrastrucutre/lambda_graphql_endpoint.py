@@ -9,6 +9,7 @@ from aws_cdk import (
     aws_apigateway as apigw,
     aws_dynamodb as dynamodb,
 )
+from aws_cdk.aws_ec2 import Volume
 
 
 class AWSLambdaGoGraphql(cdk.Construct):
@@ -28,7 +29,7 @@ class AWSLambdaGoGraphql(cdk.Construct):
             self, id="cdktoolkit-stagingbucket", bucket_name="cdktoolkit-stagingbucket-1rbmmxnlvi129"
         )
 
-        endpoint_lambda = lambda_.Function(
+        func = lambda_.Function(
             self,
             "graphql_go_lambda",
             architecture=lambda_.Architecture.X86_64,
@@ -40,17 +41,27 @@ class AWSLambdaGoGraphql(cdk.Construct):
             environment={"dynamodb_table": table.table_name},
         )
 
-        table.grant_read_write_data(endpoint_lambda)
+        table.grant_read_write_data(func)
 
         api = apigw.LambdaRestApi(
             self,
             "graphql_go_api",
-            handler=endpoint_lambda,
+            handler=func,
             proxy=False,
             default_cors_preflight_options=apigw.CorsOptions(
                 allow_origins=apigw.Cors.ALL_ORIGINS, allow_methods=apigw.Cors.ALL_METHODS
             ),
         )
 
+        ssm_sandbox_domain_uri = ssm.StringParameter(
+            self,
+            "sandbox-domain-uri",
+            description="Name of the API URI",
+            parameter_name="sandboxDomainUri",
+            string_value=api.url,
+        )
+
         items = api.root.add_resource("graphql")
         items.add_method("POST")  # POST /sandbox
+
+        self.ssm_sandbox_domain_uri = ssm_sandbox_domain_uri
