@@ -10,4 +10,12 @@ updates:
     schedule:
       interval: "daily"
     labels:
-      - "go dependencies"
+      - "go"
+      - "dependencies"
+  - package-ecosystem: "npm" # See documentation for possible values
+    directory: "/frontend/" # Location of package manifests
+    schedule:
+      interval: "daily"
+    labels:
+      - "frontend"
+      - "dependencies"
