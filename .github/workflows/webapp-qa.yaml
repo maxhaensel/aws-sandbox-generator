@@ -9,6 +9,9 @@ jobs:
   qualtiy-check:
     runs-on: ubuntu-latest
     steps:
-      - uses: ./.github/workflows/webapp-qa-re.yaml
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: run action
+        uses: ./.github/workflows/webapp-qa-re.yaml
         with:
           CODECOV_TOKEN: ${{  secrets.CODECOV_TOKEN  }}
