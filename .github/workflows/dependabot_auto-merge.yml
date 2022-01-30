@@ -18,9 +18,9 @@ jobs:
     steps:
       - name: Enable auto-merge for Dependabot PRs
         run: |
-          gh pr review "PR_NUMBER" --approve 
-          gh pr merge "PR_NUMBER" --auto --squash
-          gh pr edit "PR_NUMBER" --add-label automerge
+          gh pr review --approve "PR_URL"
+          gh pr merge --auto --squash "PR_URL"
+          gh pr edit --add-label automerge "PR_URL"
         env:
           PR_URL: ${{github.event.pull_request.html_url}}
           PR_NUMBER: ${{ github.event.number }}
