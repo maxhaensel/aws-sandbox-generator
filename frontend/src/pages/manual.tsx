@@ -1,6 +1,6 @@
 import ssoConsole from '../assets/sso-console.png'
 
-function Component() {
+function Manual() {
   return (
     <>
       <h1 className="text-2xl">Anleitung</h1>
@@ -32,4 +32,4 @@ function Component() {
   )
 }
 
-export default Component
+export { Manual }
