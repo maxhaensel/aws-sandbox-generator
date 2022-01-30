@@ -1,5 +1,11 @@
 name: Dependabot auto-merge
-on: pull_request
+on:
+  workflow_run:
+    workflows:
+      - Frontend - Quality Check
+      - graphql-endpoint - Quality Check
+    types:
+      - completed
 
 permissions:
   pull-requests: write
@@ -11,7 +17,7 @@ jobs:
     if: ${{ github.actor == 'dependabot[bot]' }}
     steps:
       - name: Enable auto-merge for Dependabot PRs
-        run: gh pr merge --auto --merge "$PR_URL"
+        run: gh pr merge --auto --squash "$PR_URL"
         env:
           PR_URL: ${{github.event.pull_request.html_url}}
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
