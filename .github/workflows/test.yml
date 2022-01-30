@@ -1,0 +1,17 @@
+name: test
+
+on:
+  pull_request:
+    branches: [main]
+    paths: [test/**]
+
+defaults:
+  run:
+    working-directory: test
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: echo
+        run: echo hello
