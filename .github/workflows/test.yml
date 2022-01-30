@@ -5,10 +5,6 @@ on:
     branches: [main]
     paths: [test/**]
 
-defaults:
-  run:
-    working-directory: test
-
 jobs:
   test:
     runs-on: ubuntu-latest
