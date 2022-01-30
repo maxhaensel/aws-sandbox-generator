@@ -16,6 +16,6 @@ jobs:
       - run: ls .github/workflows
       - run: cat .github/workflows/webapp-qa-re.yaml
       - name: run action
-        uses: .github/workflows/webapp-qa-re.yaml
+        uses: .github/workflows/webapp-qa-re.yaml@main
         with:
           CODECOV_TOKEN: ${{  secrets.CODECOV_TOKEN  }}
