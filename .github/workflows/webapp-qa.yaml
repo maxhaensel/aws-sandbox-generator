@@ -6,12 +6,27 @@ on:
     paths: [frontend/**]
 
 jobs:
-  qualtiy-check:
+  qualtiy-gate:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-      - name: run action
-        uses: ./.github/workflows/webapp-qa-re.yaml
+      - name: initialize Node 16.x
+        uses: actions/setup-node@v1
         with:
-          CODECOV_TOKEN: ${{  secrets.CODECOV_TOKEN  }}
+          node-version: 16.x
+      - name: install all dependency
+        run: yarn install
+      - name: lint all files
+        run: yarn lint
+      - name: run test
+        run: yarn test:ci
+      - name: update code-coverage
+        uses: codecov/codecov-action@v2
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
+          working-directory: ./frontend/
+          directory: ./coverage # optional
+          flags: unittests # optional
+          name: webapp # optional
+          fail_ci_if_error: true # optional (default = false)
