@@ -19,3 +19,12 @@ updates:
     labels:
       - "frontend"
       - "dependencies"
+  - package-ecosystem: "pip" # See documentation for possible values
+    directory: "/infrastrucutre/" # rename typo infrastructure
+    schedule:
+      interval: "daily"
+    labels:
+      - "IaC"
+      - "dependencies"
+
+
