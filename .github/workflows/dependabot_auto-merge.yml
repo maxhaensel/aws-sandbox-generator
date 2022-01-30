@@ -18,7 +18,7 @@ jobs:
     steps:
       - name: Enable auto-merge for Dependabot PRs
         run: |
-          gh pr review "PR_NUMBER" --approve --comment --body "dependabot automerge"
+          gh pr review "PR_NUMBER" --approve 
           gh pr merge "PR_NUMBER" --auto --squash
           gh pr edit "PR_NUMBER" --add-label automerge
         env:
