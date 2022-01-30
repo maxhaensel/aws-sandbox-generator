@@ -15,7 +15,7 @@ jobs:
       - run: ls .github/workflows
       - run: ls .github/workflows
       - run: cat .github/workflows/webapp-qa-re.yaml
-  call-workflow-2-in-local-repo:
-    uses: ./.github/workflows/webapp-qa-re.yaml
-    with:
-      CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+      - uses: ./.github/workflows/webapp-qa-re.yaml
+        with:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
