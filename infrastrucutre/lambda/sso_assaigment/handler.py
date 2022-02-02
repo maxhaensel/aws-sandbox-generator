@@ -63,7 +63,7 @@ def handler(event=None, context=None):
                 InstanceArn="arn:aws:sso:::instance/ssoins-6987b5e3ca99dac9",
                 TargetId=account_id,
                 TargetType="AWS_ACCOUNT",
-                PermissionSetArn="arn:aws:sso:::permissionSet/ssoins-6987b5e3ca99dac9/ps-17b5cee28043a210",
+                PermissionSetArn="arn:aws:sso:::permissionSet/ssoins-6987b5e3ca99dac9/ps-f78cb46c16715cdf",
                 PrincipalType="USER",
                 PrincipalId=find_user["Users"][0]["UserId"],
             )
@@ -82,7 +82,7 @@ def handler(event=None, context=None):
             InstanceArn="arn:aws:sso:::instance/ssoins-6987b5e3ca99dac9",
             TargetId=account_id,
             TargetType="AWS_ACCOUNT",
-            PermissionSetArn="arn:aws:sso:::permissionSet/ssoins-6987b5e3ca99dac9/ps-17b5cee28043a210",
+            PermissionSetArn="arn:aws:sso:::permissionSet/ssoins-6987b5e3ca99dac9/ps-f78cb46c16715cdf",
             PrincipalType="USER",
             PrincipalId=find_user["Users"][0]["UserId"],
         )
