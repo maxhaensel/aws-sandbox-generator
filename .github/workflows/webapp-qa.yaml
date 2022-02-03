@@ -4,7 +4,11 @@ on:
   pull_request:
     branches: [main]
     paths: [frontend/**]
-
+    
+defaults:
+  run:
+    working-directory: frontend
+    
 jobs:
   qualtiy-gate:
     runs-on: ubuntu-latest
