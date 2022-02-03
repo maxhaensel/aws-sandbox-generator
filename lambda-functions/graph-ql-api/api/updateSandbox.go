@@ -13,11 +13,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb/types"
 )
 
-type DynamoAPIUpdate interface {
-	UpdateItem(ctx context.Context, params *dynamodb.UpdateItemInput, optFns ...func(*dynamodb.Options)) (*dynamodb.UpdateItemOutput, error)
-}
-
-func UpdateSandBoxItem(ctx context.Context, svc DynamoAPIUpdate, sandbox models.SandboxItem) (*models.SandboxItem, error) {
+func UpdateSandBoxItem(ctx context.Context, svc DynamoAPI, sandbox models.SandboxItem) (*models.SandboxItem, error) {
 
 	table := os.Getenv("dynamodb_table")
 
@@ -26,15 +22,6 @@ func UpdateSandBoxItem(ctx context.Context, svc DynamoAPIUpdate, sandbox models.
 		log.Print(fmt.Errorf("ERROR: failed to find table-name %v", err))
 		return nil, err
 	}
-
-	// sandboxItem := struct {
-	// 	Account_id string `dynamodbav:"account_id"`
-	// }{Account_id: "397624546912"}
-
-	// key, err := attributevalue.MarshalMap(sandboxItem.Account_id)
-	// if err != nil {
-	// 	return nil, fmt.Errorf("failed to marshal Record, %w", err)
-	// }
 
 	key := map[string]types.AttributeValue{
 		"account_id": &types.AttributeValueMemberS{Value: sandbox.Account_id},

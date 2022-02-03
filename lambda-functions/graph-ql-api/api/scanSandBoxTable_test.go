@@ -17,19 +17,10 @@ import (
 	"github.com/aws/smithy-go/middleware"
 )
 
-type mockedScanApi struct {
-	response *dynamodb.ScanOutput
-	err      error
-}
-
 type mockedScanRequest struct {
-	svc        api.DynamoAPI
+	svc        api.MockedDynamoDB
 	len        int
 	logMessage string
-}
-
-func (m mockedScanApi) Scan(ctx context.Context, params *dynamodb.ScanInput, optFns ...func(*dynamodb.Options)) (*dynamodb.ScanOutput, error) {
-	return m.response, m.err
 }
 
 func TestScanSandboxTable(t *testing.T) {
@@ -38,8 +29,8 @@ func TestScanSandboxTable(t *testing.T) {
 
 	tests := []mockedScanRequest{
 		{
-			mockedScanApi{
-				response: &dynamodb.ScanOutput{
+			api.MockedDynamoDB{
+				Scan_response: &dynamodb.ScanOutput{
 					Count: 2,
 					Items: []map[string]types.AttributeValue{
 						{
@@ -61,14 +52,14 @@ func TestScanSandboxTable(t *testing.T) {
 					ScannedCount:     2,
 					ResultMetadata:   middleware.Metadata{},
 				},
-				err: nil,
+				Scan_err: nil,
 			},
 			2,
 			"",
 		},
 		{
-			mockedScanApi{
-				response: &dynamodb.ScanOutput{
+			api.MockedDynamoDB{
+				Scan_response: &dynamodb.ScanOutput{
 					Count: 2,
 					Items: []map[string]types.AttributeValue{
 						{},
@@ -78,15 +69,15 @@ func TestScanSandboxTable(t *testing.T) {
 					ScannedCount:     2,
 					ResultMetadata:   middleware.Metadata{},
 				},
-				err: nil,
+				Scan_err: nil,
 			},
 			2,
 			"",
 		},
 		{
-			mockedScanApi{
-				response: nil,
-				err:      fmt.Errorf("error"),
+			api.MockedDynamoDB{
+				Scan_response: nil,
+				Scan_err:      fmt.Errorf("error"),
 			},
 			0,
 			"ERROR: failed to Scan DynamoDB",
@@ -113,9 +104,9 @@ func TestScanSandboxTableWithoutTableName(t *testing.T) {
 	os.Unsetenv("dynamodb_table")
 
 	testcase := mockedScanRequest{
-		mockedScanApi{
-			response: nil,
-			err:      fmt.Errorf("error"),
+		api.MockedDynamoDB{
+			Scan_response: nil,
+			Scan_err:      fmt.Errorf("error"),
 		},
 		0,
 		"ERROR: failed to find table-name env-variable dynamodb_table is empty",

@@ -12,10 +12,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb"
 )
 
-type DynamoAPI interface {
-	Scan(ctx context.Context, params *dynamodb.ScanInput, optFns ...func(*dynamodb.Options)) (*dynamodb.ScanOutput, error)
-}
-
 func ScanSandboxTable(ctx context.Context, svc DynamoAPI) []models.SandboxItem {
 
 	items := []models.SandboxItem{}
@@ -45,6 +41,5 @@ func ScanSandboxTable(ctx context.Context, svc DynamoAPI) []models.SandboxItem {
 		log.Print(fmt.Errorf("ERROR: failed to unmarshal Dynamodb Scan Items, %v", err))
 		return items
 	}
-
 	return items
 }
