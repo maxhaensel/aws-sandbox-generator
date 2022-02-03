@@ -1,8 +1,8 @@
 package utils
 
 import (
-	"fmt"
 	"lambda/aws-sandbox/graph-ql-api/models"
+	"log"
 	"strconv"
 )
 
@@ -11,12 +11,12 @@ func FindAvailableSandbox(items []models.SandboxItem) (*models.SandboxItem, erro
 	for _, item := range items {
 		b, err := strconv.ParseBool(item.Available)
 		if err != nil {
+			log.Println(err.Error())
 			return nil, err
 		}
 		if b {
 			return &item, nil
 		}
 	}
-	return nil, fmt.Errorf("")
-
+	return nil, nil
 }
