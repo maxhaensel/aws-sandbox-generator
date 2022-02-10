@@ -35,7 +35,11 @@ const executableSchema = makeExecutableSchema({
   resolvers,
 })
 
-export const link = ApolloLink.from([
-  // delayLink,
-  new SchemaLink({ schema: executableSchema }),
-])
+const links = []
+const flaky: boolean = Boolean(process.env.REACT_APP_NETWORK_SIMULATION)
+if (flaky) {
+  links.push(delayLink)
+}
+links.push(new SchemaLink({ schema: executableSchema }))
+
+export const link = ApolloLink.from(links)
