@@ -30,6 +30,7 @@
   },
   "scripts": {
     "start": "REACT_APP_MOCK_API=1 craco start",
+    "start:flaky": "REACT_APP_NETWORK_SIMULATION=true yarn start",
     "start:live": "craco start",
     "build": "react-scripts build",
     "lint": "eslint",
