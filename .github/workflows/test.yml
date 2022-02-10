@@ -2,12 +2,17 @@ name: test
 
 on:
   pull_request:
-    branches: [main]
-    paths: [test/**]
+    branches: [feature/frontend]
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
+  cypress-run:
+    runs-on: ubuntu-20.04
     steps:
-      - name: echo
-        run: echo hello
+      - name: Checkout
+        uses: actions/checkout@v2
+      # Install NPM dependencies, cache them correctly
+      # and run all Cypress tests
+      - name: Cypress run
+        uses: cypress-io/github-action@v2
+        with:
+          start: yarn start
