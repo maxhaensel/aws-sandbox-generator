@@ -1,3 +1,14 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+table {
+  border-collapse: collapse;
+}
+
+tr.alter:nth-child(even) {
+  background: white;
+}
+tr.alter:nth-child(odd) {
+  background: #ddd;
+}
