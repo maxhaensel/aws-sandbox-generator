@@ -3,16 +3,57 @@ name: 'workflow'
 on:
   push:
     branches: [feature/reusable-workflow]
+    
+defaults:
+  run:
+    working-directory: frontend
+    
 
-
+# jobs:
+  # test:
+  #   uses: ./.github/workflows/reusable.yml
+  #   secrets:
+  #     CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+  # some:
+  #   needs: [test]
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: test
+  #       run: ls -la
 jobs:
-  test:
-    uses: ./.github/workflows/reusable.yml
-    secrets:
-      CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-  some:
-    needs: [test]
+  setup:
     runs-on: ubuntu-latest
+
     steps:
-      - name: test
-        run: ls -la
+      - uses: actions/checkout@v2
+      - uses: ./.github/actions/cache-restore
+        id: cache-node-modules
+        with:
+          node-version: 16.x
+      - run: yarn install
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
+
+  lint:
+    needs: setup
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ./.github/actions/node-cache-restore
+        id: cache-node-modules
+        with:
+          node-version: 16.x
+      - run: yarn lint
+
+
+  test:
+    needs: setup
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ./.github/actions/cache-restore
+        id: cache-node-modules
+        with:
+          node-version: 16.x
+      - run: npm run test
