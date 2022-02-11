@@ -70,4 +70,4 @@ jobs:
           name: coverage
           path: frontend/coverage
       - name: ls
-        run: ls  
+        run: ls ./coverage
