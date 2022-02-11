@@ -1,0 +1,35 @@
+name: deploy
+
+on:
+  # the 1st condition
+  workflow_run:
+    workflows: ["workflow"]
+    branches: [feature/reusable-workflow]
+    types:
+      - completed
+
+
+
+jobs:
+  on-failure:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'failure' }}
+    steps:
+      - run: exit 1
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ./.github/actions/node-cache-restore
+        id: cache-node-modules
+        with:
+          node-version: 16.x
+      - run: yarn build
+
+      - name: Cache Build
+        id: build-cache
+        uses: actions/cache@v2
+        with:
+          path: frontend/build
+          key: frontend-build
