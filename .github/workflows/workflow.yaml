@@ -1,0 +1,10 @@
+name: 'workflow'
+
+on:
+  push:
+    branches: [feature/reusable-workflow]
+
+
+jobs:
+  test:
+    uses: ./.github/workflows/reusable.yml
