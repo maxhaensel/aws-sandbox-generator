@@ -5,22 +5,21 @@ on:
     secrets:
       CODECOV_TOKEN:
         required: true
-
+defaults:
+  run:
+    working-directory: frontend
+    
 jobs:
   example_job:
     name: Pass input and secrets to my-action
     runs-on: ubuntu-latest
     steps:
-      - name: Dump GitHub context
-        run: |
-          echo ${{ secrets.CODECOV_TOKEN }}
-
-      # - name: Checkout repository
-      #   uses: actions/checkout@v2
-      # - name: initialize Node 16.x
-      #   uses: actions/setup-node@v1
-      #   with:
-      #     node-version: 16.x
-      # - name: install all dependency
-      #   run: yarn install
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: initialize Node 16.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: 16.x
+      - name: install all dependency
+        run: yarn install
 
