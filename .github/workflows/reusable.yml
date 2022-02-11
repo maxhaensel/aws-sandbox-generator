@@ -2,6 +2,9 @@ name: Reusable workflow example
 
 on:
   workflow_call:
+    secrets:
+      CODECOV_TOKEN:
+        required: true
 
 jobs:
   example_job:
@@ -9,16 +12,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Dump GitHub context
-        env:
-          GITHUB_CONTEXT: ${{ toJson(github) }}
         run: |
-          echo "$GITHUB_CONTEXT"
-      - name: Checkout repository
-        uses: actions/checkout@v2
-      - name: initialize Node 16.x
-        uses: actions/setup-node@v1
-        with:
-          node-version: 16.x
-      - name: install all dependency
-        run: yarn install
+          echo "$secrets.CODECOV_TOKEN"
+
+      # - name: Checkout repository
+      #   uses: actions/checkout@v2
+      # - name: initialize Node 16.x
+      #   uses: actions/setup-node@v1
+      #   with:
+      #     node-version: 16.x
+      # - name: install all dependency
+      #   run: yarn install
 

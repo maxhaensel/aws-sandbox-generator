@@ -8,3 +8,5 @@ on:
 jobs:
   test:
     uses: ./.github/workflows/reusable.yml
+    secrets:
+      CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
