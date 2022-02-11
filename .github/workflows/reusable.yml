@@ -13,7 +13,7 @@ jobs:
     steps:
       - name: Dump GitHub context
         run: |
-          echo "$secrets.CODECOV_TOKEN"
+          echo ${{ secrets.CODECOV_TOKEN }}
 
       # - name: Checkout repository
       #   uses: actions/checkout@v2
