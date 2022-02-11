@@ -13,4 +13,12 @@ jobs:
           GITHUB_CONTEXT: ${{ toJson(github) }}
         run: |
           echo "$GITHUB_CONTEXT"
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: initialize Node 16.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: 16.x
+      - name: install all dependency
+        run: yarn install
 
