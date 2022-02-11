@@ -8,18 +8,6 @@ defaults:
   run:
     working-directory: frontend
     
-
-# jobs:
-  # test:
-  #   uses: ./.github/workflows/reusable.yml
-  #   secrets:
-  #     CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-  # some:
-  #   needs: [test]
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: test
-  #       run: ls -la
 jobs:
   setup:
     runs-on: ubuntu-latest
@@ -69,5 +57,12 @@ jobs:
         with:
           name: coverage
           path: frontend/coverage
-      - name: ls
-        run: ls ./coverage
+      - name: update code-coverage
+        uses: codecov/codecov-action@v2
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
+          working-directory: ./frontend/
+          directory: ./coverage # optional
+          flags: unittests # optional
+          name: webapp # optional
+          fail_ci_if_error: true # optional (default = false)
