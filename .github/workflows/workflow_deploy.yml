@@ -4,7 +4,7 @@ on:
   # the 1st condition
   workflow_run:
     workflows: ["workflow"]
-    branches: [feature/reusable-workflow]
+    # branches: [feature/reusable-workflow]
     types:
       - completed
 
