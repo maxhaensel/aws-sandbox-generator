@@ -57,7 +57,7 @@ jobs:
       - uses: actions/upload-artifact@master
         with:
           name: coverage
-          path: coverage
+          path: frontend/coverage
 
   
   update-coverage:
@@ -68,6 +68,6 @@ jobs:
       - uses: actions/download-artifact@master
         with:
           name: coverage
-          path: coverage
+          path: frontend/coverage
       - name: ls
         run: ls  
