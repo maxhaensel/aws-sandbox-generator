@@ -10,3 +10,8 @@ jobs:
     uses: ./.github/workflows/reusable.yml
     secrets:
       CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+  some:
+    runs-on: ubuntu-latest
+    steps:
+      - name: test
+        run: ls
