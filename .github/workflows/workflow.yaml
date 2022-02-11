@@ -25,6 +25,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - uses: actions/checkout@v2
       - uses: ./.github/actions/node-cache-restore
         id: cache-node-modules
         with:
@@ -35,21 +36,38 @@ jobs:
   lint:
     needs: setup
     runs-on: ubuntu-latest
-
     steps:
+      - uses: actions/checkout@v2
       - uses: ./.github/actions/node-cache-restore
         id: cache-node-modules
         with:
           node-version: 16.x
       - run: yarn lint
 
-
   test:
     needs: setup
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
       - uses: ./.github/actions/node-cache-restore
         id: cache-node-modules
         with:
           node-version: 16.x
       - run: yarn test:ci
+      - uses: actions/upload-artifact@master
+        with:
+          name: coverage
+          path: path/to/artifact/coverage
+
+  
+  update-coverage:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/download-artifact@master
+        with:
+          name: coverage
+          path: path/to/artifact/coverage
+      - name: ls
+        run: ls  
