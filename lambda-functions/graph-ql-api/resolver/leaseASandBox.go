@@ -21,6 +21,7 @@ func (*Resolver) LeaseASandBox(ctx context.Context, args struct {
 	valid = utils.ProofPexonMail(args.Email)
 	if !valid {
 		return nil, fmt.Errorf("no valid Pexon-Mail")
+
 	}
 
 	valid = utils.Lease_time_Input(args.Lease_time)
@@ -40,10 +41,10 @@ func (*Resolver) LeaseASandBox(ctx context.Context, args struct {
 	sandbox, err := utils.FindAvailableSandbox(items)
 
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("error while finding a sandbox")
 	}
 
-	if sandbox != nil {
+	if sandbox == nil {
 		return &models.SandBoxResolver{U: models.SandBoxResponse{
 			Message: "no Sandbox Available",
 		}}, nil

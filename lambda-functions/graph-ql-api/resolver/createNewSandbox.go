@@ -15,7 +15,7 @@ func (*Resolver) CreateNewSandbox(ctx context.Context, args struct {
 			Sandbox: models.SandBoxItemResolver{
 				U: models.SandboxItem{
 					Account_id:   "123",
-					Account_name: " sandbox.Account_name",
+					Account_name: "sandbox.Account_name",
 				},
 			},
 		}}, nil
