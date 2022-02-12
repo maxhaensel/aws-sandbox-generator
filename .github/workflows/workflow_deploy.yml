@@ -3,7 +3,7 @@ name: deploy2
 on:
   # the 1st condition
   workflow_run:
-    workflows: ["workflow"]
+    workflows: [workflow]
     # branches: [feature/reusable-workflow]
     types:
       - completed
