@@ -1,15 +1,15 @@
 name: deploy2
 
-# on:
-#   # the 1st condition
-#   workflow_run:
-#     workflows: ["workflow"]
-#     # branches: [feature/reusable-workflow]
-#     types:
-#       - completed
 on:
-  push:
-    branches: [feature/reusable-workflow]
+  # the 1st condition
+  workflow_run:
+    workflows: ["workflow"]
+    # branches: [feature/reusable-workflow]
+    types:
+      - completed
+# on:
+#   push:
+#     branches: [feature/reusable-workflow]
 
 
 defaults:
