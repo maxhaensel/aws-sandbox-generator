@@ -12,6 +12,11 @@ on:
     branches: [feature/reusable-workflow]
 
 
+defaults:
+  run:
+    working-directory: frontend
+    
+
 jobs:
   on-failure:
     runs-on: ubuntu-latest
