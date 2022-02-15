@@ -7,17 +7,17 @@ function Navigation() {
   return (
     <ul className={`flex p-4 ${navBar}`}>
       <li className="mr-6">
-        <Link className={textColor} to="/">
+        <Link data-cy={'root'} className={textColor} to="/">
           Sandbox Provisionieren
         </Link>
       </li>
       <li className="mr-6">
-        <Link className={textColor} to="/sandboxes">
+        <Link data-cy={'sandboxes'} className={textColor} to="/sandboxes">
           Sandboxes verwalten
         </Link>
       </li>
       <li className="mr-6">
-        <Link className={textColor} to="/manual">
+        <Link data-cy={'manual'} className={textColor} to="/manual">
           Anleitung
         </Link>
       </li>

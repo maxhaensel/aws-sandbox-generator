@@ -63,7 +63,9 @@ function Main() {
     setUser({
       mail: '',
       valid_mail: false,
-      lease_time: '',
+      lease_time: new Date(new Date().setMonth(new Date().getMonth() + 1))
+        .toISOString()
+        .slice(0, 10),
       valid_lease_time: false,
     })
   }
@@ -74,6 +76,7 @@ function Main() {
         Gib hier deine Pexon-Mail-Adresse ein um eine Sandbox zu provisonieren
       </label>
       <input
+        data-cy={'sandbox-mail-input'}
         id="mail"
         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
         onChange={onChange}
@@ -89,6 +92,7 @@ function Main() {
       </label>
       <input
         id="lease_time"
+        data-cy="lease_time_input"
         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
         onChange={onChange}
         value={user.lease_time}
@@ -137,6 +141,7 @@ function Main() {
         {renderLeaseInput()}
         <br />
         <button
+          data-cy={'submit-request'}
           disabled={!(user.valid_mail && user.valid_lease_time)}
           className={`mt-4 ${
             user.valid_mail && user.valid_lease_time
@@ -149,18 +154,20 @@ function Main() {
         </button>
         {status.display && (
           <div
-            className={`mt-4 bg-${
-              status.successfully ? 'green' : 'red'
-            }-100 border border-${
-              status.successfully ? 'green' : 'red'
-            }-400 text-${
-              status.successfully ? 'green' : 'red'
-            }-700 px-4 py-3 rounded relative`}
+            data-cy="alert"
+            className={`
+            mt-4 border-2 px-4 py-3 rounded relative
+            ${
+              status.successfully
+                ? 'border-green-500 text-green-800'
+                : 'border-rose-500 text-rose-800'
+            }
+            `}
             role="alert"
           >
             <strong className="font-bold">
               {status.successfully ? 'Erfolgreich' : 'Fehler'}
-            </strong>
+            </strong>{' '}
             <span className="block sm:inline">{status.message}</span>
           </div>
         )}
