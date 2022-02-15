@@ -12,3 +12,7 @@ test('renders learn react link', () => {
     </MockedProvider>,
   )
 })
+
+test('renders learn react link2', () => {
+  render(<div>test</div>)
+})
