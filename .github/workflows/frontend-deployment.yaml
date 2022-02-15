@@ -2,7 +2,7 @@ name: Frontend:Build an Release
 
 on:
   workflow_run:
-    workflows: [Frontend:Quality Gate]
+    workflows: ['Frontend:Quality Gate']
     branches: [main]
     types:
       - completed
