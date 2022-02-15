@@ -12,15 +12,8 @@ defaults:
     working-directory: frontend
     
 jobs:
-  on-failure:
-    runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'failure' }}
-    steps:
-      - run: exit 1
-
   build:
-    needs: on-failure
-    if: success()
+    if: ${{ github.event.workflow_run.conclusion != 'failure' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
