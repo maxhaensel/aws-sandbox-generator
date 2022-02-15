@@ -1,0 +1,84 @@
+name: Frontend:Build an Release
+
+on:
+  workflow_run:
+    workflows: [Frontend:Quality Gate]
+    branches: [main]
+    types:
+      - completed
+
+defaults:
+  run:
+    working-directory: frontend
+    
+jobs:
+  on-failure:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'failure' }}
+    steps:
+      - run: exit 1
+
+  build:
+    needs: on-failure
+    if: success()
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: configure credentials
+        uses: "aws-actions/configure-aws-credentials@v1"
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_CICD_WEB_APP }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_CICD_WEB_APP }}
+          aws-region: "eu-central-1"
+      - name: retrieve ssm parameter
+        uses: "marvinpinto/action-inject-ssm-secrets@latest"
+        with:
+          ssm_parameter: "sandboxDomainUri"
+          env_variable_name: "sandboxDomainUri"
+
+      - name: restore node-modules
+        uses: ./.github/actions/node-cache-restore
+        id: cache-node-modules
+        with:
+          node-version: 16.x
+      - name: Build React Frontend
+        run: yarn build
+        env:
+           REACT_APP_SANDBOX_DOMAIN_URI: ${{ env.SANDBOXDOMAINURI }}
+
+      - name: Save Build Artefact
+        uses: actions/upload-artifact@master
+        with:
+          name: build-artefact
+          path: frontend/build
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download Build Artefact
+        uses: actions/download-artifact@master
+        with:
+          name: build-artefact
+          path: frontend/build
+      - name: configure credentials
+        uses: "aws-actions/configure-aws-credentials@v1"
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_CICD_WEB_APP }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_CICD_WEB_APP }}
+          aws-region: "eu-central-1"
+      - name: retrieve ssm parameter
+        uses: "marvinpinto/action-inject-ssm-secrets@latest"
+        with:
+          ssm_parameter: "sandboxHostingBucketName"
+          env_variable_name: "sandboxHostingBucketName"
+      - name: upload app to S3 bucket
+        uses: jakejarvis/s3-sync-action@master
+        with:
+          args: --follow-symlinks --delete --cache-control max-age=3600
+        env:
+          AWS_S3_BUCKET: ${{ env.SANDBOXHOSTINGBUCKETNAME }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID_CICD_WEB_APP }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY_CICD_WEB_APP }}
+          AWS_REGION: 'eu-central-1'
+          SOURCE_DIR: 'frontend/build'

@@ -1,8 +1,12 @@
-name: workflow
+name: Frontend:Quality Gate
 
 on:
+  pull_request:
+    branches: [main]
+    paths: [frontend/**]
   push:
-    branches: [feature/reusable-workflow]
+    branches: [main]
+    paths: [frontend/**]
 
 defaults:
   run:
@@ -11,14 +15,15 @@ defaults:
 jobs:
   setup:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v2
-      - uses: ./.github/actions/node-cache-restore
+      - name: Setup Cache
+        uses: ./.github/actions/node-cache-restore
         id: cache-node-modules
         with:
           node-version: 16.x
-      - run: yarn install
+      - name: Install dependencies
+        run: yarn install
         if: steps.cache-node-modules.outputs.cache-hit != 'true'
 
   lint:
@@ -26,34 +31,39 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: ./.github/actions/node-cache-restore
+      - name: Setup Cache
+        uses: ./.github/actions/node-cache-restore
         id: cache-node-modules
         with:
           node-version: 16.x
-      - run: yarn lint
+      - name: lint all files
+        run: yarn lint
 
   test:
     needs: setup
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: ./.github/actions/node-cache-restore
+      - name: Setup Cache
+        uses: ./.github/actions/node-cache-restore
         id: cache-node-modules
         with:
           node-version: 16.x
-      - run: yarn test:ci
-      - uses: actions/upload-artifact@master
+      - name: run unittests
+        run: yarn test:ci
+      - name: Save Coverage-Report
+        uses: actions/upload-artifact@master
         with:
           name: coverage
           path: frontend/coverage
 
-  
   update-coverage:
     needs: test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/download-artifact@master
+      - name: Download Coverage-Report
+        uses: actions/download-artifact@master
         with:
           name: coverage
           path: frontend/coverage
