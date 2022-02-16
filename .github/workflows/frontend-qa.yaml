@@ -73,6 +73,6 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
           working-directory: ./frontend/
           directory: ./coverage # optional
-          flags: unittests, frontend # optional
+          flags: frontend # optional
           name: webapp # optional
           fail_ci_if_error: true # optional (default = false)

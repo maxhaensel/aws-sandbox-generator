@@ -6,27 +6,27 @@ import (
 	"testing"
 )
 
-// func TestProofPexonMail(t *testing.T) {
-// 	tests := []struct {
-// 		value  string
-// 		result bool
-// 	}{
-// 		{"test@mail.de", false},
-// 		{"some_string", false},
-// 		{"test@pexon-consulting.de", false},
-// 		{"test.test@pexon-consulting.de", true},
-// 	}
+func TestProofPexonMail(t *testing.T) {
+	tests := []struct {
+		value  string
+		result bool
+	}{
+		{"test@mail.de", false},
+		{"some_string", false},
+		{"test@pexon-consulting.de", false},
+		{"test.test@pexon-consulting.de", true},
+	}
 
-// 	for i, tt := range tests {
-// 		t.Run(fmt.Sprintf("check mail: %s ", tt.value), func(t *testing.T) {
-// 			result := utils.ProofPexonMail(tt.value)
-// 			if result != tt.result {
-// 				t.Errorf("error in item %d expect %t got %t", i+1, result, tt.result)
-// 			}
-// 		})
-// 	}
+	for i, tt := range tests {
+		t.Run(fmt.Sprintf("check mail: %s ", tt.value), func(t *testing.T) {
+			result := utils.ProofPexonMail(tt.value)
+			if result != tt.result {
+				t.Errorf("error in item %d expect %t got %t", i+1, result, tt.result)
+			}
+		})
+	}
 
-// }
+}
 
 func TestLease_time_Input(t *testing.T) {
 	tests := []struct {
