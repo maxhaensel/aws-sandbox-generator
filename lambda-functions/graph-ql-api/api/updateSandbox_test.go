@@ -31,9 +31,8 @@ func TestUpdateSandboxNoEnv(t *testing.T) {
 		Assigned_until: "asd2",
 		Available:      "true",
 	}
-	_, err := api.UpdateSandBoxItem(ctx, svc, sandbox)
 
-	if err == nil {
+	if _, err := api.UpdateSandBoxItem(ctx, svc, sandbox); err == nil {
 		t.Logf("env-var is not set, but there was no error detected")
 	}
 }
@@ -58,4 +57,25 @@ func TestUpdateSandbox(t *testing.T) {
 		Available:      "true",
 	}
 	api.UpdateSandBoxItem(ctx, svc, sandbox)
+}
+
+func TestUpdateSandboxNoAccountId(t *testing.T) {
+
+	os.Setenv("dynamodb_table", "test")
+
+	ctx := context.TODO()
+
+	svc := api.MockedDynamoDB{
+		UpdateItem_response: nil,
+		UpdateItem_err:      fmt.Errorf("some Error"),
+	}
+
+	sandbox := models.SandboxItem{
+		Account_id: "",
+	}
+	_, err := api.UpdateSandBoxItem(ctx, svc, sandbox)
+
+	if err.Error() != fmt.Errorf("no Account_id provided").Error() {
+		t.Errorf("%v", err)
+	}
 }

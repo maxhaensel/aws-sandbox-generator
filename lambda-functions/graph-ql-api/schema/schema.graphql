@@ -26,10 +26,11 @@ type listSandboxesResponse {
 }
 
 type Query {
-  listSandboxes: listSandboxesResponse
+  listSandboxes(Email: String!): listSandboxesResponse
 }
 
 type Mutation {
+  deallocateSandbox(Account_id: String!): leaseASandBoxResponse
   leaseASandBox(Email: String!, Lease_time: String!): leaseASandBoxResponse
   createNewSandbox(
     account_id: String!
