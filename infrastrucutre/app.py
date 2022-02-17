@@ -40,33 +40,6 @@ class AWSSandboxHandler(core.Stack):
             billing_mode=dynamodb.BillingMode.PAY_PER_REQUEST,
         )
 
-        endpoint_lambda = lambda_.Function(
-            self,
-            "Endpoint_handler",
-            architecture=lambda_.Architecture.ARM_64,
-            runtime=lambda_.Runtime.PYTHON_3_9,
-            code=lambda_.Code.from_asset("lambda/endpoint"),
-            handler="handler.handler",
-            environment={"dynamodb_table": table.table_name, "duration_of_lease_in_days": "2"},
-            timeout=core.Duration.seconds(30),
-            memory_size=128,
-        )
-
-        table.grant_read_write_data(endpoint_lambda)
-
-        api = apigw.LambdaRestApi(
-            self,
-            "Endpoint",
-            handler=endpoint_lambda,
-            proxy=False,
-            default_cors_preflight_options=apigw.CorsOptions(
-                allow_origins=apigw.Cors.ALL_ORIGINS, allow_methods=apigw.Cors.ALL_METHODS
-            ),
-        )
-
-        items = api.root.add_resource("sandbox")
-        items.add_method("POST")  # POST /sandbox
-
         # Grant Access to SSO, Remove Access to SSO, Nuke Account
         SSO_Nuke_handler_lambda = lambda_.Function(
             self,
