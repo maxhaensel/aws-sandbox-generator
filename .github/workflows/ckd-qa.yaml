@@ -27,7 +27,7 @@ jobs:
             token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
             working-directory: ./infrastrucutre/
             files: ./coverage.xml # optional
-            flags: unittests # optional
+            flags: infrastrucutre # optional
             name: infrastrucutre # optional
             fail_ci_if_error: true # optional (default = false)
         - name: cdk diff

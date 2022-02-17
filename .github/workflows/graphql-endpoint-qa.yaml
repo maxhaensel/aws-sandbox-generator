@@ -33,6 +33,6 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
           working-directory: ./lambda-functions/graph-ql-api/
           files: ./coverage.out # optional
-          flags: unittests, frontend # optional
+          flags: graphql # optional
           name: codecov-graphql-endpoint # optional
           fail_ci_if_error: true # optional (default = false)
