@@ -7,7 +7,9 @@ import (
 	"lambda/aws-sandbox/graph-ql-api/models"
 )
 
-func (*Resolver) ListSandboxes(ctx context.Context) (*models.ListSandboxeResponse, error) {
+func (*Resolver) ListSandboxes(ctx context.Context, args struct {
+	Email string
+}) (*models.ListSandboxeResponse, error) {
 
 	svc := connection.GetDynamoDbClient(ctx)
 
@@ -16,17 +18,19 @@ func (*Resolver) ListSandboxes(ctx context.Context) (*models.ListSandboxeRespons
 	sandboxes := []*models.SandBoxItemResolver{}
 
 	for _, item := range items {
-		toadd := models.SandBoxItemResolver{
-			U: models.SandboxItem{
-				Account_id:     item.Account_id,
-				Account_name:   item.Account_name,
-				Assigned_since: item.Assigned_since,
-				Assigned_to:    item.Assigned_to,
-				Assigned_until: item.Assigned_until,
-				Available:      item.Available,
-			},
+		if item.Assigned_to == args.Email {
+			toadd := models.SandBoxItemResolver{
+				U: models.SandboxItem{
+					Account_id:     item.Account_id,
+					Account_name:   item.Account_name,
+					Assigned_since: item.Assigned_since,
+					Assigned_to:    item.Assigned_to,
+					Assigned_until: item.Assigned_until,
+					Available:      item.Available,
+				},
+			}
+			sandboxes = append(sandboxes, &toadd)
 		}
-		sandboxes = append(sandboxes, &toadd)
 	}
 
 	return &models.ListSandboxeResponse{U: models.ListSandboxeResolver{
