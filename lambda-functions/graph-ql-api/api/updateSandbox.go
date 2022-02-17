@@ -17,6 +17,10 @@ func UpdateSandBoxItem(ctx context.Context, svc DynamoAPI, sandbox models.Sandbo
 
 	table := os.Getenv("dynamodb_table")
 
+	if sandbox.Account_id == "" {
+		return nil, fmt.Errorf("no Account_id provided")
+	}
+
 	if len(table) == 0 {
 		err := fmt.Errorf("env-variable dynamodb_table is empty")
 		log.Print(fmt.Errorf("ERROR: failed to find table-name %v", err))
