@@ -21,9 +21,9 @@ func Handler(ctx context.Context, request events.APIGatewayProxyRequest) (events
 	return relay.ServeHTTP(ctx, request), nil
 }
 
-func init() {
+// func init() {
 
-}
+// }
 
 // func local() {
 // 	http.HandleFunc("/query", func(w http.ResponseWriter, r *http.Request) {
