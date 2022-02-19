@@ -13,7 +13,7 @@ defaults:
     
 jobs:
   build:
-    if: ${{ github.event.workflow_run.conclusion != 'failure' }}
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -37,7 +37,7 @@ jobs:
       - name: Build React Frontend
         run: yarn build
         env:
-           REACT_APP_SANDBOX_DOMAIN_URI: ${{ env.SANDBOXDOMAINURI }}
+           REACT_APP_GRAPHQL_ENDPOINT: ${{ env.SANDBOXDOMAINURI }}
 
       - name: Save Build Artefact
         uses: actions/upload-artifact@master
