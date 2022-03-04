@@ -59,7 +59,7 @@
     ]
   },
   "devDependencies": {
-    "@cypress/react": "^5.12.3",
+    "@cypress/react": "^5.12.4",
     "@cypress/webpack-dev-server": "^1.8.1",
     "autoprefixer": "^10.4.0",
     "cypress": "^9.5.1",
