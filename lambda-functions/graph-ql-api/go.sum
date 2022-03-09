@@ -1,8 +1,9 @@
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
 github.com/aws/aws-lambda-go v1.28.0 h1:fZiik1PZqW2IyAN4rj+Y0UBaO1IDFlsNo9Zz/XnArK4=
 github.com/aws/aws-lambda-go v1.28.0/go.mod h1:jJmlefzPfGnckuHdXX7/80O3BvUUi12XOkbv4w9SGLU=
-github.com/aws/aws-sdk-go-v2 v1.14.0 h1:IzSYBJHu0ZdUi27kIW6xVrs0eSxI4AzwbenzfXhhVs4=
 github.com/aws/aws-sdk-go-v2 v1.14.0/go.mod h1:ZA3Y8V0LrlWj63MQAnRHgKf/5QB//LSZCPNWlWrNGLU=
+github.com/aws/aws-sdk-go-v2 v1.15.0 h1:f9kWLNfyCzCB43eupDAk3/XgJ2EpgktiySD6leqs0js=
+github.com/aws/aws-sdk-go-v2 v1.15.0/go.mod h1:lJYcuZZEHWNIb6ugJjbQY1fykdoobWbOS7kJYb4APoI=
 github.com/aws/aws-sdk-go-v2/config v1.14.0 h1:Yr8/7R6H8nqqfqgLATrcB83ax6FE2HcDXEB54XPhE98=
 github.com/aws/aws-sdk-go-v2/config v1.14.0/go.mod h1:GKDRrvsq/PTaOYc9252u8Uah1hsIdtor4oIrFvUNPNM=
 github.com/aws/aws-sdk-go-v2/credentials v1.9.0 h1:R3Q5s1uGLUg0aUzi+oRaUqRXhd17G/9+PiVnAwXp4sY=
