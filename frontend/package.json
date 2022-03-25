@@ -6,7 +6,7 @@
     "@apollo/client": "^3.5.10",
     "@graphql-tools/schema": "^8.3.5",
     "@heroicons/react": "^1.0.6",
-    "@testing-library/jest-dom": "^5.16.2",
+    "@testing-library/jest-dom": "^5.16.3",
     "@testing-library/react": "^12.1.4",
     "@testing-library/user-event": "^13.2.1",
     "@types/jest": "^27.4.1",
