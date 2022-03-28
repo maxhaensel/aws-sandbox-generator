@@ -3,6 +3,12 @@ schema {
   mutation: Mutation
 }
 
+enum Cloud {
+  AWS
+  AZURE
+  GCP
+}
+
 type sandbox {
   account_id: String!
   account_name: String!
@@ -10,6 +16,14 @@ type sandbox {
   assigned_until: String
   assigned_since: String
   assigned_to: String
+}
+
+type AWS {
+  account_id: String!
+}
+
+type AZURE {
+  pipeline_id: String!
 }
 
 type leaseASandBoxResponse {
@@ -29,9 +43,15 @@ type Query {
   listSandboxes(Email: String!): listSandboxesResponse
 }
 
+union SearchResult = AZURE | AWS
+
 type Mutation {
   deallocateSandbox(Account_id: String!): leaseASandBoxResponse
-  leaseASandBox(Email: String!, Lease_time: String!): leaseASandBoxResponse
+  leaseASandBox(
+    Email: String!
+    Lease_time: String!
+    Cloud: Cloud!
+  ): [SearchResult]!
   createNewSandbox(
     account_id: String!
     account_name: String!

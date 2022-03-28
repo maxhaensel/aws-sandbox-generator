@@ -73,8 +73,8 @@ var malformed_available = api.MockedDynamoDB{
 }
 
 var Query = `
-			mutation CreateReviewForEpisode($Email: String!, $Lease_time: String!) {
-				leaseASandBox(Email: $Email, Lease_time: $Lease_time) {
+			mutation CreateReviewForEpisode($Email: String!, $Lease_time: String!,  $Cloud: Cloud!) {
+				leaseASandBox(Email: $Email, Lease_time: $Lease_time, Cloud: $Cloud) {
 					message
 				}
 			}
@@ -110,6 +110,7 @@ func TestLeaseASandbox_malformed_input(t *testing.T) {
 			variables: map[string]interface{}{
 				"Email":      "party@gmx.de",
 				"Lease_time": "2024-05-02",
+				"Cloud":      "AWS",
 			},
 			ExpectedErrors: noValideMail,
 		},
