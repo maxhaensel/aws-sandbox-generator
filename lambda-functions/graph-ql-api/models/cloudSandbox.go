@@ -31,11 +31,11 @@ type LeaseSandBoxResult struct {
 
 // AwsSandbox and LeaseAwsResolver
 type AwsSandbox struct {
-	Id             graphql.ID
-	Assigned_until string
-	Assigned_since string
-	Assigned_to    string
-	Account_name   string
+	Id            graphql.ID
+	AssignedUntil string
+	AssignedSince string
+	AssignedTo    string
+	AccountName   string
 }
 
 type LeaseAwsResolver struct {
@@ -46,30 +46,30 @@ func (r *LeaseAwsResolver) Id() graphql.ID {
 	return r.U.Id
 }
 
-func (r *LeaseAwsResolver) Assigned_until() string {
-	return r.U.Assigned_until
+func (r *LeaseAwsResolver) AssignedUntil() string {
+	return r.U.AssignedUntil
 }
 
-func (r *LeaseAwsResolver) Assigned_since() string {
-	return r.U.Assigned_since
+func (r *LeaseAwsResolver) AssignedSince() string {
+	return r.U.AssignedSince
 }
 
-func (r *LeaseAwsResolver) Assigned_to() string {
-	return r.U.Assigned_to
+func (r *LeaseAwsResolver) AssignedTo() string {
+	return r.U.AssignedTo
 }
 
-func (r *LeaseAwsResolver) Account_name() string {
-	return r.U.Account_name
+func (r *LeaseAwsResolver) AccountName() string {
+	return r.U.AccountName
 }
 
 // AzureSandbox and LeaseAzureResolver
 
 type AzureSandbox struct {
-	Id             graphql.ID
-	Pipeline_id    string
-	Assigned_until string
-	Assigned_since string
-	Assigned_to    string
+	Id            graphql.ID
+	PipelineId    string
+	AssignedUntil string
+	AssignedSince string
+	AssignedTo    string
 }
 
 type LeaseAzureResolver struct {
@@ -80,20 +80,20 @@ func (r *LeaseAzureResolver) Id() graphql.ID {
 	return r.U.Id
 }
 
-func (r *LeaseAzureResolver) Pipeline_id() string {
-	return r.U.Pipeline_id
+func (r *LeaseAzureResolver) PipelineId() string {
+	return r.U.PipelineId
 }
 
-func (r *LeaseAzureResolver) Assigned_until() string {
-	return r.U.Assigned_until
+func (r *LeaseAzureResolver) AssignedUntil() string {
+	return r.U.AssignedUntil
 }
 
-func (r *LeaseAzureResolver) Assigned_since() string {
-	return r.U.Assigned_since
+func (r *LeaseAzureResolver) AssignedSince() string {
+	return r.U.AssignedSince
 }
 
-func (r *LeaseAzureResolver) Assigned_to() string {
-	return r.U.Assigned_to
+func (r *LeaseAzureResolver) AssignedTo() string {
+	return r.U.AssignedTo
 }
 
 // ToAwsSandbox and ToAzureSandbox

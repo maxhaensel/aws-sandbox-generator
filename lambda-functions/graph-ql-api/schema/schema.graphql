@@ -9,7 +9,7 @@ enum Cloud {
   GCP
 }
 
-type sandbox {
+type Sandbox {
   account_id: String!
   account_name: String!
   available: String
@@ -18,58 +18,58 @@ type sandbox {
   assigned_to: String
 }
 
-interface cloudSandbox {
+interface CloudSandbox {
   id: ID!
-  assigned_until: String!
-  assigned_since: String!
-  assigned_to: String!
+  assignedUntil: String!
+  assignedSince: String!
+  assignedTo: String!
 }
 
-type awsSandbox implements cloudSandbox {
+type AwsSandbox implements CloudSandbox {
   id: ID!
-  assigned_until: String!
-  assigned_since: String!
-  assigned_to: String!
-  account_name: String!
+  assignedUntil: String!
+  assignedSince: String!
+  assignedTo: String!
+  accountName: String!
 }
 
-type azureSandbox implements cloudSandbox {
+type AzureSandbox implements CloudSandbox {
   id: ID!
-  assigned_until: String!
-  assigned_since: String!
-  assigned_to: String!
-  pipeline_id: String!
+  assignedUntil: String!
+  assignedSince: String!
+  assignedTo: String!
+  pipelineId: String!
 }
 
-type createNewSandboxResponse {
-  sandbox: sandbox!
+type CreateNewSandboxResponse {
+  sandbox: Sandbox!
 }
 
-type listSandboxesResponse {
-  sandboxes: [sandbox]
+type ListSandboxesResponse {
+  sandboxes: [Sandbox]
 }
 
 type Query {
-  listSandboxes(Email: String!): listSandboxesResponse
+  listSandboxes(Email: String!): ListSandboxesResponse
 }
 
-union leaseSandBoxResult = azureSandbox | awsSandbox
+union LeaseSandBoxResult = AzureSandbox | AwsSandbox
 
 # todo Delete
-type leaseASandBoxResponse {
+type LeaseASandBoxResponse {
   message: String!
-  sandbox: sandbox!
+  sandbox: Sandbox!
 }
 
 type Mutation {
-  deallocateSandbox(Account_id: String!): leaseASandBoxResponse
+  deallocateSandbox(Account_id: String!): LeaseASandBoxResponse
   leaseSandBox(
-    Email: String!
-    Lease_time: String!
-    Cloud: Cloud!
-  ): leaseSandBoxResult!
+    email: String!
+    leaseTime: String!
+    cloud: Cloud!
+  ): LeaseSandBoxResult!
   createNewSandbox(
     account_id: String!
     account_name: String!
-  ): createNewSandboxResponse!
+  ): CreateNewSandboxResponse!
 }
