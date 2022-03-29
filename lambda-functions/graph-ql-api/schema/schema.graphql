@@ -3,7 +3,13 @@ schema {
   mutation: Mutation
 }
 
-type sandbox {
+enum Cloud {
+  AWS
+  AZURE
+  GCP
+}
+
+type Sandbox {
   account_id: String!
   account_name: String!
   available: String
@@ -12,28 +18,58 @@ type sandbox {
   assigned_to: String
 }
 
-type leaseASandBoxResponse {
-  message: String!
-  sandbox: sandbox!
+interface CloudSandbox {
+  id: ID!
+  assignedUntil: String!
+  assignedSince: String!
+  assignedTo: String!
 }
 
-type createNewSandboxResponse {
-  sandbox: sandbox!
+type AwsSandbox implements CloudSandbox {
+  id: ID!
+  assignedUntil: String!
+  assignedSince: String!
+  assignedTo: String!
+  accountName: String!
 }
 
-type listSandboxesResponse {
-  sandboxes: [sandbox]
+type AzureSandbox implements CloudSandbox {
+  id: ID!
+  assignedUntil: String!
+  assignedSince: String!
+  assignedTo: String!
+  pipelineId: String!
+}
+
+type CreateNewSandboxResponse {
+  sandbox: Sandbox!
+}
+
+type ListSandboxesResponse {
+  sandboxes: [Sandbox]
 }
 
 type Query {
-  listSandboxes(Email: String!): listSandboxesResponse
+  listSandboxes(Email: String!): ListSandboxesResponse
+}
+
+union LeaseSandBoxResult = AzureSandbox | AwsSandbox
+
+# todo Delete
+type LeaseASandBoxResponse {
+  message: String!
+  sandbox: Sandbox!
 }
 
 type Mutation {
-  deallocateSandbox(Account_id: String!): leaseASandBoxResponse
-  leaseASandBox(Email: String!, Lease_time: String!): leaseASandBoxResponse
+  deallocateSandbox(Account_id: String!): LeaseASandBoxResponse
+  leaseSandBox(
+    email: String!
+    leaseTime: String!
+    cloud: Cloud!
+  ): LeaseSandBoxResult!
   createNewSandbox(
     account_id: String!
     account_name: String!
-  ): createNewSandboxResponse!
+  ): CreateNewSandboxResponse!
 }
