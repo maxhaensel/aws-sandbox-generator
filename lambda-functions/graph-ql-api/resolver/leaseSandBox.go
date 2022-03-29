@@ -14,9 +14,9 @@ import (
 var valid bool
 
 func (*Resolver) LeaseSandBox(ctx context.Context, args struct {
-	Email      string
-	Lease_time string
-	Cloud      string
+	Email     string
+	LeaseTime string
+	Cloud     string
 }) (*models.LeaseSandBoxResult, error) {
 
 	valid = utils.ProofPexonMail(args.Email)
@@ -26,13 +26,13 @@ func (*Resolver) LeaseSandBox(ctx context.Context, args struct {
 
 	}
 
-	valid = utils.Lease_time_Input(args.Lease_time)
+	valid = utils.Lease_time_Input(args.LeaseTime)
 	if !valid {
 		// 🤦‍♀️
 		return nil, fmt.Errorf("Lease-Time is not correct")
 	}
 
-	s := strings.Split(args.Lease_time, "-")
+	s := strings.Split(args.LeaseTime, "-")
 	year, _ := strconv.Atoi(s[0])
 	month, _ := strconv.Atoi(s[1])
 	day, _ := strconv.Atoi(s[2])
@@ -43,11 +43,11 @@ func (*Resolver) LeaseSandBox(ctx context.Context, args struct {
 		return &models.LeaseSandBoxResult{
 			Result: &models.LeaseAzureResolver{
 				U: models.AzureSandbox{
-					Id:             "this-azure",
-					Assigned_until: "2023",
-					Assigned_since: "2022",
-					Assigned_to:    "max",
-					Pipeline_id:    "this-is-azure",
+					Id:            "this-azure2",
+					AssignedUntil: "2023",
+					AssignedSince: "2022",
+					AssignedTo:    "max",
+					PipelineId:    "this-is-azure",
 				},
 			},
 		}, nil
@@ -88,11 +88,11 @@ func (*Resolver) LeaseSandBox(ctx context.Context, args struct {
 		return &models.LeaseSandBoxResult{
 			Result: &models.LeaseAwsResolver{
 				U: models.AwsSandbox{
-					Id:             "uuid!",
-					Assigned_until: updatedSandbox.Assigned_until,
-					Assigned_since: updatedSandbox.Assigned_since,
-					Assigned_to:    updatedSandbox.Assigned_to,
-					Account_name:   updatedSandbox.Account_name,
+					Id:            "uuid!",
+					AssignedUntil: updatedSandbox.Assigned_until,
+					AssignedSince: updatedSandbox.Assigned_since,
+					AssignedTo:    updatedSandbox.Assigned_to,
+					AccountName:   updatedSandbox.Account_name,
 				},
 			},
 		}, nil
