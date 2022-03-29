@@ -18,17 +18,27 @@ type sandbox {
   assigned_to: String
 }
 
-type AWS {
-  account_id: String!
+interface cloudSandbox {
+  id: ID!
+  assigned_until: String!
+  assigned_since: String!
+  assigned_to: String!
 }
 
-type AZURE {
+type awsSandbox implements cloudSandbox {
+  id: ID!
+  assigned_until: String!
+  assigned_since: String!
+  assigned_to: String!
+  account_name: String!
+}
+
+type azureSandbox implements cloudSandbox {
+  id: ID!
+  assigned_until: String!
+  assigned_since: String!
+  assigned_to: String!
   pipeline_id: String!
-}
-
-type leaseASandBoxResponse {
-  message: String!
-  sandbox: sandbox!
 }
 
 type createNewSandboxResponse {
@@ -43,15 +53,21 @@ type Query {
   listSandboxes(Email: String!): listSandboxesResponse
 }
 
-union SearchResult = AZURE | AWS
+union leaseSandBoxResult = azureSandbox | awsSandbox
+
+# todo Delete
+type leaseASandBoxResponse {
+  message: String!
+  sandbox: sandbox!
+}
 
 type Mutation {
   deallocateSandbox(Account_id: String!): leaseASandBoxResponse
-  leaseASandBox(
+  leaseSandBox(
     Email: String!
     Lease_time: String!
     Cloud: Cloud!
-  ): [SearchResult]!
+  ): leaseSandBoxResult!
   createNewSandbox(
     account_id: String!
     account_name: String!
