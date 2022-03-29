@@ -39,7 +39,7 @@ func (*Resolver) LeaseSandBox(ctx context.Context, args struct {
 
 	// check if the Cloud is AZURE
 	if args.Cloud == models.PublicCloud.GetAZURE() {
-		// do your logic here
+		// do your logic here 🤡
 		return &models.LeaseSandBoxResult{
 			Result: &models.LeaseAzureResolver{
 				U: models.AzureSandbox{
