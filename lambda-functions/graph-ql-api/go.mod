@@ -10,5 +10,4 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/dynamodb v1.15.2
 	github.com/aws/smithy-go v1.11.2
 	github.com/graph-gophers/graphql-go v1.3.0
-	github.com/jteeuwen/go-bindata v3.0.7+incompatible // indirect
 )
