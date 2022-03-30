@@ -3,9 +3,14 @@ import React from 'react'
 import pexonLogo from '../assets/pexon.webp'
 
 function Main() {
+  enum sandboxType {
+    Azure,
+    AWS,
+  }
   const [user, setUser] = React.useState({
     mail: '',
     valid_mail: false,
+    sandbox_type: sandboxType.Azure,
     lease_time: new Date(new Date().setMonth(new Date().getMonth() + 1))
       .toISOString()
       .slice(0, 10),
@@ -18,8 +23,16 @@ function Main() {
   })
 
   const [leaseASandBoxRequest, { data, loading, error }] = useMutation(gql`
-    mutation LeaseASandBox($email: String!, $lease_time: String!) {
-      leaseASandBox(Email: $email, Lease_time: $lease_time) {
+    mutation LeaseASandBox(
+      $email: String!
+      $lease_time: String!
+      $sandbox_type: Int!
+    ) {
+      leaseASandBox(
+        Email: $email
+        Lease_time: $lease_time
+        Cloud: $sandbox_type
+      ) {
         message
         sandbox {
           account_id
@@ -33,7 +46,9 @@ function Main() {
     }
   `)
 
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+  ) => {
     if (e.target.id === 'mail') {
       const mail = e.currentTarget.value
       const reg = new RegExp(/\w+\.\w+@pexon-consulting\.de/gm)
@@ -46,6 +61,11 @@ function Main() {
       const valid_lease_time = lease_time !== '' ? true : false
       setUser(user => ({ ...user, lease_time, valid_lease_time }))
     }
+
+    if (e.target.id === 'sandbox_type') {
+      const sandbox_type = +e.currentTarget.value
+      setUser(user => ({ ...user, sandbox_type }))
+    }
   }
 
   const resetStatus = () => {
@@ -53,22 +73,44 @@ function Main() {
   }
 
   const submitRequest = () => {
+    console.log(user)
     leaseASandBoxRequest({
       variables: {
         email: user.mail,
         lease_time: user.lease_time,
+        sandbox_type: user.sandbox_type,
       },
     })
 
     setUser({
       mail: '',
       valid_mail: false,
+      sandbox_type: sandboxType.Azure,
       lease_time: new Date(new Date().setMonth(new Date().getMonth() + 1))
         .toISOString()
         .slice(0, 10),
       valid_lease_time: false,
     })
   }
+
+  const renderSandboxInput = () => (
+    <>
+      <form>
+        <label htmlFor="sandbox_type" className="mt-2 text-sm text-gray-500">
+          Wähle die Art deiner Sandbox aus
+          <select
+            id="sandbox_type"
+            className="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            defaultValue={0}
+            onChange={e => onChange(e)}
+          >
+            <option value={0}>Azure</option>
+            <option value={1}>AWS</option>
+          </select>
+        </label>
+      </form>
+    </>
+  )
 
   const renderMailInput = () => (
     <>
@@ -137,6 +179,7 @@ function Main() {
     <div className="flex justify-center mt-32">
       <div className="m-16">
         <img src={pexonLogo} alt="pexon-logo" width={300}></img>
+        {renderSandboxInput()}
         {renderMailInput()}
         {renderLeaseInput()}
         <br />
