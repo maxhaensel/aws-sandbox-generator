@@ -3,9 +3,15 @@ import React from 'react'
 import pexonLogo from '../assets/pexon.webp'
 
 function Main() {
+  const sandboxType = {
+    Azure: 'Azure',
+    AWS: 'AWS',
+    GCP: 'GCP',
+  }
   const [user, setUser] = React.useState({
     mail: '',
     valid_mail: false,
+    sandbox_type: sandboxType.Azure,
     lease_time: new Date(new Date().setMonth(new Date().getMonth() + 1))
       .toISOString()
       .slice(0, 10),
@@ -33,7 +39,9 @@ function Main() {
     }
   `)
 
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+  ) => {
     if (e.target.id === 'mail') {
       const mail = e.currentTarget.value
       const reg = new RegExp(/\w+\.\w+@pexon-consulting\.de/gm)
@@ -45,6 +53,10 @@ function Main() {
       const lease_time = e.currentTarget.value
       const valid_lease_time = lease_time !== '' ? true : false
       setUser(user => ({ ...user, lease_time, valid_lease_time }))
+    }
+
+    if (e.target.id === 'sandbox_type') {
+      console.log(e.target.value)
     }
   }
 
@@ -63,12 +75,34 @@ function Main() {
     setUser({
       mail: '',
       valid_mail: false,
+      sandbox_type: sandboxType.Azure,
       lease_time: new Date(new Date().setMonth(new Date().getMonth() + 1))
         .toISOString()
         .slice(0, 10),
       valid_lease_time: false,
     })
   }
+
+  const renderSandboxInput = () => (
+    <>
+      <form>
+        <label htmlFor="sandbox_type" className="mt-2 text-sm text-gray-500">
+          Wähle die Art deiner Sandbox aus
+          <select
+            id="sandbox_type"
+            className="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            onChange={e => onChange(e)}
+          >
+            <option selected value="Azure">
+              Azure
+            </option>
+            <option value="AWS">AWS</option>
+            <option value="GCP">GCP</option>
+          </select>
+        </label>
+      </form>
+    </>
+  )
 
   const renderMailInput = () => (
     <>
@@ -137,6 +171,7 @@ function Main() {
     <div className="flex justify-center mt-32">
       <div className="m-16">
         <img src={pexonLogo} alt="pexon-logo" width={300}></img>
+        {renderSandboxInput()}
         {renderMailInput()}
         {renderLeaseInput()}
         <br />
