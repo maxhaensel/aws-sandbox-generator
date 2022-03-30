@@ -18,6 +18,9 @@
 		"--security-opt",
 		"seccomp=unconfined"
 	],
+	"mounts": [
+		"source=${localEnv:HOME}/.ssh,target=/home/vscode/.ssh,type=bind"
+	],
 	// Set *default* container specific settings.json values on container create.
 	"settings": {
 		"go.toolsManagement.checkForUpdates": "local",
