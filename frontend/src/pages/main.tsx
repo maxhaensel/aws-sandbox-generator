@@ -3,10 +3,9 @@ import React from 'react'
 import pexonLogo from '../assets/pexon.webp'
 
 function Main() {
-  const sandboxType = {
-    Azure: 'Azure',
-    AWS: 'AWS',
-    GCP: 'GCP',
+  enum sandboxType {
+    Azure,
+    AWS,
   }
   const [user, setUser] = React.useState({
     mail: '',
@@ -24,8 +23,16 @@ function Main() {
   })
 
   const [leaseASandBoxRequest, { data, loading, error }] = useMutation(gql`
-    mutation LeaseASandBox($email: String!, $lease_time: String!) {
-      leaseASandBox(Email: $email, Lease_time: $lease_time) {
+    mutation LeaseASandBox(
+      $email: String!
+      $lease_time: String!
+      $sandbox_type: Int!
+    ) {
+      leaseASandBox(
+        Email: $email
+        Lease_time: $lease_time
+        Cloud: $sandbox_type
+      ) {
         message
         sandbox {
           account_id
@@ -56,7 +63,8 @@ function Main() {
     }
 
     if (e.target.id === 'sandbox_type') {
-      console.log(e.target.value)
+      const sandbox_type = +e.currentTarget.value
+      setUser(user => ({ ...user, sandbox_type }))
     }
   }
 
@@ -65,10 +73,12 @@ function Main() {
   }
 
   const submitRequest = () => {
+    console.log(user)
     leaseASandBoxRequest({
       variables: {
         email: user.mail,
         lease_time: user.lease_time,
+        sandbox_type: user.sandbox_type,
       },
     })
 
@@ -91,13 +101,11 @@ function Main() {
           <select
             id="sandbox_type"
             className="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            defaultValue={0}
             onChange={e => onChange(e)}
           >
-            <option selected value="Azure">
-              Azure
-            </option>
-            <option value="AWS">AWS</option>
-            <option value="GCP">GCP</option>
+            <option value={0}>Azure</option>
+            <option value={1}>AWS</option>
           </select>
         </label>
       </form>
