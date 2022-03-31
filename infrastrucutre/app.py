@@ -16,8 +16,9 @@ from aws_cdk import (
 )
 from aws_cdk.aws_lambda_event_sources import DynamoEventSource
 
-from hosting import AWSSandBoxHosting
-from lambda_graphql_endpoint import AWSLambdaGoGraphql
+from database.infrastructure import AWSTable
+from hosting.infrastructure import AWSSandBoxHosting
+from api.infrastructure import AWSLambdaGoGraphql
 
 env_EU = core.Environment(account="172920935848", region="eu-central-1")
 
@@ -104,7 +105,14 @@ class AWSSandboxHandler(core.Stack):
         """
         create Graphql-Endpoint
         """
-        lambda_go_graphql = AWSLambdaGoGraphql(self, "graph-ql-endpoint", table)
+        multi_cloud_table = AWSTable(self, "multi_cloud_table")
+
+        """
+        create Graphql-Endpoint
+        """
+        lambda_go_graphql = AWSLambdaGoGraphql(
+            self, "graph-ql-endpoint", table=table, multi_cloud_table=multi_cloud_table.table
+        )
 
         """
         create Web-App-Hosting 

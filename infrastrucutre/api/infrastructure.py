@@ -1,3 +1,4 @@
+import os
 from aws_cdk import (
     core as cdk,
     aws_s3 as s3,
@@ -13,17 +14,10 @@ from aws_cdk.aws_ec2 import Volume
 
 
 class AWSLambdaGoGraphql(cdk.Construct):
-    def __init__(self, scope: cdk.Construct, construct_id: str, table: dynamodb.Table) -> None:
+    def __init__(
+        self, scope: cdk.Construct, construct_id: str, table: dynamodb.Table, multi_cloud_table: dynamodb.Table
+    ) -> None:
         super().__init__(scope, construct_id)
-
-        # table = dynamodb.Table(
-        #     self,
-        #     "graphql_endpoint_table",
-        #     partition_key=dynamodb.Attribute(name="account_id", type=dynamodb.AttributeType.STRING),
-        #     billing_mode=dynamodb.BillingMode.PAY_PER_REQUEST,
-        #     table_name="sandbox-account-status",
-        #     removal_policy=cdk.RemovalPolicy.DESTROY,
-        # )
 
         s3Bucket = s3.Bucket.from_bucket_name(
             self, id="cdktoolkit-stagingbucket", bucket_name="cdktoolkit-stagingbucket-1rbmmxnlvi129"
@@ -38,10 +32,15 @@ class AWSLambdaGoGraphql(cdk.Construct):
             handler="main",
             timeout=cdk.Duration.seconds(30),
             memory_size=128,
-            environment={"dynamodb_table": table.table_name},
+            environment={
+                "dynamodb_table": table.table_name,
+                "multi_cloud_table": multi_cloud_table.table_name,
+                "gitlab_azure_pipeline_webhook": os.getenv("GITLAB_AZURE_PIPELINE_WEBHOOK", ""),
+            },
         )
 
         table.grant_read_write_data(func)
+        multi_cloud_table.grant_read_write_data(func)
 
         api = apigw.LambdaRestApi(
             self,
