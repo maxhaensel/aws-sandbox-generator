@@ -2,13 +2,19 @@ package resolver
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"lambda/aws-sandbox/graph-ql-api/api"
 	"lambda/aws-sandbox/graph-ql-api/connection"
 	"lambda/aws-sandbox/graph-ql-api/models"
 	"lambda/aws-sandbox/graph-ql-api/utils"
+	"log"
+	"net/http"
+	"net/url"
 	"strconv"
 	"strings"
+
+	"github.com/google/uuid"
 )
 
 var valid bool
@@ -40,13 +46,28 @@ func (*Resolver) LeaseSandBox(ctx context.Context, args struct {
 	// check if the Cloud is AZURE
 	if args.Cloud == models.PublicCloud.GetAZURE() {
 		// do your logic here 🤡
+		since, until := utils.TimeRange(year, month, day)
+		data := url.Values{
+			"rg_name":       {"John Doe"},
+			"trainee_email": {args.Email},
+			"needed_until":  {*until},
+			"created_by":    {args.Email},
+		}
+		resp, err := http.PostForm("https://httpbin.org/post", data)
+		if err != nil {
+			log.Fatal(err)
+		}
+		var res map[string]interface{}
+		json.NewDecoder(resp.Body).Decode(&res)
+		fmt.Println(res["form"])
+
 		return &models.LeaseSandBoxResult{
 			Result: &models.LeaseAzureResolver{
 				U: models.AzureSandbox{
-					Id:            "this-azure2",
-					AssignedUntil: "2023",
-					AssignedSince: "2022",
-					AssignedTo:    "max",
+					Id:            uuid.New(),
+					AssignedUntil: *until,
+					AssignedSince: *since,
+					AssignedTo:    args.Email,
 					PipelineId:    "this-is-azure",
 				},
 			},
