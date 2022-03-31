@@ -35,7 +35,7 @@ class AWSLambdaGoGraphql(cdk.Construct):
             environment={
                 "dynamodb_table": table.table_name,
                 "multi_cloud_table": multi_cloud_table.table_name,
-                "gitlab_azure_pipeline_webhook": os.getenv("GITLAB_AZURE_PIPELINE_WEBHOOK", "default_value"),
+                "gitlab_azure_pipeline_webhook": os.getenv("GITLAB_AZURE_PIPELINE_WEBHOOK", ""),
             },
         )
 
