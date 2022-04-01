@@ -17,6 +17,8 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/graph-gophers/graphql-go"
+	"strconv"
+	"strings"
 )
 
 var valid bool
@@ -79,9 +81,6 @@ func (*Resolver) LeaseSandBox(ctx context.Context, args struct {
 					Status:        res.Status,
 					ProjectId:     strconv.Itoa(res.ProjectId),
 					WebUrl:        res.WebUrl,
-				},
-			},
-		}, nil
 	}
 
 	// check if the Cloud is AWS
