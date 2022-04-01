@@ -40,3 +40,4 @@ jobs:
             AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY_CICD_IAC }}
             AWS_DEFAULT_REGION: 'eu-central-1'
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            GITLAB_AZURE_PIPELINE_WEBHOOK: ${{ secrets.GITLAB_AZURE_PIPELINE_WEBHOOK }}
