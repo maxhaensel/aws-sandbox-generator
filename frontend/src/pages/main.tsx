@@ -2,11 +2,15 @@ import { gql, useMutation } from '@apollo/client'
 import React from 'react'
 import pexonLogo from '../assets/pexon.webp'
 
+// type MyCloud = String
+
+// TODO: move this in a global-type-file and amke is available for hole the projects
+export enum sandboxType {
+  Azure = 'AZURE',
+  AWS = 'AWS',
+}
+
 function Main() {
-  enum sandboxType {
-    Azure,
-    AWS,
-  }
   const [user, setUser] = React.useState({
     mail: '',
     valid_mail: false,
@@ -22,25 +26,25 @@ function Main() {
     successfully: false,
   })
 
-  const [leaseASandBoxRequest, { data, loading, error }] = useMutation(gql`
-    mutation LeaseASandBox(
+  const [leaseSandBoxRequest, { data, loading, error }] = useMutation(gql`
+    mutation LeaseSandBox(
       $email: String!
-      $lease_time: String!
-      $sandbox_type: Int!
+      $leaseTime: String!
+      $sandbox_type: Cloud!
     ) {
-      leaseASandBox(
-        Email: $email
-        Lease_time: $lease_time
-        Cloud: $sandbox_type
-      ) {
-        message
-        sandbox {
-          account_id
-          account_name
-          assigned_until
-          assigned_since
-          assigned_to
-          available
+      leaseSandBox(email: $email, leaseTime: $leaseTime, cloud: $sandbox_type) {
+        __typename
+        ... on CloudSandbox {
+          id
+          assignedTo
+          assignedUntil
+          assignedSince
+        }
+        ... on AzureSandbox {
+          pipelineId
+        }
+        ... on AwsSandbox {
+          accountName
         }
       }
     }
@@ -63,8 +67,15 @@ function Main() {
     }
 
     if (e.target.id === 'sandbox_type') {
-      const sandbox_type = +e.currentTarget.value
-      setUser(user => ({ ...user, sandbox_type }))
+      if (e.currentTarget.value === 'AWS') {
+        const sandbox_type = sandboxType.AWS
+        setUser(user => ({ ...user, sandbox_type }))
+      }
+
+      if (e.currentTarget.value === 'AZURE') {
+        const sandbox_type = sandboxType.Azure
+        setUser(user => ({ ...user, sandbox_type }))
+      }
     }
   }
 
@@ -73,11 +84,10 @@ function Main() {
   }
 
   const submitRequest = () => {
-    console.log(user)
-    leaseASandBoxRequest({
+    leaseSandBoxRequest({
       variables: {
         email: user.mail,
-        lease_time: user.lease_time,
+        leaseTime: user.lease_time,
         sandbox_type: user.sandbox_type,
       },
     })
@@ -94,22 +104,20 @@ function Main() {
   }
 
   const renderSandboxInput = () => (
-    <>
-      <form>
-        <label htmlFor="sandbox_type" className="mt-2 text-sm text-gray-500">
-          Wähle die Art deiner Sandbox aus
-          <select
-            id="sandbox_type"
-            className="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            defaultValue={0}
-            onChange={e => onChange(e)}
-          >
-            <option value={0}>Azure</option>
-            <option value={1}>AWS</option>
-          </select>
-        </label>
-      </form>
-    </>
+    <form>
+      <label htmlFor="sandbox_type" className="mt-2 text-sm text-gray-500">
+        Wähle die Art deiner Sandbox aus
+        <select
+          id="sandbox_type"
+          className="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          defaultValue={sandboxType.Azure}
+          onChange={onChange}
+        >
+          <option value={sandboxType.Azure}>Azure</option>
+          <option value={sandboxType.AWS}>AWS</option>
+        </select>
+      </label>
+    </form>
   )
 
   const renderMailInput = () => (
@@ -157,13 +165,13 @@ function Main() {
   }, [status, setStatus])
 
   React.useEffect(() => {
+    // TODO: The result must still distinguish between AWS and AZURE
+    // currently its patch the id as message
     if (loading === false && data) {
-      const successfully =
-        data.leaseASandBox.message !== 'no Sandbox Available' ? true : false
       setStatus({
-        message: `${data.leaseASandBox.message}`,
+        message: `${data.leaseSandBox.id}`,
         display: true,
-        successfully,
+        successfully: true,
       })
     }
     if (error) {

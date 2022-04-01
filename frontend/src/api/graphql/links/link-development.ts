@@ -6,7 +6,7 @@ import { makeExecutableSchema } from '@graphql-tools/schema'
 
 import typeDefs from '../schema/schema'
 
-import { listSandboxes, leaseASandBox, deallocateSandbox } from '../mocks'
+import { listSandboxes, leaseSandBox, deallocateSandbox } from '../mocks'
 
 function getRandomArbitrary(min: number, max: number, biased: number) {
   const result = Math.random() >= biased
@@ -27,7 +27,7 @@ const delayLink = new ApolloLink((operation, forward) => {
 
 const resolvers = {
   Query: { listSandboxes },
-  Mutation: { leaseASandBox, deallocateSandbox },
+  Mutation: { leaseSandBox, deallocateSandbox },
 }
 
 const executableSchema = makeExecutableSchema({

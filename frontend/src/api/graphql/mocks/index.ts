@@ -1,3 +1,3 @@
 export { listSandboxes } from './listSandboxes'
-export { leaseASandBox } from './leaseASandBox'
+export { leaseSandBox } from './leaseSandBox'
 export { deallocateSandbox } from './deallocateSandbox'
