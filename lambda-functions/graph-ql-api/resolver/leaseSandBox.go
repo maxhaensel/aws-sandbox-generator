@@ -54,7 +54,7 @@ func (*Resolver) LeaseSandBox(ctx context.Context, args struct {
 		data := url.Values{
 			"rg_name":       {"bootcamp-" + state_name},
 			"trainee_email": {args.Email},
-			"needed_until":  {*until},
+			"removal_date":  {*until},
 			"created_by":    {args.Email},
 		}
 
@@ -76,6 +76,9 @@ func (*Resolver) LeaseSandBox(ctx context.Context, args struct {
 					AssignedSince: *since,
 					AssignedTo:    args.Email,
 					PipelineId:    strconv.Itoa(res.Id),
+					Status:        res.Status,
+					ProjectId:     strconv.Itoa(res.ProjectId),
+					WebUrl:        res.WebUrl,
 				},
 			},
 		}, nil

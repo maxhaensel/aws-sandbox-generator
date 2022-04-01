@@ -70,6 +70,9 @@ type AzureSandbox struct {
 	AssignedUntil string
 	AssignedSince string
 	AssignedTo    string
+	Status        string
+	ProjectId     string
+	WebUrl        string
 }
 
 type LeaseAzureResolver struct {
