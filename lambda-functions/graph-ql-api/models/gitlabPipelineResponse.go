@@ -1,10 +1,8 @@
 package models
 
-import "encoding/json"
-
 type GitlabPipelineResponse struct {
-	Id            json("id")
-	Status
-	ProjectId
-	WebUrl 
+	Id        int    `json:"id"`
+	Status    string `json:"status"`
+	ProjectId int    `json:"project_id"`
+	WebUrl    string `json:"web_url"`
 }

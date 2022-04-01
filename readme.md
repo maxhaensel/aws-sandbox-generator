@@ -2,6 +2,8 @@
 
 [![codecov](https://codecov.io/gh/maxhaensel/aws-sandbox-generator/branch/main/graph/badge.svg?token=15JNFW7CGS)](https://codecov.io/gh/maxhaensel/aws-sandbox-generator)
 
+## Local Starten
+
 nur die Test starten oder einen Mock-Server starten
 
 für Test muss du "nur"

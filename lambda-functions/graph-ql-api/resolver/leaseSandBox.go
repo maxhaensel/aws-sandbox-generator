@@ -11,10 +11,12 @@ import (
 	"log"
 	"net/http"
 	"net/url"
+	"os"
 	"strconv"
 	"strings"
 
 	"github.com/google/uuid"
+	"github.com/graph-gophers/graphql-go"
 )
 
 var valid bool
@@ -47,28 +49,33 @@ func (*Resolver) LeaseSandBox(ctx context.Context, args struct {
 	if args.Cloud == models.PublicCloud.GetAZURE() {
 		// do your logic here 🤡
 		since, until := utils.TimeRange(year, month, day)
+		state_name := strings.Replace(strings.Split(args.Email, "@")[0], ".", "-", 1)
+
 		data := url.Values{
-			"rg_name":       {"John Doe"},
+			"rg_name":       {"bootcamp-" + state_name},
 			"trainee_email": {args.Email},
 			"needed_until":  {*until},
 			"created_by":    {args.Email},
 		}
-		resp, err := http.PostForm("https://httpbin.org/post", data)
+
+		res := models.GitlabPipelineResponse{}
+		url := os.Getenv("gitlab_azure_pipeline_webhook")
+		url += "&variables[TF_STATE_NAME]=" + state_name
+
+		resp, err := http.PostForm(url, data)
 		if err != nil {
 			log.Fatal(err)
 		}
-		var res map[string]interface{}
 		json.NewDecoder(resp.Body).Decode(&res)
-		fmt.Println(res["form"])
 
 		return &models.LeaseSandBoxResult{
 			Result: &models.LeaseAzureResolver{
 				U: models.AzureSandbox{
-					Id:            uuid.New(),
+					Id:            graphql.ID(uuid.New().String()),
 					AssignedUntil: *until,
 					AssignedSince: *since,
 					AssignedTo:    args.Email,
-					PipelineId:    "this-is-azure",
+					PipelineId:    strconv.Itoa(res.Id),
 				},
 			},
 		}, nil
