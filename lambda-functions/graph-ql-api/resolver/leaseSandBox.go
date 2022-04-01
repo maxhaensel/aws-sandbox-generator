@@ -2,13 +2,21 @@ package resolver
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"lambda/aws-sandbox/graph-ql-api/api"
 	"lambda/aws-sandbox/graph-ql-api/connection"
 	"lambda/aws-sandbox/graph-ql-api/models"
 	"lambda/aws-sandbox/graph-ql-api/utils"
+	"log"
+	"net/http"
+	"net/url"
+	"os"
 	"strconv"
 	"strings"
+
+	"github.com/google/uuid"
+	"github.com/graph-gophers/graphql-go"
 )
 
 var valid bool
@@ -40,17 +48,40 @@ func (*Resolver) LeaseSandBox(ctx context.Context, args struct {
 	// check if the Cloud is AZURE
 	if args.Cloud == models.PublicCloud.GetAZURE() {
 		// do your logic here 🤡
+		since, until := utils.TimeRange(year, month, day)
+		state_name := strings.Replace(strings.Split(args.Email, "@")[0], ".", "-", 1)
+
+		data := url.Values{
+			"rg_name":       {"bootcamp-" + state_name},
+			"trainee_email": {args.Email},
+			"removal_date":  {*until},
+			"created_by":    {args.Email},
+		}
+
+		res := models.GitlabPipelineResponse{}
+		url := os.Getenv("gitlab_azure_pipeline_webhook")
+		url += "&variables[TF_STATE_NAME]=" + state_name
+
+		resp, err := http.PostForm(url, data)
+		if err != nil {
+			log.Fatal(err)
+		}
+		json.NewDecoder(resp.Body).Decode(&res)
+
 		return &models.LeaseSandBoxResult{
 			Result: &models.LeaseAzureResolver{
 				U: models.AzureSandbox{
-					Id:            "this-azure2",
-					AssignedUntil: "2023",
-					AssignedSince: "2022",
-					AssignedTo:    "max",
-					PipelineId:    "this-is-azure",
+					Id:            graphql.ID(uuid.New().String()),
+					AssignedUntil: *until,
+					AssignedSince: *since,
+					AssignedTo:    args.Email,
+					PipelineId:    strconv.Itoa(res.Id),
+					Status:        res.Status,
+					ProjectId:     strconv.Itoa(res.ProjectId),
+					WebUrl:        res.WebUrl,
 				},
 			},
-		}, nil
+		}, err
 	}
 
 	// check if the Cloud is AWS
