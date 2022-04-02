@@ -83,7 +83,7 @@ var Query = `
 						accountName
 					}
 					... on AzureSandbox {
-						pipelineId
+						sandboxName
 					}
 				}
 			}
