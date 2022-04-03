@@ -17,44 +17,61 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-      - name: init go
-        uses: actions/setup-go@v2
-        with:
-            go-version: '^1.17.6' # The Go version to download (if necessary) and use.
-      - name: install go-bindata
-        run: go install github.com/jteeuwen/go-bindata/...@latest
-      - name: go vendor
-        run: go mod vendor
-      - name: generate graphql-schema
-        run: go generate ./schema 
-      - name: run unittests
-        run: go test ./...  -coverprofile=coverage.out -covermode=atomic
-      - name: update code-coverage
-        uses: codecov/codecov-action@v2
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
-          working-directory: ./lambda-functions/graph-ql-api/
-          files: ./coverage.out # optional
-          flags: graphql # optional
-          name: codecov-graphql-endpoint # optional
-          fail_ci_if_error: true # optional (default = false)      
-      - name: build project
-        run: GOARCH=amd64 GOOS=linux go build main.go
-      - name: create sha256
-        run: sha256sum main | awk '{ print $1 }' > sha
-      - name: zip binary
-        run: zip -9 $(cat sha) main
-      - name: Set env
-        run: echo "sha256=$(cat sha)" >> $GITHUB_ENV
-      - name: prin
-        run: echo $sha256
-      - name: Upload file to s3-bucket
-        uses: zdurham/s3-upload-github-action@master
-        env:
-          FILE: ./lambda-functions/graph-ql-api/${{ env.sha256 }}.zip
-          AWS_REGION: eu-central-1
-          S3_BUCKET: cdktoolkit-stagingbucket-1rbmmxnlvi129
-          # S3_KEY: lambda/$(cat sha).zip
-          S3_KEY: lambda/${{ env.sha256 }}.zip
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID_CICD_IAC }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY_CICD_IAC }}
+      - name: test
+        run: echo "123123" > ./infrastrucutre/api/sha
+      - name: sha
+        run: ls -la ./infrastrucutre/api/sha
+      # - name: init go
+      #   uses: actions/setup-go@v2
+      #   with:
+      #       go-version: '^1.17.6' # The Go version to download (if necessary) and use.
+      # - name: install go-bindata
+      #   run: go install github.com/jteeuwen/go-bindata/...@latest
+      # - name: go vendor
+      #   run: go mod vendor
+      # - name: generate graphql-schema
+      #   run: go generate ./schema 
+      # - name: run unittests
+      #   run: go test ./...  -coverprofile=coverage.out -covermode=atomic
+      # - name: update code-coverage
+      #   uses: codecov/codecov-action@v2
+      #   with:
+      #     token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
+      #     working-directory: ./lambda-functions/graph-ql-api/
+      #     files: ./coverage.out # optional
+      #     flags: graphql # optional
+      #     name: codecov-graphql-endpoint # optional
+      #     fail_ci_if_error: true # optional (default = false)      
+      # - name: build project
+      #   run: GOARCH=amd64 GOOS=linux go build main.go
+      # - name: create sha256
+      #   run: sha256sum main | awk '{ print $1 }' > sha
+      # - name: zip binary
+      #   run: zip -9 $(cat sha) main
+      # - name: Set env
+      #   run: echo "sha256=$(cat sha)" >> $GITHUB_ENV
+      # - name: prin
+      #   run: echo $sha256
+      # - name: Upload file to s3-bucket
+      #   uses: zdurham/s3-upload-github-action@master
+      #   env:
+      #     FILE: ./lambda-functions/graph-ql-api/${{ env.sha256 }}.zip
+      #     AWS_REGION: eu-central-1
+      #     S3_BUCKET: cdktoolkit-stagingbucket-1rbmmxnlvi129
+      #     # S3_KEY: lambda/$(cat sha).zip
+      #     S3_KEY: lambda/${{ env.sha256 }}.zip
+      #     AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID_CICD_IAC }}
+      #     AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY_CICD_IAC }}
+
+      # - name: setup git config
+      #   run: |
+      #     # setup the username and email. I tend to use 'GitHub Actions Bot' with no email by default
+      #     git config user.name "GitHub Actions Bot"
+      #     git config user.email "<>"
+
+      # - name: commit
+      #   run: |
+      #     # Stage the file, commit and push
+      #     git add time.txt
+      #     git commit -m "new date commit"
+      #     git push origin master
