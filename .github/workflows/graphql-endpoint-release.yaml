@@ -68,9 +68,10 @@ jobs:
           git config user.email "<>"
 
       - name: commit
+        working-directory: .
         run: |
           # Stage the file, commit and push
-          git add ../../infrastrucutre/api/sha
+          git add ./infrastrucutre/api/sha
           git commit -m "new backend version commit"
       - name: push
         working-directory: .
