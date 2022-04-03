@@ -2,10 +2,8 @@ name: 'graphql-endpoint - Build an Release'
 
 on:
   push:
-    # branches: [main] 
-    branches:
-      - feature/enable-cd-backend
-    # paths: [lambda-functions/graph-ql-api/**]
+    branches: [main] 
+    paths: [lambda-functions/graph-ql-api/**]
 
 defaults:
   run:
@@ -27,17 +25,17 @@ jobs:
         run: go mod vendor
       - name: generate graphql-schema
         run: go generate ./schema 
-      # - name: run unittests
-      #   run: go test ./...  -coverprofile=coverage.out -covermode=atomic
-      # - name: update code-coverage
-      #   uses: codecov/codecov-action@v2
-      #   with:
-      #     token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
-      #     working-directory: ./lambda-functions/graph-ql-api/
-      #     files: ./coverage.out # optional
-      #     flags: graphql # optional
-      #     name: codecov-graphql-endpoint # optional
-      #     fail_ci_if_error: true # optional (default = false)      
+      - name: run unittests
+        run: go test ./...  -coverprofile=coverage.out -covermode=atomic
+      - name: update code-coverage
+        uses: codecov/codecov-action@v2
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
+          working-directory: ./lambda-functions/graph-ql-api/
+          files: ./coverage.out # optional
+          flags: graphql # optional
+          name: codecov-graphql-endpoint # optional
+          fail_ci_if_error: true # optional (default = false)      
       - name: build project
         run: GOARCH=amd64 GOOS=linux go build main.go
       - name: create sha256
@@ -46,36 +44,29 @@ jobs:
         run: zip -9 $(cat sha) main
       - name: Set env
         run: echo "sha256=$(cat sha)" >> $GITHUB_ENV
-      # - name: Upload file to s3-bucket
-      #   uses: zdurham/s3-upload-github-action@master
-      #   env:
-      #     FILE: ./lambda-functions/graph-ql-api/${{ env.sha256 }}.zip
-      #     AWS_REGION: eu-central-1
-      #     S3_BUCKET: cdktoolkit-stagingbucket-1rbmmxnlvi129
-      #     # S3_KEY: lambda/$(cat sha).zip
-      #     S3_KEY: lambda/${{ env.sha256 }}.zip
-      #     AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID_CICD_IAC }}
-      #     AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY_CICD_IAC }}
-
-
+      - name: Upload file to s3-bucket
+        uses: zdurham/s3-upload-github-action@master
+        env:
+          FILE: ./lambda-functions/graph-ql-api/${{ env.sha256 }}.zip
+          AWS_REGION: eu-central-1
+          S3_BUCKET: cdktoolkit-stagingbucket-1rbmmxnlvi129
+          S3_KEY: lambda/${{ env.sha256 }}.zip
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID_CICD_IAC }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY_CICD_IAC }}
       - name: create sha in api-folder
         run: cat sha > ../../infrastrucutre/api/sha
-
       - name: setup git config
         run: |
           # setup the username and email. I tend to use 'GitHub Actions Bot' with no email by default
           git config user.name "GitHub Actions Bot"
           git config user.email "<>"
-
-      - name: commit and push
+      - name: commit, push and create pr
         working-directory: .
         run: |
-          # Stage the file, commit and push
           git checkout -b ${{ env.sha256 }}
           git add ./infrastrucutre/api/sha
-          git commit -m "new backend version commit"
+          git commit -m "add ${{ env.sha256 }}"
           git push --set-upstream origin ${{ env.sha256 }}
-          # origin ${{ env.sha256 }}
-          gh pr create --base main --title "update" --body "my Body"
+          gh pr create --base main --title "[Release] version ${{ env.sha256 }}" --body "${{ env.sha256 }}"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
