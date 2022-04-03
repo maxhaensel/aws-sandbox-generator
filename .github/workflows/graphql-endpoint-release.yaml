@@ -85,8 +85,9 @@ jobs:
           # Stage the file, commit and push
           git add ./infrastrucutre/api/sha
           git commit -m "new backend version commit"
+          git push
           gh pr create --base main --title "update" --body "my Body"
           # git show-ref
-          # git push
+          # 
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
