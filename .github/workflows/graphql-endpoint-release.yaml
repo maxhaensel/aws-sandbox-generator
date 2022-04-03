@@ -45,16 +45,16 @@ jobs:
       - name: zip binary
         run: zip -9 $(cat sha) main
       - name: Set env
-        run: echo "s3_key=lambda/$(cat sha).zip" >> $GITHUB_ENV
+        run: echo "sha256=$(cat sha)" >> $GITHUB_ENV
       - name: prin
-        run: echo $s3_key
+        run: echo $sha256
       - name: Upload file to s3-bucket
         uses: zdurham/s3-upload-github-action@master
         env:
-          FILE: ./lambda-functions/graph-ql-api/main.zip
+          FILE: ./lambda-functions/graph-ql-api/${{ env.sha256 }}.zip
           AWS_REGION: eu-central-1
           S3_BUCKET: cdktoolkit-stagingbucket-1rbmmxnlvi129
           # S3_KEY: lambda/$(cat sha).zip
-          S3_KEY: ${{ env.s3_key }}
+          S3_KEY: lambda/${{ env.sha256 }}.zip
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID_CICD_IAC }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY_CICD_IAC }}
