@@ -17,8 +17,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-        with:
-          ref: 'main'
       - name: init go
         uses: actions/setup-go@v2
         with:
@@ -63,27 +61,30 @@ jobs:
       - name: create sha in api-folder
         run: cat sha > ../../infrastrucutre/api/sha
 
-      - name: Create Pull Request
+      
+
+      # - name: Create Pull Request
        
-        uses: peter-evans/create-pull-request@v4
-        with:
-          working-directory: .
-          commit-message: update authors
-          title: Update AUTHORS
-          body: Credit new contributors by updating AUTHORS
-          branch: update-authors
+      #   uses: peter-evans/create-pull-request@v4
+      #   with:
+      #     working-directory: .
+      #     commit-message: update authors
+      #     title: Update AUTHORS
+      #     body: Credit new contributors by updating AUTHORS
+      #     branch: update-backend
+      #     base: main
+      - name: setup git config
+        run: |
+          # setup the username and email. I tend to use 'GitHub Actions Bot' with no email by default
+          git config user.name "GitHub Actions Bot"
+          git config user.email "<>"
 
-      # - name: setup git config
-      #   run: |
-      #     # setup the username and email. I tend to use 'GitHub Actions Bot' with no email by default
-      #     git config user.name "GitHub Actions Bot"
-      #     git config user.email "<>"
-
-      # - name: commit and push
-      #   working-directory: .
-      #   run: |
-      #     # Stage the file, commit and push
-      #     git add ./infrastrucutre/api/sha
-      #     git commit -m "new backend version commit"
-      #     git show-ref
-      #     git push
+      - name: commit and push
+        working-directory: .
+        run: |
+          # Stage the file, commit and push
+          git add ./infrastrucutre/api/sha
+          git commit -m "new backend version commit"
+          gh pr create --base main --title "update" --body "my Body"
+          # git show-ref
+          # git push
