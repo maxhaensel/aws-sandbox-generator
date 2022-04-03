@@ -67,15 +67,10 @@ jobs:
           git config user.name "GitHub Actions Bot"
           git config user.email "<>"
 
-      - name: commit
+      - name: commit and push
         working-directory: .
         run: |
           # Stage the file, commit and push
           git add ./infrastrucutre/api/sha
           git commit -m "new backend version commit"
-      - name: push
-        working-directory: .
-        run: |
-          pwd
-          ls -la
           git push origin master
