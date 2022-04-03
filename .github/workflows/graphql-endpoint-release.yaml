@@ -73,7 +73,7 @@ jobs:
           git add ../../infrastrucutre/api/sha
           git commit -m "new backend version commit"
       - name: push
-        working-directory: ../../
+        working-directory: ../
         run: |
           pwd
           ls -la
