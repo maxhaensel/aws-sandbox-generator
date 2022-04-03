@@ -38,7 +38,9 @@
     "test:ci": "CI=true react-scripts test --coverage",
     "eject": "react-scripts eject",
     "cy:run": "cypress run",
-    "test:cy": "yarn start & wait-on localhost:3000 & cypress open"
+    "test:cy": "yarn start & wait-on localhost:3000 & cypress open",
+    "download-schema": "apollo service:download --endpoint=http://localhost:8080/query src/api/graphql/graphql-schema.json",
+    "codegen": "yarn download-schema && apollo codegen:generate --localSchemaFile=src/api/graphql/graphql-schema.json --target=typescript --tagName=gql --globalTypesFile=src/types/globalTypes.ts"
   },
   "eslintConfig": {
     "extends": [
