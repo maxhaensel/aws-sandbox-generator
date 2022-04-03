@@ -71,15 +71,17 @@ func (*Resolver) LeaseSandBox(ctx context.Context, args struct {
 		return &models.LeaseSandBoxResult{
 			Result: &models.LeaseAzureResolver{
 				U: models.AzureSandbox{
-					Id:            graphql.ID(uuid.New().String()),
-					AssignedUntil: *until,
-					AssignedSince: *since,
-					AssignedTo:    args.Email,
-					PipelineId:    strconv.Itoa(res.Id),
-					Status:        res.Status,
-					ProjectId:     strconv.Itoa(res.ProjectId),
-					WebUrl:        res.WebUrl,
-					SandboxName:   sandbox_name,
+					Metadata: models.SandboxMetadata{
+						Id:            graphql.ID(uuid.New().String()),
+						AssignedUntil: *until,
+						AssignedSince: *since,
+						AssignedTo:    args.Email,
+					},
+					PipelineId:  strconv.Itoa(res.Id),
+					Status:      res.Status,
+					ProjectId:   strconv.Itoa(res.ProjectId),
+					WebUrl:      res.WebUrl,
+					SandboxName: sandbox_name,
 				},
 			},
 		}, err
@@ -120,11 +122,13 @@ func (*Resolver) LeaseSandBox(ctx context.Context, args struct {
 		return &models.LeaseSandBoxResult{
 			Result: &models.LeaseAwsResolver{
 				U: models.AwsSandbox{
-					Id:            "uuid!",
-					AssignedUntil: updatedSandbox.Assigned_until,
-					AssignedSince: updatedSandbox.Assigned_since,
-					AssignedTo:    updatedSandbox.Assigned_to,
-					AccountName:   updatedSandbox.Account_name,
+					Metadata: models.SandboxMetadata{
+						Id:            graphql.ID(uuid.New().String()),
+						AssignedUntil: updatedSandbox.Assigned_until,
+						AssignedSince: updatedSandbox.Assigned_since,
+						AssignedTo:    updatedSandbox.Assigned_to,
+					},
+					AccountName: updatedSandbox.Account_name,
 				},
 			},
 		}, nil
