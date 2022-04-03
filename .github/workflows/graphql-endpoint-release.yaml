@@ -17,14 +17,10 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-      - name: ls
-        run: ls -la
-      - name: pwd
-        run: pwd
-      # - name: test
-      #   run: echo "123123" > ./infrastrucutre/api/sha
-      # - name: sha
-      #   run: ls -la ./infrastrucutre/api/sha
+      - name: test
+        run: echo "abc" > ../../infrastrucutre/api/sha
+      - name: sha
+        run: ls -la ../../infrastrucutre/api/sha
       # - name: init go
       #   uses: actions/setup-go@v2
       #   with:
