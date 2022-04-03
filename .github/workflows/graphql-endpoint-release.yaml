@@ -63,17 +63,27 @@ jobs:
       - name: create sha in api-folder
         run: cat sha > ../../infrastrucutre/api/sha
 
-      - name: setup git config
-        run: |
-          # setup the username and email. I tend to use 'GitHub Actions Bot' with no email by default
-          git config user.name "GitHub Actions Bot"
-          git config user.email "<>"
+      - name: Create Pull Request
+       
+        uses: peter-evans/create-pull-request@v4
+        with:
+          working-directory: .
+          commit-message: update authors
+          title: Update AUTHORS
+          body: Credit new contributors by updating AUTHORS
+          branch: update-authors
 
-      - name: commit and push
-        working-directory: .
-        run: |
-          # Stage the file, commit and push
-          git add ./infrastrucutre/api/sha
-          git commit -m "new backend version commit"
-          git show-ref
-          git push
+      # - name: setup git config
+      #   run: |
+      #     # setup the username and email. I tend to use 'GitHub Actions Bot' with no email by default
+      #     git config user.name "GitHub Actions Bot"
+      #     git config user.email "<>"
+
+      # - name: commit and push
+      #   working-directory: .
+      #   run: |
+      #     # Stage the file, commit and push
+      #     git add ./infrastrucutre/api/sha
+      #     git commit -m "new backend version commit"
+      #     git show-ref
+      #     git push
