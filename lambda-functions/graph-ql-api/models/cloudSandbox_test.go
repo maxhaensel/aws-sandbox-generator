@@ -10,26 +10,32 @@ func TestLeaseAwsResolver(t *testing.T) {
 	tests := []models.LeaseAwsResolver{
 		{
 			models.AwsSandbox{
-				Id:          "Test",
+				Metadata: models.SandboxMetadata{
+					Id: "Test",
+				},
 				AccountName: "Test",
 			},
 		},
 		{
 			models.AwsSandbox{
-				Id:            "Test",
-				AccountName:   "Test",
-				AssignedSince: "Test",
-				AssignedTo:    "Test",
-				AssignedUntil: "Test",
+				Metadata: models.SandboxMetadata{
+					Id:            "Test",
+					AssignedSince: "Test",
+					AssignedTo:    "Test",
+					AssignedUntil: "Test",
+				},
+				AccountName: "Test",
 			},
 		},
 		{
 			models.AwsSandbox{
-				Id:            "",
-				AccountName:   "",
-				AssignedSince: "",
-				AssignedTo:    "",
-				AssignedUntil: "",
+				Metadata: models.SandboxMetadata{
+					Id:            "",
+					AssignedSince: "",
+					AssignedTo:    "",
+					AssignedUntil: "",
+				},
+				AccountName: "",
 			},
 		},
 	}
@@ -37,7 +43,7 @@ func TestLeaseAwsResolver(t *testing.T) {
 	for i, tt := range tests {
 		t.Run(fmt.Sprintf("error in item %d expect", i+1), func(t *testing.T) {
 
-			if tt.Id() != tt.U.Id {
+			if tt.Metadata().Id() != tt.U.Metadata.Id {
 				t.Errorf("error in item %d expect", i+1)
 			}
 
@@ -45,15 +51,15 @@ func TestLeaseAwsResolver(t *testing.T) {
 				t.Errorf("error in item %d expect", i+1)
 			}
 
-			if tt.AssignedSince() != tt.U.AssignedSince {
+			if tt.Metadata().AssignedSince() != tt.U.Metadata.AssignedSince {
 				t.Errorf("error in item %d expect", i+1)
 			}
 
-			if tt.AssignedTo() != tt.U.AssignedTo {
+			if tt.Metadata().AssignedTo() != tt.U.Metadata.AssignedTo {
 				t.Errorf("error in item %d expect", i+1)
 			}
 
-			if tt.AssignedUntil() != tt.U.AssignedUntil {
+			if tt.Metadata().AssignedUntil() != tt.U.Metadata.AssignedUntil {
 				t.Errorf("error in item %d expect", i+1)
 			}
 		})
@@ -65,26 +71,32 @@ func TestLeaseAzureResolver(t *testing.T) {
 	tests := []models.LeaseAzureResolver{
 		{
 			models.AzureSandbox{
-				Id:         "Test",
-				PipelineId: "Test",
+				Metadata: models.SandboxMetadata{
+					Id: "Test",
+				},
+				SandboxName: "Test",
 			},
 		},
 		{
 			models.AzureSandbox{
-				Id:            "Test",
-				PipelineId:    "Test",
-				AssignedSince: "Test",
-				AssignedTo:    "Test",
-				AssignedUntil: "Test",
+				Metadata: models.SandboxMetadata{
+					Id:            "Test",
+					AssignedSince: "Test",
+					AssignedTo:    "Test",
+					AssignedUntil: "Test",
+				},
+				SandboxName: "Test",
 			},
 		},
 		{
 			models.AzureSandbox{
-				Id:            "",
-				PipelineId:    "",
-				AssignedSince: "",
-				AssignedTo:    "",
-				AssignedUntil: "",
+				Metadata: models.SandboxMetadata{
+					Id:            "",
+					AssignedSince: "",
+					AssignedTo:    "",
+					AssignedUntil: "",
+				},
+				SandboxName: "",
 			},
 		},
 	}
@@ -92,23 +104,23 @@ func TestLeaseAzureResolver(t *testing.T) {
 	for i, tt := range tests {
 		t.Run(fmt.Sprintf("error in item %d expect", i+1), func(t *testing.T) {
 
-			if tt.Id() != tt.U.Id {
+			if tt.Metadata().Id() != tt.U.Metadata.Id {
 				t.Errorf("error in item %d expect", i+1)
 			}
 
-			if tt.PipelineId() != tt.U.PipelineId {
+			if tt.SandboxName() != tt.U.SandboxName {
 				t.Errorf("error in item %d expect", i+1)
 			}
 
-			if tt.AssignedSince() != tt.U.AssignedSince {
+			if tt.Metadata().AssignedSince() != tt.U.Metadata.AssignedSince {
 				t.Errorf("error in item %d expect", i+1)
 			}
 
-			if tt.AssignedTo() != tt.U.AssignedTo {
+			if tt.Metadata().AssignedTo() != tt.U.Metadata.AssignedTo {
 				t.Errorf("error in item %d expect", i+1)
 			}
 
-			if tt.AssignedUntil() != tt.U.AssignedUntil {
+			if tt.Metadata().AssignedUntil() != tt.U.Metadata.AssignedUntil {
 				t.Errorf("error in item %d expect", i+1)
 			}
 		})
