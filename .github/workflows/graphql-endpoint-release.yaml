@@ -74,7 +74,8 @@ jobs:
           git checkout -b ${{ env.sha256 }}
           git add ./infrastrucutre/api/sha
           git commit -m "new backend version commit"
-          git push origin ${{ env.sha256 }}
+          git push 
+          # origin ${{ env.sha256 }}
           gh pr create --base main --title "update" --body "my Body"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
