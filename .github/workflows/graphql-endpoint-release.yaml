@@ -88,3 +88,5 @@ jobs:
           gh pr create --base main --title "update" --body "my Body"
           # git show-ref
           # git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
