@@ -74,4 +74,4 @@ jobs:
           git add ./infrastrucutre/api/sha
           git commit -m "new backend version commit"
           git show-ref
-          # git push origin main
+          git push
