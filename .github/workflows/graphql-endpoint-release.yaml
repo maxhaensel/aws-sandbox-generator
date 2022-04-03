@@ -75,4 +75,6 @@ jobs:
       - name: push
         working-directory: ../../
         run: |
+          pwd
+          ls -la
           git push origin master
