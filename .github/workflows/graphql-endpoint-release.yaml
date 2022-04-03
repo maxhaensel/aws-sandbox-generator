@@ -72,4 +72,6 @@ jobs:
           # Stage the file, commit and push
           git add ../../infrastrucutre/api/sha
           git commit -m "new backend version commit"
+      - name: push
+        run: |
           git push origin master
