@@ -12,25 +12,22 @@ function leaseSandBox(parent: any, { email, leaseTime, cloud }: input) {
   if (email === 'aws.mail@pexon-consulting.de') {
     return {
       __typename: 'AwsSandbox',
-      id: 'Sandbox 3',
-      accountName: 'String',
-      assignedUntil: 'string',
+      id: 'Sandbox ID',
+      accountName: 'AWS Account Name',
+      assignedUntil: '10.05.2022',
       assignedSince: 'string',
-      assignedTo: 'string',
+      assignedTo: 'aws.mail@pexon-consulting.de',
     }
   }
 
   if (email === 'azure.mail@pexon-consulting.de') {
     return {
       __typename: 'AzureSandbox',
-      id: 'this is a great id',
-      pipelineId: 'string',
-      assignedUntil: 'string',
+      id: 'Sandbox ID',
+      assignedUntil: '10.05.2022',
       assignedSince: 'string',
-      assignedTo: 'string',
-      status: 'string',
-      projectId: 'string',
-      webUrl: 'string',
+      assignedTo: 'azure.mail@pexon-consulting.de',
+      sandboxName: 'Azure Subscription Name',
     }
   }
 
