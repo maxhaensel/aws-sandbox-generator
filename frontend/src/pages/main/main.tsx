@@ -42,10 +42,6 @@ function Main() {
     }
   `)
 
-  const resetStatus = () => {
-    setStatus({ message: '', display: false, successfully: false, sandbox: undefined })
-  }
-
   const submitRequest = async (requestData: LeaseSandBoxVariables) => {
     try {
       await leaseSandBoxRequest({
