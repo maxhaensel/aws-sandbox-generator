@@ -18,21 +18,27 @@ type Sandbox {
   assigned_to: String
 }
 
-interface SandboxMetadata {
+interface CloudSandbox {
   id: ID!
   assignedUntil: String!
   assignedSince: String!
   assignedTo: String!
 }
 
-type AwsSandbox {
-  metadata: SandboxMetadata!
+type AwsSandbox implements CloudSandbox {
+  id: ID!
+  assignedUntil: String!
+  assignedSince: String!
+  assignedTo: String!
   accountName: String!
 }
 
-type AzureSandbox {
-  metadata: SandboxMetadata!
-  sandboxName: String!
+type AzureSandbox implements CloudSandbox {
+  id: ID!
+  assignedUntil: String!
+  assignedSince: String!
+  assignedTo: String!
+  pipelineId: String!
 }
 
 type CreateNewSandboxResponse {

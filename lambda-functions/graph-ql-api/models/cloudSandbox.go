@@ -29,53 +29,105 @@ type LeaseSandBoxResult struct {
 	Result interface{}
 }
 
-// SandboxMetadata and SandboxMetadataResolver
-type SandboxMetadata struct {
+// AwsSandbox and LeaseAwsResolver
+type AwsSandbox struct {
 	Id            graphql.ID
 	AssignedUntil string
 	AssignedSince string
 	AssignedTo    string
+	AccountName   string
 }
 
-/*
- SandboxMetadataResolver
-
- SandboxMetadata {
-  id: ID!
-  assignedUntil: String!
-  assignedSince: String!
-  assignedTo: String!
+type LeaseAwsResolver struct {
+	U AwsSandbox
 }
-*/
-
-type SandboxMetadataResolver struct{ cs *SandboxMetadata }
-
-func (r *SandboxMetadataResolver) Id() graphql.ID {
-	return r.cs.Id
+type CloudSandbox interface {
+	ID() graphql.ID
+	Name() string
+	Friends() *[]*characterResolver
+	FriendsConnection(friendsConnectionArgs) (*friendsConnectionResolver, error)
+	AppearsIn() []string
 }
-
-func (r *SandboxMetadataResolver) AssignedUntil() string {
-	return r.cs.AssignedUntil
+type human struct {
+	ID   graphql.ID
+	Name string
+}
+type humanResolver struct {
+	h *human
 }
 
-func (r *SandboxMetadataResolver) AssignedSince() string {
-	return r.cs.AssignedSince
+func (r *humanResolver) ID() graphql.ID {
+	return r.h.ID
 }
 
-func (r *SandboxMetadataResolver) AssignedTo() string {
-	return r.cs.AssignedTo
+func (r *humanResolver) Name() string {
+	return r.h.Name
 }
 
-// AwsSandbox and LeaseAwsResolver
-type AwsSandbox struct {
-	Metadata    SandboxMetadata
-	AccountName string
+var humanData = make(map[graphql.ID]*human)
+
+type CloudSandboxResolver struct {
+	CloudSandbox
+}
+type character interface {
+	ID() graphql.ID
+	Name() string
+	Friends() *[]*characterResolver
+	AppearsIn() []string
 }
 
-type LeaseAwsResolver struct{ U AwsSandbox }
+type characterResolver struct {
+	character
+}
+type droid struct {
+	ID              graphql.ID
+	Name            string
+	PrimaryFunction string
+}
+type droidResolver struct {
+	d *droid
+}
 
-func (r *LeaseAwsResolver) Metadata() *SandboxMetadataResolver {
-	return &SandboxMetadataResolver{&r.U.Metadata}
+func (r *droidResolver) ID() graphql.ID {
+	return r.d.ID
+}
+
+func (r *droidResolver) Name() string {
+	return r.d.Name
+}
+func (r *droidResolver) PrimaryFunction() *string {
+	if r.d.PrimaryFunction == "" {
+		return nil
+	}
+	return &r.d.PrimaryFunction
+}
+
+var droidData = make(map[graphql.ID]*droid)
+
+func resolveCharacter(id graphql.ID) *characterResolver {
+	if h, ok := humanData[id]; ok {
+		return &characterResolver{&humanResolver{h}}
+	}
+	if d, ok := droidData[id]; ok {
+		return &characterResolver{&droidResolver{d}}
+	}
+	return nil
+}
+
+func (r *LeaseAwsResolver) Id() graphql.ID {
+	return r.U.Id
+}
+
+func (r *LeaseAwsResolver) AssignedUntil() string {
+	return r.U.AssignedUntil
+}
+
+func (r *LeaseAwsResolver) AssignedSince() string {
+	return r.U.AssignedSince
+}
+
+func (r *LeaseAwsResolver) AssignedTo() string {
+	return r.U.AssignedTo
 }
 
 func (r *LeaseAwsResolver) AccountName() string {
@@ -85,30 +137,38 @@ func (r *LeaseAwsResolver) AccountName() string {
 // AzureSandbox and LeaseAzureResolver
 
 type AzureSandbox struct {
-	Metadata    SandboxMetadata
-	PipelineId  string
-	Status      string
-	ProjectId   string
-	WebUrl      string
-	SandboxName string
+	Id            graphql.ID
+	PipelineId    string
+	AssignedUntil string
+	AssignedSince string
+	AssignedTo    string
+	Status        string
+	ProjectId     string
+	WebUrl        string
 }
 
-/*
- LeaseAzureResolver
-
- AzureSandbox {
-  metadata: SandboxMetadata!
-  sandboxName: String!
- }
-*/
-type LeaseAzureResolver struct{ U AzureSandbox }
-
-func (r *LeaseAzureResolver) Metadata() *SandboxMetadataResolver {
-	return &SandboxMetadataResolver{&r.U.Metadata}
+type LeaseAzureResolver struct {
+	U AzureSandbox
 }
 
-func (r *LeaseAzureResolver) SandboxName() string {
-	return r.U.SandboxName
+func (r *LeaseAzureResolver) Id() graphql.ID {
+	return r.U.Id
+}
+
+func (r *LeaseAzureResolver) PipelineId() string {
+	return r.U.PipelineId
+}
+
+func (r *LeaseAzureResolver) AssignedUntil() string {
+	return r.U.AssignedUntil
+}
+
+func (r *LeaseAzureResolver) AssignedSince() string {
+	return r.U.AssignedSince
+}
+
+func (r *LeaseAzureResolver) AssignedTo() string {
+	return r.U.AssignedTo
 }
 
 // ToAwsSandbox and ToAzureSandbox

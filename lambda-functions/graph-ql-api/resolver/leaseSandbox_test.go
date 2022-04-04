@@ -73,23 +73,17 @@ var Query = `
 			mutation LeaseSandBox($email: String!, $leaseTime: String!,  $cloud: Cloud!) {
 				leaseSandBox(email: $email, leaseTime: $leaseTime, cloud: $cloud) {
 					__typename
+					... on CloudSandbox {
+						id
+						assignedTo
+						assignedUntil
+						assignedSince
+					}
 					... on AwsSandbox {
 						accountName
-						metadata {
-							id
-							assignedTo
-							assignedUntil
-							assignedSince
-						}
 					}
 					... on AzureSandbox {
-						sandboxName
-						metadata {
-							id
-							assignedTo
-							assignedUntil
-							assignedSince
-						}
+						pipelineId
 					}
 				}
 			}
@@ -273,13 +267,11 @@ func TestLeaseSandbox_AWS_Successfully_Provisioning(t *testing.T) {
 			ExpectedResult: `{
 				"leaseSandBox":{
 					"__typename": "AwsSandbox",
-					"metadata": {
-						"id": "uuid!"
-						"assignedSince": "2022",
-						"assignedTo": "test.test@pexon-consulting.de",
-						"assignedUntil": "2022",
-					},
-					"accountName": "sandbox-123"
+					"accountName": "sandbox-123",
+					"assignedSince": "2022",
+					"assignedTo": "test.test@pexon-consulting.de",
+					"assignedUntil": "2022",
+					"id": "uuid!"
 				}
 			}`,
 		},

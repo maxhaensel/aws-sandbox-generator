@@ -50,9 +50,9 @@ func (*Resolver) LeaseSandBox(ctx context.Context, args struct {
 		// do your logic here 🤡
 		since, until := utils.TimeRange(year, month, day)
 		state_name := strings.Replace(strings.Split(args.Email, "@")[0], ".", "-", 1)
-		sandbox_name := "rg-bootcamp-" + state_name
+
 		data := url.Values{
-			"rg_name":       {sandbox_name},
+			"rg_name":       {"bootcamp-" + state_name},
 			"trainee_email": {args.Email},
 			"removal_date":  {*until},
 			"created_by":    {args.Email},
@@ -71,17 +71,14 @@ func (*Resolver) LeaseSandBox(ctx context.Context, args struct {
 		return &models.LeaseSandBoxResult{
 			Result: &models.LeaseAzureResolver{
 				U: models.AzureSandbox{
-					Metadata: models.SandboxMetadata{
-						Id:            graphql.ID(uuid.New().String()),
-						AssignedUntil: *until,
-						AssignedSince: *since,
-						AssignedTo:    args.Email,
-					},
-					PipelineId:  strconv.Itoa(res.Id),
-					Status:      res.Status,
-					ProjectId:   strconv.Itoa(res.ProjectId),
-					WebUrl:      res.WebUrl,
-					SandboxName: sandbox_name,
+					Id:            graphql.ID(uuid.New().String()),
+					AssignedUntil: *until,
+					AssignedSince: *since,
+					AssignedTo:    args.Email,
+					PipelineId:    strconv.Itoa(res.Id),
+					Status:        res.Status,
+					ProjectId:     strconv.Itoa(res.ProjectId),
+					WebUrl:        res.WebUrl,
 				},
 			},
 		}, err
@@ -122,13 +119,11 @@ func (*Resolver) LeaseSandBox(ctx context.Context, args struct {
 		return &models.LeaseSandBoxResult{
 			Result: &models.LeaseAwsResolver{
 				U: models.AwsSandbox{
-					Metadata: models.SandboxMetadata{
-						Id:            graphql.ID(uuid.New().String()),
-						AssignedUntil: updatedSandbox.Assigned_until,
-						AssignedSince: updatedSandbox.Assigned_since,
-						AssignedTo:    updatedSandbox.Assigned_to,
-					},
-					AccountName: updatedSandbox.Account_name,
+					Id:            "uuid!",
+					AssignedUntil: updatedSandbox.Assigned_until,
+					AssignedSince: updatedSandbox.Assigned_since,
+					AssignedTo:    updatedSandbox.Assigned_to,
+					AccountName:   updatedSandbox.Account_name,
 				},
 			},
 		}, nil
