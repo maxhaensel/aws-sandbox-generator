@@ -23,12 +23,19 @@ class AWSLambdaGoGraphql(cdk.Construct):
             self, id="cdktoolkit-stagingbucket", bucket_name="cdktoolkit-stagingbucket-1rbmmxnlvi129"
         )
 
+        sha = "main"
+        try:
+            with open("./api/sha", "r") as f:
+                sha = f.read().rstrip()
+        except:
+            print("File Not Found, use main")
+
         func = lambda_.Function(
             self,
             "graphql_go_lambda",
             architecture=lambda_.Architecture.X86_64,
             runtime=lambda_.Runtime.GO_1_X,
-            code=lambda_.Code.from_bucket(s3Bucket, "lambda/main.zip"),
+            code=lambda_.Code.from_bucket(s3Bucket, f"lambda/{sha}.zip"),
             handler="main",
             timeout=cdk.Duration.seconds(30),
             memory_size=128,
