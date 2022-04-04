@@ -2,15 +2,12 @@ package main
 
 import (
 	"context"
-	"net/http"
-	"io/ioutil"
-	"log"
 	"lambda/aws-sandbox/graph-ql-api/relay"
 	"lambda/aws-sandbox/graph-ql-api/resolver"
 	"lambda/aws-sandbox/graph-ql-api/schema"
 
 	"github.com/aws/aws-lambda-go/events"
-	// "github.com/aws/aws-lambda-go/lambda"
+	"github.com/aws/aws-lambda-go/lambda"
 
 	graphql "github.com/graph-gophers/graphql-go"
 )
@@ -24,33 +21,33 @@ func Handler(ctx context.Context, request events.APIGatewayProxyRequest) (events
 	return relay.ServeHTTP(ctx, request), nil
 }
 
-func init() {
+// func init() {
 
-}
+// }
 
-func local() {
-	http.HandleFunc("/query", func(w http.ResponseWriter, r *http.Request) {
+// func local() {
+// 	http.HandleFunc("/query", func(w http.ResponseWriter, r *http.Request) {
 
-		b, err := ioutil.ReadAll(r.Body)
+// 		b, err := ioutil.ReadAll(r.Body)
 
-		if err != nil {
-			panic(err)
-		}
+// 		if err != nil {
+// 			panic(err)
+// 		}
 
-		ctx := context.TODO()
- 		mock_handler := events.APIGatewayProxyRequest{
-			Body: string(b),
-		}
-		responseJSON, _ := Handler(ctx, mock_handler)
+// 		ctx := context.TODO()
+//  		mock_handler := events.APIGatewayProxyRequest{
+// 			Body: string(b),
+// 		}
+// 		responseJSON, _ := Handler(ctx, mock_handler)
 
-		w.Write([]byte(responseJSON.Body))
-	})
-	log.Fatal(http.ListenAndServe(":8080", nil))
-}
+// 		w.Write([]byte(responseJSON.Body))
+// 	})
+// 	log.Fatal(http.ListenAndServe(":8080", nil))
+// }
 
 func main() {
-	local()
-	// lambda.Start(Handler)
+	// local()
+	lambda.Start(Handler)
 }
 
 // Test Sha, remove later
