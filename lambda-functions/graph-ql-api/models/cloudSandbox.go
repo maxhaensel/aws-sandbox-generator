@@ -73,6 +73,7 @@ type AzureSandbox struct {
 	Status        string
 	ProjectId     string
 	WebUrl        string
+	SandboxName   string
 }
 
 type LeaseAzureResolver struct {
@@ -97,6 +98,9 @@ func (r *LeaseAzureResolver) AssignedSince() string {
 
 func (r *LeaseAzureResolver) AssignedTo() string {
 	return r.U.AssignedTo
+}
+func (r *LeaseAzureResolver) SandboxName() string {
+	return r.U.SandboxName
 }
 
 // ToAwsSandbox and ToAzureSandbox

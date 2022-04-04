@@ -50,9 +50,9 @@ func (*Resolver) LeaseSandBox(ctx context.Context, args struct {
 		// do your logic here 🤡
 		since, until := utils.TimeRange(year, month, day)
 		state_name := strings.Replace(strings.Split(args.Email, "@")[0], ".", "-", 1)
-
+		sandbox_name := "rg-bootcamp-" + state_name
 		data := url.Values{
-			"rg_name":       {"bootcamp-" + state_name},
+			"rg_name":       {sandbox_name},
 			"trainee_email": {args.Email},
 			"removal_date":  {*until},
 			"created_by":    {args.Email},
@@ -79,6 +79,7 @@ func (*Resolver) LeaseSandBox(ctx context.Context, args struct {
 					Status:        res.Status,
 					ProjectId:     strconv.Itoa(res.ProjectId),
 					WebUrl:        res.WebUrl,
+					SandboxName:   sandbox_name,
 				},
 			},
 		}, err

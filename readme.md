@@ -22,3 +22,9 @@ local aufrufen und das Lambda dings raus nehmen.
 `go run main.go`
 
 Grundsätzlich bevor es los geht muss das schema.graphql in go-code kompiliert werden `go generate ./schema` das erzeugt dann ein .go file von wo go dann das schema lesen kann
+
+## Frontend
+
+Jedes Mal nachdem man eine GraphQL Query oder Mutation geschrieben hat, sollte man `yarn generate` ausführen. Dieses Skript erzeugt automatisch TypeScript-Types basierend auf dem Schema auf dem Server und den entwickelten GraphQL Documents.
+
+**Achtung:** Damit das Script funktioniert, muss zuvor der GraphQL-Server lokal gestartet werden und unter Port 8080 laufen.

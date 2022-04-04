@@ -14,7 +14,7 @@
     "@types/react": "^17.0.43",
     "@types/react-dom": "^17.0.14",
     "craco": "^0.0.3",
-    "graphql": "^16.3.0",
+    "graphql": "^15.8.0",
     "graphql.macro": "^1.4.2",
     "html-webpack-plugin": "^5.5.0",
     "module-replace-webpack-plugin": "^0.0.12",
@@ -38,7 +38,9 @@
     "test:ci": "CI=true react-scripts test --coverage",
     "eject": "react-scripts eject",
     "cy:run": "cypress run",
-    "test:cy": "yarn start & wait-on localhost:3000 & cypress open"
+    "test:cy": "yarn start & wait-on localhost:3000 & cypress open",
+    "download-schema": "apollo service:download --endpoint=http://localhost:8080/query src/api/graphql/graphql-schema.json",
+    "codegen": "yarn download-schema && apollo codegen:generate --localSchemaFile=src/api/graphql/graphql-schema.json --target=typescript --tagName=gql --globalTypesFile=src/types/globalTypes.ts"
   },
   "eslintConfig": {
     "extends": [
@@ -61,6 +63,9 @@
   "devDependencies": {
     "@cypress/react": "^5.12.4",
     "@cypress/webpack-dev-server": "^1.8.4",
+    "apollo": "2.33.4",
+    "apollo-codegen-core": "0.40.3",
+    "apollo-language-server": "1.26.3",
     "autoprefixer": "^10.4.4",
     "cypress": "^9.5.3",
     "postcss": "^8.4.12",
