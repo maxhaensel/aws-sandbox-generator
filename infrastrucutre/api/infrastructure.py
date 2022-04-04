@@ -26,7 +26,7 @@ class AWSLambdaGoGraphql(cdk.Construct):
         sha = "main"
         try:
             with open("./api/sha", "r") as f:
-                sha = f.read()
+                sha = f.read().rstrip()
         except:
             print("File Not Found, use main")
 
