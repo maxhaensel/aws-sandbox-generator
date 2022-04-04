@@ -2,7 +2,11 @@ import { gql, useMutation } from '@apollo/client'
 import React from 'react'
 import { SandboxForm } from './SandboxForm'
 import { StatusMessage } from './StatusMessage'
-import { LeaseSandBox, LeaseSandBox_leaseSandBox, LeaseSandBoxVariables } from './__generated__/LeaseSandBox'
+import {
+  LeaseSandBox,
+  LeaseSandBox_leaseSandBox,
+  LeaseSandBoxVariables,
+} from './__generated__/LeaseSandBox'
 
 type State = {
   message: string
@@ -18,33 +22,34 @@ function Main() {
     successfully: false,
   })
 
-  const [leaseSandBoxRequest, { data, loading, error }] = useMutation<LeaseSandBox>(gql`
-    mutation LeaseSandBox(
-      $email: String!
-      $leaseTime: String!
-      $sandbox_type: Cloud!
-    ) {
-      leaseSandBox(email: $email, leaseTime: $leaseTime, cloud: $sandbox_type) {
-        __typename
-        ... on CloudSandbox {
-          id
-          assignedTo
-          assignedUntil
-          assignedSince
-        }
-        ... on AzureSandbox {
-          sandboxName
-        }
-        ... on AwsSandbox {
-          accountName
+  const [leaseSandBoxRequest, { data, loading, error }] =
+    useMutation<LeaseSandBox>(gql`
+      mutation LeaseSandBox(
+        $email: String!
+        $leaseTime: String!
+        $sandbox_type: Cloud!
+      ) {
+        leaseSandBox(
+          email: $email
+          leaseTime: $leaseTime
+          cloud: $sandbox_type
+        ) {
+          __typename
+          ... on CloudSandbox {
+            id
+            assignedTo
+            assignedUntil
+            assignedSince
+          }
+          ... on AzureSandbox {
+            sandboxName
+          }
+          ... on AwsSandbox {
+            accountName
+          }
         }
       }
-    }
-  `)
-
-  const resetStatus = () => {
-    setStatus({ message: '', display: false, successfully: false, sandbox: undefined })
-  }
+    `)
 
   const submitRequest = async (requestData: LeaseSandBoxVariables) => {
     try {
@@ -78,9 +83,7 @@ function Main() {
     <div className="flex justify-center mt-32">
       <div className="m-16">
         <SandboxForm submitRequest={submitRequest} />
-        {status.display && (
-          <StatusMessage status={status} />
-        )}
+        {status.display && <StatusMessage status={status} />}
         <div className="mt-8"></div>
       </div>
     </div>
