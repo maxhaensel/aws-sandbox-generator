@@ -38,6 +38,7 @@
     "test": "react-scripts test",
     "test:ci": "CI=true react-scripts test --coverage",
     "test:cy": "yarn start & wait-on localhost:3000 & cypress open",
+    "test:e2e": "yarn start & wait-on localhost:3000 & cypress run",
     "cy:run": "cypress run",
     "cy:open": "cypress open",
     "codegen:gql": "yarn apollo codegen:generate --target=typescript --globalTypesFile=src/types/globalTypes.ts",
