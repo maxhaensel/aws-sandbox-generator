@@ -9,7 +9,7 @@ function leaseSandBox(parent: any, { email, leaseTime, cloud }: input) {
     })
   }
 
-  if (email === 'aws.mail@pexon-consulting.de') {
+  if (cloud === 'AWS') {
     return {
       __typename: 'AwsSandbox',
       id: 'Sandbox ID',
@@ -20,7 +20,7 @@ function leaseSandBox(parent: any, { email, leaseTime, cloud }: input) {
     }
   }
 
-  if (email === 'azure.mail@pexon-consulting.de') {
+  if (cloud === 'AZURE') {
     return {
       __typename: 'AzureSandbox',
       id: 'Sandbox ID',
