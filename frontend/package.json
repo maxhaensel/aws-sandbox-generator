@@ -13,6 +13,7 @@
     "@types/node": "^17.0.23",
     "@types/react": "^17.0.43",
     "@types/react-dom": "^17.0.14",
+    "@typescript-eslint/eslint-plugin": "^5.18.0",
     "craco": "^0.0.3",
     "graphql": "^15.8.0",
     "graphql.macro": "^1.4.2",
@@ -33,14 +34,14 @@
     "start:flaky": "REACT_APP_NETWORK_SIMULATION=true yarn start",
     "start:live": "craco start",
     "build": "react-scripts build",
-    "lint": "eslint",
+    "lint": "eslint .",
     "test": "react-scripts test",
     "test:ci": "CI=true react-scripts test --coverage",
-    "eject": "react-scripts eject",
-    "cy:run": "cypress run",
     "test:cy": "yarn start & wait-on localhost:3000 & cypress open",
-    "download-schema": "apollo service:download --endpoint=http://localhost:8080/query src/api/graphql/graphql-schema.json",
-    "codegen": "yarn download-schema && apollo codegen:generate --localSchemaFile=src/api/graphql/graphql-schema.json --target=typescript --tagName=gql --globalTypesFile=src/types/globalTypes.ts"
+    "cy:run": "cypress run",
+    "cy:open": "cypress open",
+    "codegen:gql": "yarn apollo codegen:generate --target=typescript --globalTypesFile=src/types/globalTypes.ts",
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": [
