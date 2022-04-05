@@ -49,8 +49,7 @@ function Main() {
           }
         }
       }
-    }
-  `)
+    `)
 
   const submitRequest = async (requestData: LeaseSandBoxVariables) => {
     leaseSandBoxRequest({
