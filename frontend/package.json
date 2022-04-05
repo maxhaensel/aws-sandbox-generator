@@ -64,7 +64,7 @@
     "@cypress/react": "^5.12.4",
     "@cypress/webpack-dev-server": "^1.8.4",
     "apollo": "2.33.4",
-    "apollo-codegen-core": "0.40.3",
+    "apollo-codegen-core": "0.40.8",
     "apollo-language-server": "1.26.3",
     "autoprefixer": "^10.4.4",
     "cypress": "^9.5.3",
