@@ -51,3 +51,4 @@ func main() {
 }
 
 // Test Sha, remove later
+// Test Sha2, remove later :)
