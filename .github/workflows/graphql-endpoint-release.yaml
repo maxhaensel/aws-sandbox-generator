@@ -68,5 +68,7 @@ jobs:
           git commit -m "add ${{ env.sha256 }}"
           git push --set-upstream origin ${{ env.sha256 }}
           gh pr create --base main --title "[Release] version ${{ env.sha256 }}" --body "${{ env.sha256 }}"
+          gh pr review ${{ env.sha256 }} --approve
+          gh pr merge ${{ env.sha256 }} --auto --squash
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
