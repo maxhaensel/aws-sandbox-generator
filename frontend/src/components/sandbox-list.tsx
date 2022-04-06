@@ -2,7 +2,10 @@ import React from 'react'
 import { gql, useMutation, useQuery } from '@apollo/client'
 import { TrashIcon, RefreshIcon } from '@heroicons/react/solid'
 
-import { GetSandboxes, GetSandboxes_listSandboxes_sandboxes } from './__generated__/GetSandboxes'
+import {
+  GetSandboxes,
+  GetSandboxes_listSandboxes_sandboxes,
+} from './__generated__/GetSandboxes'
 import { cache } from '../api'
 import { convertDate } from '../utils'
 
@@ -74,8 +77,6 @@ function SandboxList() {
 
   const updateCache = (key: string) => {
     cache.updateQuery({ query: GET_SANDBOXES }, data => {
-      console.log(data)
-
       const sandboxes = data.listSandboxes.sandboxes.filter(
         (item: GetSandboxes_listSandboxes_sandboxes) => item.account_id !== key,
       )
@@ -108,26 +109,34 @@ function SandboxList() {
           </tr>
         </thead>
         <tbody>
-          {data.listSandboxes?.sandboxes?.map((sandbox) => {
+          {data.listSandboxes?.sandboxes?.map(sandbox => {
             const account_id = sandbox?.account_id
             return (
-              <tr className="alter" key={`sandbox_overview_${sandbox?.account_id}`}>
-                <td className="px-6 py-4 whitespace-nowrap">{sandbox?.account_id}</td>
-                <td className="px-6 py-4 whitespace-nowrap">{sandbox?.account_name}</td>
+              <tr
+                className="alter"
+                key={`sandbox_overview_${sandbox?.account_id}`}
+              >
+                <td className="px-6 py-4 whitespace-nowrap">
+                  {sandbox?.account_id}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  {sandbox?.account_name}
+                </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   {convertDate(sandbox?.assigned_until)}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   {convertDate(sandbox?.assigned_since)}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap">{sandbox?.assigned_to}</td>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  {sandbox?.assigned_to}
+                </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <DeallocateSandboxButton {...{ account_id, updateCache }} />
                 </td>
               </tr>
             )
-          },
-          )}
+          })}
         </tbody>
       </table>
     )

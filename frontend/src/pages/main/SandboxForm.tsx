@@ -67,6 +67,7 @@ function SandboxForm(props: {
       <label htmlFor="sandbox_type" className="mt-2 text-sm text-gray-500">
         Wähle die Art deiner Sandbox aus
         <select
+          data-cy={'sandbox-cloud-input'}
           id="sandbox_type"
           className="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           defaultValue={Cloud.AZURE}
@@ -124,11 +125,12 @@ function SandboxForm(props: {
       <button
         data-cy={'submit-request'}
         disabled={!(user.valid_mail && user.valid_lease_time)}
-        className={`mt-4 ${user.valid_mail && user.valid_lease_time
+        className={`mt-4 ${
+          user.valid_mail && user.valid_lease_time
             ? 'bg-blue-500 hover:bg-blue-700'
             : 'bg-gray-300'
-          } text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline`}
-        onClick={submitRequest}  
+        } text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline`}
+        onClick={submitRequest}
       >
         Request Sandbox
       </button>
