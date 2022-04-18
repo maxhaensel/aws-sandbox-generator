@@ -36,7 +36,7 @@ const executableSchema = makeExecutableSchema({
 })
 
 const links = []
-const flaky: boolean = Boolean(process.env.REACT_APP_NETWORK_SIMULATION)
+const flaky = Boolean(process.env.REACT_APP_NETWORK_SIMULATION)
 if (flaky) {
   links.push(delayLink)
 }

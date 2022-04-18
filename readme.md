@@ -7,16 +7,18 @@
 nur die Test starten oder einen Mock-Server starten
 
 für Test muss du "nur"
-`go test ./...` oder wenn du was spezielles Testen willst `go test -v -run TestDeallocateSandbox ./resolver -count=1` 
+`go test ./...` oder wenn du was spezielles Testen willst `go test -v -run TestDeallocateSandbox ./resolver -count=1`
 Ich starte die Test/Debug immer über VS-Code
 
 Falls du einen "Server" starten willst musst du im Main.go die funcktion local einkommentieren und in func main =>
+
 ```
 func main() {
     local()
     // lambda.Start(Handler)
 }
 ```
+
 local aufrufen und das Lambda dings raus nehmen.
 
 `go run main.go`

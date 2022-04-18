@@ -1,0 +1,3 @@
+extend type Mutation {
+  example_only_available_in_dev(test: String!): String!
+}

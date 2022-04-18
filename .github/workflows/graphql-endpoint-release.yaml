@@ -2,7 +2,7 @@ name: 'graphql-endpoint - Build an Release'
 
 on:
   push:
-    branches: [main]
+    branches: [main] 
     paths: [lambda-functions/graph-ql-api/**]
 
 defaults:
@@ -38,14 +38,37 @@ jobs:
           fail_ci_if_error: true # optional (default = false)      
       - name: build project
         run: GOARCH=amd64 GOOS=linux go build main.go
+      - name: create sha256
+        run: sha256sum main | awk '{ print $1 }' > sha
       - name: zip binary
-        run: zip -9 main.zip main
+        run: zip -9 $(cat sha) main
+      - name: Set env
+        run: echo "sha256=$(cat sha)" >> $GITHUB_ENV
       - name: Upload file to s3-bucket
         uses: zdurham/s3-upload-github-action@master
         env:
-          FILE: ./lambda-functions/graph-ql-api/main.zip
+          FILE: ./lambda-functions/graph-ql-api/${{ env.sha256 }}.zip
           AWS_REGION: eu-central-1
           S3_BUCKET: cdktoolkit-stagingbucket-1rbmmxnlvi129
-          S3_KEY: lambda/main.zip
+          S3_KEY: lambda/${{ env.sha256 }}.zip
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID_CICD_IAC }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY_CICD_IAC }}
+      - name: create sha in api-folder
+        run: cat sha > ../../infrastrucutre/api/sha
+      - name: setup git config
+        run: |
+          # setup the username and email. I tend to use 'GitHub Actions Bot' with no email by default
+          git config user.name "GitHub Actions Bot"
+          git config user.email "<>"
+      - name: commit, push and create pr
+        working-directory: .
+        run: |
+          git checkout -b ${{ env.sha256 }}
+          git add ./infrastrucutre/api/sha
+          git commit -m "add ${{ env.sha256 }}"
+          git push --set-upstream origin ${{ env.sha256 }}
+          gh pr create --base main --title "[Release] version ${{ env.sha256 }}" --body "${{ env.sha256 }}"
+          gh pr review ${{ env.sha256 }} --approve
+          gh pr merge ${{ env.sha256 }} --auto --squash
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

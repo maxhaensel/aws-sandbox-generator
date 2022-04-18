@@ -2,17 +2,16 @@ import React from 'react'
 import { gql, useMutation, useQuery } from '@apollo/client'
 import { TrashIcon, RefreshIcon } from '@heroicons/react/solid'
 
-import { Sandbox } from '../types/sandbox'
+import {
+  GetSandboxes,
+  GetSandboxes_listSandboxes_sandboxes,
+} from './__generated__/GetSandboxes'
 import { cache } from '../api'
 import { convertDate } from '../utils'
 
-type ListSandboxes = {
-  listSandboxes: { sandboxes: Sandbox[] }
-}
-
 const GET_SANDBOXES = gql`
   query GetSandboxes {
-    listSandboxes {
+    listSandboxes(Email: "") {
       sandboxes {
         account_id
         account_name
@@ -28,12 +27,14 @@ function DeallocateSandboxButton({
   account_id,
   updateCache,
 }: {
-  account_id: string
+  account_id?: string
   updateCache: (key: string) => void
 }) {
   const [deallocateSandbox, { data, loading }] = useMutation(gql`
     mutation DeallocateSandbox($Account_id: String!) {
-      deallocateSandbox(Account_id: $Account_id)
+      deallocateSandbox(Account_id: $Account_id) {
+        message
+      }
     }
   `)
 
@@ -72,14 +73,12 @@ function DeallocateSandboxButton({
 }
 
 function SandboxList() {
-  const { loading, error, data } = useQuery<ListSandboxes>(GET_SANDBOXES)
+  const { loading, error, data } = useQuery<GetSandboxes>(GET_SANDBOXES)
 
   const updateCache = (key: string) => {
     cache.updateQuery({ query: GET_SANDBOXES }, data => {
-      console.log(data)
-
       const sandboxes = data.listSandboxes.sandboxes.filter(
-        (item: Sandbox) => item.account_id !== key,
+        (item: GetSandboxes_listSandboxes_sandboxes) => item.account_id !== key,
       )
 
       return { listSandboxes: { sandboxes } }
@@ -110,33 +109,34 @@ function SandboxList() {
           </tr>
         </thead>
         <tbody>
-          {data.listSandboxes.sandboxes.map(
-            (
-              {
-                account_id,
-                account_name,
-                assigned_until,
-                assigned_since,
-                assigned_to,
-              },
-              i,
-            ) => (
-              <tr className="alter" key={`sandbox_overview_${account_id}`}>
-                <td className="px-6 py-4 whitespace-nowrap">{account_id}</td>
-                <td className="px-6 py-4 whitespace-nowrap">{account_name}</td>
+          {data.listSandboxes?.sandboxes?.map(sandbox => {
+            const account_id = sandbox?.account_id
+            return (
+              <tr
+                className="alter"
+                key={`sandbox_overview_${sandbox?.account_id}`}
+              >
                 <td className="px-6 py-4 whitespace-nowrap">
-                  {convertDate(assigned_until)}
+                  {sandbox?.account_id}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  {convertDate(assigned_since)}
+                  {sandbox?.account_name}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap">{assigned_to}</td>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  {convertDate(sandbox?.assigned_until)}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  {convertDate(sandbox?.assigned_since)}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  {sandbox?.assigned_to}
+                </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <DeallocateSandboxButton {...{ account_id, updateCache }} />
                 </td>
               </tr>
-            ),
-          )}
+            )
+          })}
         </tbody>
       </table>
     )

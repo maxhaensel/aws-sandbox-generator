@@ -1,4 +1,4 @@
-function convertDate(str: string | undefined) {
+function convertDate(str: string | null | undefined) {
   return new Date(str || '').toLocaleDateString('de-DE', {
     weekday: 'short',
     year: 'numeric',

@@ -26,7 +26,6 @@ describe('check leaseASandbox Request Sandbox Button', () => {
     },
   )
 })
-
 describe('validate alert displays shows the correct state', () => {
   beforeEach(() => {
     cy.clock()
@@ -35,19 +34,31 @@ describe('validate alert displays shows the correct state', () => {
 
   Cypress._.each(
     [
-      { input: 'max.muster@pexon-consulting.de', display: 'Fehler' },
-      { input: 'successful.mail@pexon-consulting.de', display: 'Erfolgreich' },
+      {
+        input: { mail: 'error.mail@pexon-consulting.de', cloud: 'AWS' },
+        display: ['Fehler'],
+      },
+      {
+        input: { mail: 'max.mustermann@pexon-consulting.de', cloud: 'AZURE' },
+        display: ['Erfolgreich', 'Azure'],
+      },
+      {
+        input: { mail: 'max.mustermann@pexon-consulting.de', cloud: 'AWS' },
+        display: ['Erfolgreich', 'AWS'],
+      },
     ],
     ({ input, display }) => {
-      it(`make request with ${input} expect alert to be ${display}`, () => {
-        cy.get('[data-cy=sandbox-mail-input]').type(input)
+      it(`make request with mail:${input.mail} and cloud:${input.cloud} expect alert to be ${display}`, () => {
+        cy.get('[data-cy=sandbox-mail-input]').type(input.mail)
+
+        cy.get('[data-cy=sandbox-cloud-input]').select(input.cloud)
 
         cy.get('[data-cy=alert]').should('not.exist')
         cy.get('[data-cy=submit-request]').click()
         cy.get('[data-cy=alert]').should('exist')
-        cy.get('[data-cy=alert]').contains(display)
-        cy.tick(6000)
-        cy.get('[data-cy=alert]').should('not.exist')
+        display.forEach(element => {
+          cy.get('[data-cy=alert]').contains(element)
+        })
       })
     },
   )

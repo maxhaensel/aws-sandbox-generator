@@ -69,6 +69,7 @@ type AzureSandbox struct {
 	ProjectId     string
 	PipelineId    string
 	WebUrl        string
+	SandboxName   string
 }
 
 type LeaseAzureResolver struct {
@@ -98,6 +99,9 @@ func (r *LeaseAzureResolver) PipelineId() string {
 }
 func (r *LeaseAzureResolver) WebUrl() string {
 	return r.Az.WebUrl
+}
+func (r *LeaseAzureResolver) SandboxName() string {
+	return r.U.SandboxName
 }
 
 // CloudSandbox

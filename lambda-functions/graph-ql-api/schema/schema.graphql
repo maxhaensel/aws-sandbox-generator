@@ -38,7 +38,7 @@ type AzureSandbox implements CloudSandbox {
   assignedUntil: String!
   assignedSince: String!
   assignedTo: String!
-  pipelineId: String!
+  sandboxName: String!
 }
 
 type CreateNewSandboxResponse {
