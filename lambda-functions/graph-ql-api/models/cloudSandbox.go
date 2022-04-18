@@ -101,7 +101,7 @@ func (r *LeaseAzureResolver) WebUrl() string {
 	return r.Az.WebUrl
 }
 func (r *LeaseAzureResolver) SandboxName() string {
-	return r.U.SandboxName
+	return r.Az.SandboxName
 }
 
 // CloudSandbox

@@ -3,6 +3,7 @@ package resolver
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"lambda/aws-sandbox/graph-ql-api/api"
 	"lambda/aws-sandbox/graph-ql-api/connection"
@@ -59,7 +60,11 @@ func (*Resolver) LeaseSandBox(ctx context.Context, args struct {
 		}
 
 		res := models.GitlabPipelineResponse{}
-		url := os.Getenv("gitlab_azure_pipeline_webhook")
+		url, ok := os.LookupEnv("gitlab_azure_pipeline_webhook")
+		if !ok {
+			message := "Environment Variable 'gitlab_azure_pipeline_webhook' is not set"
+			return nil, errors.New(message)
+		}
 		url += "&variables[TF_STATE_NAME]=" + state_name
 
 		resp, err := http.PostForm(url, data)
