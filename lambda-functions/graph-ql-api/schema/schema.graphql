@@ -45,15 +45,14 @@ type CreateNewSandboxResponse {
   sandbox: Sandbox!
 }
 
-type ListSandboxesResponse {
-  sandboxes: [Sandbox]
+union LeaseSandBoxResult = AzureSandbox | AwsSandbox
+
+type ListLeaseSandBoxResult {
+  cloudSandboxes: [LeaseSandBoxResult]
 }
 
 type Query {
-  listSandboxes(Email: String!): ListSandboxesResponse
 }
-
-union LeaseSandBoxResult = AzureSandbox | AwsSandbox
 
 # todo Delete
 type LeaseASandBoxResponse {

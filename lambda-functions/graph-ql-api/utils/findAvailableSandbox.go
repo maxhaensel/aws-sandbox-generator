@@ -6,17 +6,20 @@ import (
 	"strconv"
 )
 
-func FindAvailableSandbox(items []models.SandboxItem) (*models.SandboxItem, error) {
+func FindAvailableSandbox(items []*models.LeaseSandBoxResult) (*models.LeaseAwsResolver, error) {
 
 	for _, item := range items {
-		b, err := strconv.ParseBool(item.Available)
-		if err != nil {
-			log.Println(err.Error())
-			return nil, err
+		if aws_sandbox, ok := item.ToAwsSandbox(); ok {
+			b, err := strconv.ParseBool(aws_sandbox.Available())
+			if err != nil {
+				log.Println(err.Error())
+				return nil, err
+			}
+			if b {
+				return aws_sandbox, nil
+			}
 		}
-		if b {
-			return &item, nil
-		}
+
 	}
 	return nil, nil
 }

@@ -12,9 +12,9 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb"
 )
 
-func ScanSandboxTable(ctx context.Context, svc DynamoAPI) []models.SandboxItem {
+func ScanSandboxTable(ctx context.Context, svc DynamoAPI) []*models.LeaseSandBoxResult {
 
-	items := []models.SandboxItem{}
+	items := []*models.LeaseSandBoxResult{}
 
 	table := os.Getenv("dynamodb_table")
 

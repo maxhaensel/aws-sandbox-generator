@@ -28,10 +28,12 @@ func (c Cloud) GetAZURE() string {
 // AwsSandbox and LeaseAwsResolver
 type AwsSandbox struct {
 	Id            graphql.ID
-	AssignedUntil string
-	AssignedSince string
-	AssignedTo    string
-	AccountName   string
+	Cloud         Cloud  `dynamodbav:":cloud"`
+	AssignedUntil string `dynamodbav:":assigned_until"`
+	AssignedSince string `dynamodbav:":assigned_since"`
+	AssignedTo    string `dynamodbav:":assigned_to"`
+	AccountName   string `dynamodbav:":account_name"`
+	Available     string `dynamodbav:":available"`
 }
 
 type LeaseAwsResolver struct {
@@ -40,6 +42,10 @@ type LeaseAwsResolver struct {
 
 func (r *LeaseAwsResolver) Id() graphql.ID {
 	return r.Aws.Id
+}
+
+func (r *LeaseAwsResolver) Cloud() Cloud {
+	return r.Aws.Cloud
 }
 
 func (r *LeaseAwsResolver) AssignedUntil() string {
@@ -57,19 +63,23 @@ func (r *LeaseAwsResolver) AssignedTo() string {
 func (r *LeaseAwsResolver) AccountName() string {
 	return r.Aws.AccountName
 }
+func (r *LeaseAwsResolver) Available() string {
+	return r.Aws.Available
+}
 
 // AzureSandbox and LeaseAzureResolver
 
 type AzureSandbox struct {
 	Id            graphql.ID
-	AssignedUntil string
-	AssignedSince string
-	AssignedTo    string
-	Status        string
-	ProjectId     string
-	PipelineId    string
-	WebUrl        string
-	SandboxName   string
+	Cloud         Cloud  `dynamodbav:":cloud"`
+	AssignedUntil string `dynamodbav:":assigned_until"`
+	AssignedSince string `dynamodbav:":assigned_since"`
+	AssignedTo    string `dynamodbav:":assigned_to"`
+	Status        string `dynamodbav:":status"`
+	ProjectId     string `dynamodbav:":project_id"`
+	PipelineId    string `dynamodbav:":pipeline_id"`
+	WebUrl        string `dynamodbav:":pipeline_url"`
+	SandboxName   string `dynamodbav:":name"`
 }
 
 type LeaseAzureResolver struct {
@@ -78,6 +88,9 @@ type LeaseAzureResolver struct {
 
 func (r *LeaseAzureResolver) Id() graphql.ID {
 	return r.Az.Id
+}
+func (r *LeaseAzureResolver) Cloud() Cloud {
+	return r.Az.Cloud
 }
 func (r *LeaseAzureResolver) AssignedUntil() string {
 	return r.Az.AssignedUntil
@@ -110,10 +123,16 @@ type CloudSandbox interface {
 	AssignedUntil() string
 	AssignedSince() string
 	AssignedTo() string
+	Cloud() Cloud
 }
 type LeaseSandBoxResult struct {
 	CloudSandbox
 }
+
+type ListLeaseSandBoxResult struct {
+	CloudSandboxes []*LeaseSandBoxResult
+}
+
 type Resolver struct{}
 
 func (r *LeaseSandBoxResult) ToAwsSandbox() (*LeaseAwsResolver, bool) {

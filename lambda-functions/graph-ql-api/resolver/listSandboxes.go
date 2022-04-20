@@ -9,30 +9,15 @@ import (
 
 func (*Resolver) ListSandboxes(ctx context.Context, args struct {
 	Email string
-}) (*models.ListSandboxeResponse, error) {
+}) (*models.ListLeaseSandBoxResult, error) {
 
 	svc := connection.GetDynamoDbClient(ctx)
 
 	items := api.ScanSandboxTable(ctx, svc)
 
-	sandboxes := []*models.SandBoxItemResolver{}
-
-	for _, item := range items {
-		if item.Assigned_to == args.Email {
-			toadd := models.SandBoxItemResolver{
-				U: models.SandboxItem{
-					Account_id:     item.Account_id,
-					Account_name:   item.Account_name,
-					Assigned_since: item.Assigned_since,
-					Assigned_to:    item.Assigned_to,
-					Assigned_until: item.Assigned_until,
-					Available:      item.Available,
-				},
-			}
-			sandboxes = append(sandboxes, &toadd)
-		}
+	sandboxes := &models.ListLeaseSandBoxResult{
+		CloudSandboxes: items,
 	}
 
-	return &models.ListSandboxeResponse{U: models.ListSandboxeResolver{
-		Sandboxes: sandboxes}}, nil
+	return sandboxes, nil
 }

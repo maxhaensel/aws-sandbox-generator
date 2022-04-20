@@ -22,14 +22,20 @@ func TestUpdateSandboxNoEnv(t *testing.T) {
 		UpdateItem_response: nil,
 		UpdateItem_err:      fmt.Errorf("some Error"),
 	}
+	aws := models.AwsSandbox{
+		Id:            "397624546912",
+		Cloud:         models.Cloud{AZURE: models.PublicCloud.AZURE},
+		AssignedUntil: "asd2",
+		AssignedSince: "asd1",
+		AssignedTo:    "4",
+		AccountName:   "Sandbox-3",
+		Available:     "true",
+	}
 
-	sandbox := models.SandboxItem{
-		Account_id:     "397624546912",
-		Account_name:   "Sandbox-3",
-		Assigned_to:    "4",
-		Assigned_since: "asd1",
-		Assigned_until: "asd2",
-		Available:      "true",
+	sandbox := &models.LeaseSandBoxResult{
+		CloudSandbox: &models.LeaseAwsResolver{
+			Aws: aws,
+		},
 	}
 
 	if _, err := api.UpdateSandBoxItem(ctx, svc, sandbox); err == nil {
@@ -48,13 +54,20 @@ func TestUpdateSandbox(t *testing.T) {
 		UpdateItem_err:      fmt.Errorf("some Error"),
 	}
 
-	sandbox := models.SandboxItem{
-		Account_id:     "397624546912",
-		Account_name:   "Sandbox-3",
-		Assigned_to:    "4",
-		Assigned_since: "asd1",
-		Assigned_until: "asd2",
-		Available:      "true",
+	aws := models.AwsSandbox{
+		Id:            "397624546912",
+		Cloud:         models.Cloud{AZURE: models.PublicCloud.AZURE},
+		AssignedUntil: "asd2",
+		AssignedSince: "asd1",
+		AssignedTo:    "4",
+		AccountName:   "Sandbox-3",
+		Available:     "true",
+	}
+
+	sandbox := &models.LeaseSandBoxResult{
+		CloudSandbox: &models.LeaseAwsResolver{
+			Aws: aws,
+		},
 	}
 	api.UpdateSandBoxItem(ctx, svc, sandbox)
 }
@@ -70,8 +83,20 @@ func TestUpdateSandboxNoAccountId(t *testing.T) {
 		UpdateItem_err:      fmt.Errorf("some Error"),
 	}
 
-	sandbox := models.SandboxItem{
-		Account_id: "",
+	aws := models.AwsSandbox{
+		Id:            "397624546912",
+		Cloud:         models.Cloud{AZURE: models.PublicCloud.AZURE},
+		AssignedUntil: "asd2",
+		AssignedSince: "asd1",
+		AssignedTo:    "4",
+		AccountName:   "",
+		Available:     "true",
+	}
+
+	sandbox := &models.LeaseSandBoxResult{
+		CloudSandbox: &models.LeaseAwsResolver{
+			Aws: aws,
+		},
 	}
 	_, err := api.UpdateSandBoxItem(ctx, svc, sandbox)
 

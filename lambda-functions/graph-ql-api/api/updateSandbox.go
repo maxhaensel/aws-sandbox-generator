@@ -13,55 +13,70 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb/types"
 )
 
-func UpdateSandBoxItem(ctx context.Context, svc DynamoAPI, sandbox models.SandboxItem) (*models.SandboxItem, error) {
+func UpdateSandBoxItem(ctx context.Context, svc DynamoAPI, sandbox *models.LeaseSandBoxResult) (*models.LeaseSandBoxResult, error) {
 
 	table := os.Getenv("dynamodb_table")
-
-	if sandbox.Account_id == "" {
-		return nil, fmt.Errorf("no Account_id provided")
-	}
 
 	if len(table) == 0 {
 		err := fmt.Errorf("env-variable dynamodb_table is empty")
 		log.Print(fmt.Errorf("ERROR: failed to find table-name %v", err))
 		return nil, err
 	}
-
-	key := map[string]types.AttributeValue{
-		"account_id": &types.AttributeValueMemberS{Value: sandbox.Account_id},
-	}
-
-	update := struct {
-		Assigned_to    string `dynamodbav:":assigned_to"`
-		Assigned_since string `dynamodbav:":assigned_since"`
-		Assigned_until string `dynamodbav:":assigned_until"`
-		Available      string `dynamodbav:":available"`
-	}{
-		Assigned_to:    sandbox.Assigned_to,
-		Assigned_since: sandbox.Assigned_since,
-		Assigned_until: sandbox.Assigned_until,
-		Available:      sandbox.Available,
-	}
-
-	expr, err := attributevalue.MarshalMap(update)
+	updateExpressionQuery := `
+	SET 
+	assigned_to = :assigned_to, 
+	assigned_since = :assigned_since, 
+	assigned_until = :assigned_until, 
+	cloud = :cloud,`
+	expr, err := attributevalue.MarshalMap(sandbox)
 	if err != nil {
 		return nil, fmt.Errorf("failed to marshal Record, %w", err)
 	}
+	if aws_sandbox, ok := sandbox.ToAwsSandbox(); ok {
+		accountName := aws_sandbox.AccountName()
+		if accountName == "" {
+			return nil, fmt.Errorf("no Account_id provided")
+		}
+		updateExpressionQuery += `available = :available`
+		expr, err = attributevalue.MarshalMap(aws_sandbox)
+		if err != nil {
+			return nil, fmt.Errorf("failed to marshal Record, %w", err)
+		}
+	}
 
-	updateExpression := aws.String(`
-		SET 
-		assigned_to = :assigned_to, 
-		assigned_since = :assigned_since, 
-		assigned_until = :assigned_until, 
-		available = :available`,
-	)
+	if az_sandbox, ok := sandbox.ToAzureSandbox(); ok {
+		updateExpressionQuery += `
+		pipeline_id = :pipeline_id,
+		status = :status,
+		project_id = :project_id,
+		pipeline_url = :pipeline_url,
+		name = :name
+		`
+		expr, err = attributevalue.MarshalMap(az_sandbox)
+		if err != nil {
+			return nil, fmt.Errorf("failed to marshal Record, %w", err)
+		}
+	}
+
+	key := map[string]types.AttributeValue{
+		"ID": &types.AttributeValueMemberS{Value: string(sandbox.Id())},
+	}
+
+	updateExpression := aws.String(updateExpressionQuery)
 
 	input := &dynamodb.UpdateItemInput{
-		UpdateExpression:          updateExpression,
-		TableName:                 aws.String(table),
-		ExpressionAttributeValues: expr,
-		Key:                       key,
-		ReturnValues:              "ALL_NEW",
+		Key:                         key,
+		TableName:                   aws.String(table),
+		AttributeUpdates:            map[string]types.AttributeValueUpdate{},
+		ConditionExpression:         new(string),
+		ConditionalOperator:         "",
+		Expected:                    map[string]types.ExpectedAttributeValue{},
+		ExpressionAttributeNames:    map[string]string{},
+		ExpressionAttributeValues:   expr,
+		ReturnConsumedCapacity:      "",
+		ReturnItemCollectionMetrics: "",
+		ReturnValues:                "ALL_NEW",
+		UpdateExpression:            updateExpression,
 	}
 
 	response, err := svc.UpdateItem(ctx, input)
@@ -70,7 +85,7 @@ func UpdateSandBoxItem(ctx context.Context, svc DynamoAPI, sandbox models.Sandbo
 		return nil, err
 	}
 
-	p := models.SandboxItem{}
+	p := models.LeaseSandBoxResult{}
 	attributevalue.UnmarshalMap(response.Attributes, &p)
 
 	return &p, nil

@@ -45,10 +45,15 @@ func (*Resolver) LeaseSandBox(ctx context.Context, args struct {
 	month, _ := strconv.Atoi(s[1])
 	day, _ := strconv.Atoi(s[2])
 
+	uuid := uuid.New().String()
+	since, until := utils.TimeRange(year, month, day)
+	cloud_sandbox := &models.LeaseSandBoxResult{}
+
+	svc := connection.GetDynamoDbClient(ctx)
+
 	// check if the Cloud is AZURE
 	if args.Cloud == models.PublicCloud.GetAZURE() {
 		// do your logic here 🤡
-		since, until := utils.TimeRange(year, month, day)
 		state_name := strings.Replace(strings.Split(args.Email, "@")[0], ".", "-", 1)
 		sandbox_name := "rg-bootcamp-" + state_name
 		data := url.Values{
@@ -68,7 +73,8 @@ func (*Resolver) LeaseSandBox(ctx context.Context, args struct {
 		}
 		json.NewDecoder(resp.Body).Decode(&res)
 		az := models.AzureSandbox{
-			Id:            graphql.ID(uuid.New().String()),
+			Id:            graphql.ID(uuid),
+			Cloud:         models.Cloud{AZURE: models.PublicCloud.AZURE},
 			AssignedUntil: *until,
 			AssignedSince: *since,
 			AssignedTo:    args.Email,
@@ -77,18 +83,14 @@ func (*Resolver) LeaseSandBox(ctx context.Context, args struct {
 			ProjectId:     strconv.Itoa(res.ProjectId),
 			WebUrl:        res.WebUrl,
 		}
-		return &models.LeaseSandBoxResult{
-			CloudSandbox: &models.LeaseAzureResolver{Az: az},
-		}, err
+		cloud_sandbox.CloudSandbox = &models.LeaseAzureResolver{Az: az}
+
 	}
 
 	// check if the Cloud is AWS
 	if args.Cloud == models.PublicCloud.GetAWS() {
 
-		svc := connection.GetDynamoDbClient(ctx)
-
 		items := api.ScanSandboxTable(ctx, svc)
-
 		sandbox, err := utils.FindAvailableSandbox(items)
 
 		if err != nil {
@@ -101,33 +103,21 @@ func (*Resolver) LeaseSandBox(ctx context.Context, args struct {
 			return nil, fmt.Errorf("no Sandbox Available")
 		}
 
-		since, until := utils.TimeRange(year, month, day)
+		sandbox.Aws.AssignedUntil = *until
+		sandbox.Aws.AssignedSince = *since
+		sandbox.Aws.Available = "false"
+		sandbox.Aws.AssignedTo = args.Email
 
-		sandbox.Assigned_to = args.Email
-		sandbox.Assigned_since = *since
-		sandbox.Assigned_until = *until
-		sandbox.Available = "false"
-
-		updatedSandbox, err := api.UpdateSandBoxItem(ctx, svc, *sandbox)
-
-		if err != nil {
-			return nil, err
-		}
-
-		return &models.LeaseSandBoxResult{
-			CloudSandbox: &models.LeaseAwsResolver{
-				Aws: models.AwsSandbox{
-					Id:            "uuid!",
-					AssignedUntil: updatedSandbox.Assigned_until,
-					AssignedSince: updatedSandbox.Assigned_since,
-					AssignedTo:    updatedSandbox.Assigned_to,
-					AccountName:   updatedSandbox.Account_name,
-				},
-			},
-		}, nil
+		cloud_sandbox.CloudSandbox = sandbox
 
 	}
 
+	updatedSandbox, err := api.UpdateSandBoxItem(ctx, svc, cloud_sandbox)
+	if err != nil {
+		return nil, err
+	}
+	return updatedSandbox, err
+
 	// TODO 🔥 add custom error to be more clear whats going on
-	return nil, fmt.Errorf("internal servererror")
+	//return nil, fmt.Errorf("internal servererror")
 }
