@@ -70,16 +70,16 @@ func (r *LeaseAwsResolver) Available() string {
 // AzureSandbox and LeaseAzureResolver
 
 type AzureSandbox struct {
-	Id            graphql.ID
-	Cloud         Cloud  `dynamodbav:":cloud"`
-	AssignedUntil string `dynamodbav:":assigned_until"`
-	AssignedSince string `dynamodbav:":assigned_since"`
-	AssignedTo    string `dynamodbav:":assigned_to"`
-	Status        string `dynamodbav:":status"`
-	ProjectId     string `dynamodbav:":project_id"`
-	PipelineId    string `dynamodbav:":pipeline_id"`
-	WebUrl        string `dynamodbav:":pipeline_url"`
-	SandboxName   string `dynamodbav:":name"`
+	Id            graphql.ID `dynamodbav:":sandbox_id"`
+	Cloud         Cloud      `dynamodbav:":cloud"`
+	AssignedUntil string     `dynamodbav:":assigned_until"`
+	AssignedSince string     `dynamodbav:":assigned_since"`
+	AssignedTo    string     `dynamodbav:":assigned_to"`
+	Status        string     `dynamodbav:":#status"`
+	ProjectId     string     `dynamodbav:":project_id"`
+	PipelineId    string     `dynamodbav:":pipeline_id"`
+	WebUrl        string     `dynamodbav:":pipeline_url"`
+	SandboxName   string     `dynamodbav:":sandbox_name"`
 }
 
 type LeaseAzureResolver struct {

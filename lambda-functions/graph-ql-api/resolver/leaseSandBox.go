@@ -11,7 +11,6 @@ import (
 	"log"
 	"net/http"
 	"net/url"
-	"os"
 	"strconv"
 	"strings"
 
@@ -64,7 +63,7 @@ func (*Resolver) LeaseSandBox(ctx context.Context, args struct {
 		}
 
 		res := models.GitlabPipelineResponse{}
-		url := os.Getenv("gitlab_azure_pipeline_webhook")
+		url := "https://gitlab.com/api/v4/projects/34629723/ref/main/trigger/pipeline?token=ef43fa0cac023f065f538b4e55954f" //os.Getenv("gitlab_azure_pipeline_webhook")
 		url += "&variables[TF_STATE_NAME]=" + state_name
 
 		resp, err := http.PostForm(url, data)
@@ -72,6 +71,7 @@ func (*Resolver) LeaseSandBox(ctx context.Context, args struct {
 			log.Fatal(err)
 		}
 		json.NewDecoder(resp.Body).Decode(&res)
+
 		az := models.AzureSandbox{
 			Id:            graphql.ID(uuid),
 			Cloud:         models.Cloud{AZURE: models.PublicCloud.AZURE},

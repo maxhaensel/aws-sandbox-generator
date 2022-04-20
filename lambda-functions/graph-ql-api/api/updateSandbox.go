@@ -38,7 +38,7 @@ func UpdateSandBoxItem(ctx context.Context, svc DynamoAPI, sandbox *models.Lease
 			return nil, fmt.Errorf("no Account_id provided")
 		}
 		updateExpressionQuery += `available = :available`
-		expr, err = attributevalue.MarshalMap(aws_sandbox)
+		expr, err = attributevalue.MarshalMap(aws_sandbox.Aws)
 		if err != nil {
 			return nil, fmt.Errorf("failed to marshal Record, %w", err)
 		}
@@ -52,7 +52,7 @@ func UpdateSandBoxItem(ctx context.Context, svc DynamoAPI, sandbox *models.Lease
 		pipeline_url = :pipeline_url,
 		name = :name
 		`
-		expr, err = attributevalue.MarshalMap(az_sandbox)
+		expr, err = attributevalue.MarshalMap(az_sandbox.Az)
 		if err != nil {
 			return nil, fmt.Errorf("failed to marshal Record, %w", err)
 		}
@@ -60,7 +60,8 @@ func UpdateSandBoxItem(ctx context.Context, svc DynamoAPI, sandbox *models.Lease
 	id := sandbox.CloudSandbox.Id()
 
 	key := map[string]types.AttributeValue{
-		"ID": &types.AttributeValueMemberS{Value: string(id)},
+		"id":          &types.AttributeValueMemberS{Value: string(id)},
+		"assigned_to": &types.AttributeValueMemberS{Value: sandbox.CloudSandbox.AssignedTo()},
 	}
 
 	updateExpression := aws.String(updateExpressionQuery)
