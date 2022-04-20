@@ -57,26 +57,20 @@ func UpdateSandBoxItem(ctx context.Context, svc DynamoAPI, sandbox *models.Lease
 			return nil, fmt.Errorf("failed to marshal Record, %w", err)
 		}
 	}
+	id := sandbox.CloudSandbox.Id()
 
 	key := map[string]types.AttributeValue{
-		"ID": &types.AttributeValueMemberS{Value: string(sandbox.Id())},
+		"ID": &types.AttributeValueMemberS{Value: string(id)},
 	}
 
 	updateExpression := aws.String(updateExpressionQuery)
 
 	input := &dynamodb.UpdateItemInput{
-		Key:                         key,
-		TableName:                   aws.String(table),
-		AttributeUpdates:            map[string]types.AttributeValueUpdate{},
-		ConditionExpression:         new(string),
-		ConditionalOperator:         "",
-		Expected:                    map[string]types.ExpectedAttributeValue{},
-		ExpressionAttributeNames:    map[string]string{},
-		ExpressionAttributeValues:   expr,
-		ReturnConsumedCapacity:      "",
-		ReturnItemCollectionMetrics: "",
-		ReturnValues:                "ALL_NEW",
-		UpdateExpression:            updateExpression,
+		Key:                       key,
+		TableName:                 aws.String(table),
+		ExpressionAttributeValues: expr,
+		ReturnValues:              "ALL_NEW",
+		UpdateExpression:          updateExpression,
 	}
 
 	response, err := svc.UpdateItem(ctx, input)

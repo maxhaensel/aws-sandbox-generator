@@ -61,7 +61,7 @@ type LeaseASandBoxResponse {
 }
 
 type Mutation {
-  deallocateSandbox(Account_id: String!): LeaseASandBoxResponse
+  # deallocateSandbox(Account_id: String!): LeaseASandBoxResponse
   leaseSandBox(
     email: String!
     leaseTime: String!
