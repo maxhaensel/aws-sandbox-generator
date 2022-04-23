@@ -9,7 +9,7 @@ on:
 permissions:
       id-token: write
       contents: read    # This is required for actions/checkout
-      
+
 defaults:
   run:
     working-directory: infrastructure
@@ -37,7 +37,7 @@ jobs:
           uses: aws-actions/configure-aws-credentials@v1
           with:
             role-to-assume: ${{ secrets.AWS_CICD_OIDC_ROLE }}
-            role-session-name: "${{ github.job }}-${{ github.sha }}-rolesession"
+            role-session-name: "${{ github.sha }}-rolesession"
             aws-region: eu-central-1
         - name: cdk diff
           uses: youyo/aws-cdk-github-actions@v2
