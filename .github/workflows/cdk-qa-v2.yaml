@@ -21,25 +21,27 @@ jobs:
     steps:
         - name: Checkout repository
           uses: actions/checkout@v2
-        - name: Install dependencies
-          run: pip install -r requirements-dev.txt
-        - name: run test and generate coverage
-          run: pytest --cov=./ --cov-report=xml          
-        - name: update code-coverage
-          uses: codecov/codecov-action@v2
-          with:
-            token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
-            working-directory: ./infrastructure/
-            files: ./coverage.xml # optional
-            flags: infrastructure # optional
-            name: infrastructure # optional
-            fail_ci_if_error: true # optional (default = false)
+        # - name: Install dependencies
+        #   run: pip install -r requirements-dev.txt
+        # - name: run test and generate coverage
+        #   run: pytest --cov=./ --cov-report=xml          
+        # - name: update code-coverage
+        #   uses: codecov/codecov-action@v2
+        #   with:
+        #     token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
+        #     working-directory: ./infrastructure/
+        #     files: ./coverage.xml # optional
+        #     flags: infrastructure # optional
+        #     name: infrastructure # optional
+        #     fail_ci_if_error: true # optional (default = false)
         - name: configure aws credentials
           uses: aws-actions/configure-aws-credentials@v1
           with:
             role-to-assume: ${{ secrets.AWS_CICD_OIDC_ROLE }}
             role-session-name: "${{ github.sha }}-rolesession"
             aws-region: eu-central-1
+        - name: list
+          run: ls -la
         - name: cdk diff
           uses: youyo/aws-cdk-github-actions@v2
           with:
