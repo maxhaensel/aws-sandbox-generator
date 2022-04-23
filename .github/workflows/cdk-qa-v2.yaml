@@ -42,6 +42,7 @@ jobs:
             aws-region: eu-central-1
         - name: list
           run: ls -la
+          
         - name: cdk diff
           uses: youyo/aws-cdk-github-actions@v2
           with:
