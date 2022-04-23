@@ -1,7 +1,8 @@
 name: 'IaC - Quality Check - v2'
 
 on:
-  pull_request:
+  # pull_request:
+  push:
     branches: [feature/release-2.0]
     paths: [infrastructure/**]
   workflow_dispatch:
