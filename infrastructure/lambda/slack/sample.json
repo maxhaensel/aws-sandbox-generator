@@ -1,0 +1,37 @@
+{
+  "AlarmName": "AWSSandbox-ErrorsFA5270DE-WKVWTJ1YRRU3",
+  "AlarmDescription": null,
+  "AWSAccountId": "172920935848",
+  "AlarmConfigurationUpdatedTimestamp": "2022-04-07T14:48:55.387+0000",
+  "NewStateValue": "ALARM",
+  "NewStateReason": "Threshold Crossed: 1 out of the last 1 datapoints [1.0 (10/04/22 00:36:00)] was greater than or equal to the threshold (1.0) (minimum 1 datapoint for OK -> ALARM transition).",
+  "StateChangeTime": "2022-04-10T00:40:51.093+0000",
+  "Region": "EU (Frankfurt)",
+  "AlarmArn": "arn:aws:cloudwatch:eu-central-1:172920935848:alarm:AWSSandbox-ErrorsFA5270DE-WKVWTJ1YRRU3",
+  "OldStateValue": "INSUFFICIENT_DATA",
+  "OKActions": [],
+  "AlarmActions": [
+    "arn:aws:sns:eu-central-1:172920935848:AWSSandbox-TopicBFC7AF6E-15JDZWZKVYNT9"
+  ],
+  "InsufficientDataActions": [],
+  "Trigger": {
+    "MetricName": "Errors",
+    "Namespace": "AWS/Lambda",
+    "StatisticType": "Statistic",
+    "Statistic": "SUM",
+    "Unit": null,
+    "Dimensions": [
+      {
+        "value": "AWSSandbox-SSOhandlerlambda0DE9C552-AgPpx6Dlp9cT",
+        "name": "FunctionName"
+      }
+    ],
+    "Period": 60,
+    "EvaluationPeriods": 1,
+    "DatapointsToAlarm": 1,
+    "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+    "Threshold": 1.0,
+    "TreatMissingData": "",
+    "EvaluateLowSampleCountPercentile": ""
+  }
+}
