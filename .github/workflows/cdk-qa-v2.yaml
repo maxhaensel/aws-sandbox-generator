@@ -4,7 +4,7 @@ on:
   # pull_request:
   push:
     branches: [feature/release-2.0]
-    paths: [infrastructure/**]
+    paths: [infrastructure/**, .github]
   workflow_dispatch:
     
 permissions:
@@ -42,7 +42,7 @@ jobs:
             aws-region: eu-central-1
         - name: list
           run: ls -la
-          
+
         - name: cdk diff
           uses: youyo/aws-cdk-github-actions@v2
           with:
