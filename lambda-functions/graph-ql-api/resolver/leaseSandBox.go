@@ -3,6 +3,7 @@ package resolver
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"lambda/aws-sandbox/graph-ql-api/api"
 	"lambda/aws-sandbox/graph-ql-api/connection"
@@ -59,7 +60,11 @@ func (*Resolver) LeaseSandBox(ctx context.Context, args struct {
 		}
 
 		res := models.GitlabPipelineResponse{}
-		url := os.Getenv("gitlab_azure_pipeline_webhook")
+		url, ok := os.LookupEnv("gitlab_azure_pipeline_webhook")
+		if !ok {
+			message := "Environment Variable 'gitlab_azure_pipeline_webhook' is not set"
+			return nil, errors.New(message)
+		}
 		url += "&variables[TF_STATE_NAME]=" + state_name
 
 		resp, err := http.PostForm(url, data)
@@ -67,21 +72,18 @@ func (*Resolver) LeaseSandBox(ctx context.Context, args struct {
 			log.Fatal(err)
 		}
 		json.NewDecoder(resp.Body).Decode(&res)
-
+		az := models.AzureSandbox{
+			Id:            graphql.ID(uuid.New().String()),
+			AssignedUntil: *until,
+			AssignedSince: *since,
+			AssignedTo:    args.Email,
+			PipelineId:    strconv.Itoa(res.Id),
+			Status:        res.Status,
+			ProjectId:     strconv.Itoa(res.ProjectId),
+			WebUrl:        res.WebUrl,
+		}
 		return &models.LeaseSandBoxResult{
-			Result: &models.LeaseAzureResolver{
-				U: models.AzureSandbox{
-					Id:            graphql.ID(uuid.New().String()),
-					AssignedUntil: *until,
-					AssignedSince: *since,
-					AssignedTo:    args.Email,
-					PipelineId:    strconv.Itoa(res.Id),
-					Status:        res.Status,
-					ProjectId:     strconv.Itoa(res.ProjectId),
-					WebUrl:        res.WebUrl,
-					SandboxName:   sandbox_name,
-				},
-			},
+			CloudSandbox: &models.LeaseAzureResolver{Az: az},
 		}, err
 	}
 
@@ -118,8 +120,8 @@ func (*Resolver) LeaseSandBox(ctx context.Context, args struct {
 		}
 
 		return &models.LeaseSandBoxResult{
-			Result: &models.LeaseAwsResolver{
-				U: models.AwsSandbox{
+			CloudSandbox: &models.LeaseAwsResolver{
+				Aws: models.AwsSandbox{
 					Id:            "uuid!",
 					AssignedUntil: updatedSandbox.Assigned_until,
 					AssignedSince: updatedSandbox.Assigned_since,

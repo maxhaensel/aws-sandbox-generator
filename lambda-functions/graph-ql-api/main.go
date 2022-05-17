@@ -35,7 +35,7 @@ func Handler(ctx context.Context, request events.APIGatewayProxyRequest) (events
 // 		}
 
 // 		ctx := context.TODO()
-//  		mock_handler := events.APIGatewayProxyRequest{
+// 		mock_handler := events.APIGatewayProxyRequest{
 // 			Body: string(b),
 // 		}
 // 		responseJSON, _ := Handler(ctx, mock_handler)

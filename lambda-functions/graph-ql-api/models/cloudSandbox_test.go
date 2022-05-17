@@ -37,23 +37,23 @@ func TestLeaseAwsResolver(t *testing.T) {
 	for i, tt := range tests {
 		t.Run(fmt.Sprintf("error in item %d expect", i+1), func(t *testing.T) {
 
-			if tt.Id() != tt.U.Id {
+			if tt.Id() != tt.Aws.Id {
 				t.Errorf("error in item %d expect", i+1)
 			}
 
-			if tt.AccountName() != tt.U.AccountName {
+			if tt.AccountName() != tt.Aws.AccountName {
 				t.Errorf("error in item %d expect", i+1)
 			}
 
-			if tt.AssignedSince() != tt.U.AssignedSince {
+			if tt.AssignedSince() != tt.Aws.AssignedSince {
 				t.Errorf("error in item %d expect", i+1)
 			}
 
-			if tt.AssignedTo() != tt.U.AssignedTo {
+			if tt.AssignedTo() != tt.Aws.AssignedTo {
 				t.Errorf("error in item %d expect", i+1)
 			}
 
-			if tt.AssignedUntil() != tt.U.AssignedUntil {
+			if tt.AssignedUntil() != tt.Aws.AssignedUntil {
 				t.Errorf("error in item %d expect", i+1)
 			}
 		})
@@ -92,23 +92,23 @@ func TestLeaseAzureResolver(t *testing.T) {
 	for i, tt := range tests {
 		t.Run(fmt.Sprintf("error in item %d expect", i+1), func(t *testing.T) {
 
-			if tt.Id() != tt.U.Id {
+			if tt.Id() != tt.Az.Id {
 				t.Errorf("error in item %d expect", i+1)
 			}
 
-			if tt.PipelineId() != tt.U.PipelineId {
+			if tt.PipelineId() != tt.Az.PipelineId {
 				t.Errorf("error in item %d expect", i+1)
 			}
 
-			if tt.AssignedSince() != tt.U.AssignedSince {
+			if tt.AssignedSince() != tt.Az.AssignedSince {
 				t.Errorf("error in item %d expect", i+1)
 			}
 
-			if tt.AssignedTo() != tt.U.AssignedTo {
+			if tt.AssignedTo() != tt.Az.AssignedTo {
 				t.Errorf("error in item %d expect", i+1)
 			}
 
-			if tt.AssignedUntil() != tt.U.AssignedUntil {
+			if tt.AssignedUntil() != tt.Az.AssignedUntil {
 				t.Errorf("error in item %d expect", i+1)
 			}
 		})
