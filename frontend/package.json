@@ -63,7 +63,7 @@
     ]
   },
   "devDependencies": {
-    "@cypress/react": "^6.0.0",
+    "@cypress/react": "^6.1.0",
     "@cypress/webpack-dev-server": "^2.1.0",
     "apollo": "2.34.0",
     "apollo-codegen-core": "0.40.9",
