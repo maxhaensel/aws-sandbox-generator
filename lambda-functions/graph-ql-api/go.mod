@@ -5,7 +5,7 @@ go 1.16
 require (
 	github.com/aws/aws-lambda-go v1.34.1
 	github.com/aws/aws-sdk-go-v2 v1.17.0
-	github.com/aws/aws-sdk-go-v2/config v1.17.8
+	github.com/aws/aws-sdk-go-v2/config v1.17.9
 	github.com/aws/aws-sdk-go-v2/feature/dynamodb/attributevalue v1.10.1
 	github.com/aws/aws-sdk-go-v2/service/dynamodb v1.17.2
 	github.com/aws/smithy-go v1.13.3
