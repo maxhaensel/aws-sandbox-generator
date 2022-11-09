@@ -1300,15 +1300,16 @@
     tunnel-agent "^0.6.0"
     uuid "^8.3.2"
 
-"@cypress/webpack-dev-server@^3.0.0":
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/@cypress/webpack-dev-server/-/webpack-dev-server-3.0.0.tgz#72cd8dc56a9615ebdb57407ed8e7afbd7835c15c"
-  integrity sha512-pZrrSuws9LX/KKlv87mHlOubFe4E81ZbHVVKFDxIqm/nbsj2RFriCLIbbU2W23wqMhFWqbCc0daJylqMVhVJTw==
+"@cypress/webpack-dev-server@^3.0.1":
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/@cypress/webpack-dev-server/-/webpack-dev-server-3.0.1.tgz#4bbe1cfa512f4c66a8868c91f6a5549f23289c00"
+  integrity sha512-wLjHVueoeQImeXfXrRGg3CKxLHPF6gnq5kSKnrjBkzZUOeCyuLl8qa+KaeEnyJHxJk52ZVeGQrZl6JQawqJkVQ==
   dependencies:
     find-up "6.3.0"
     fs-extra "9.1.0"
     html-webpack-plugin-4 "npm:html-webpack-plugin@^4"
     html-webpack-plugin-5 "npm:html-webpack-plugin@^5"
+    local-pkg "0.4.1"
     speed-measure-webpack-plugin "1.4.2"
     tslib "^2.3.1"
     webpack-dev-server "^4.7.4"
@@ -8817,6 +8818,11 @@ loader-utils@^3.2.0:
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/loader-utils/-/loader-utils-3.2.0.tgz#bcecc51a7898bee7473d4bc6b845b23af8304d4f"
   integrity sha512-HVl9ZqccQihZ7JM85dco1MvO9G+ONvxoGa9rkhzFsneGLKSUg1gJf9bWzhRhcvm2qChhWpebQhP44qxjKIUCaQ==
+
+local-pkg@0.4.1:
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/local-pkg/-/local-pkg-0.4.1.tgz#e7b0d7aa0b9c498a1110a5ac5b00ba66ef38cfff"
+  integrity sha512-lL87ytIGP2FU5PWwNDo0w3WhIo2gopIAxPg9RxDYF7m4rr5ahuZxP22xnJHIvaLTe4Z9P6uKKY2UHiwyB4pcrw==
 
 locate-path@^2.0.0:
   version "2.0.0"
