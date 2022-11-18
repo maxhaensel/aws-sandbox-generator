@@ -6,7 +6,7 @@ require (
 	github.com/aws/aws-lambda-go v1.35.0
 	github.com/aws/aws-sdk-go-v2 v1.17.1
 	github.com/aws/aws-sdk-go-v2/config v1.18.2
-	github.com/aws/aws-sdk-go-v2/feature/dynamodb/attributevalue v1.10.3
+	github.com/aws/aws-sdk-go-v2/feature/dynamodb/attributevalue v1.10.4
 	github.com/aws/aws-sdk-go-v2/service/dynamodb v1.17.5
 	github.com/aws/smithy-go v1.13.4
 	github.com/google/uuid v1.3.0
