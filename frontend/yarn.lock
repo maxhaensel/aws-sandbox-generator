@@ -1300,10 +1300,10 @@
     tunnel-agent "^0.6.0"
     uuid "^8.3.2"
 
-"@cypress/webpack-dev-server@^3.1.1":
-  version "3.1.1"
-  resolved "https://registry.yarnpkg.com/@cypress/webpack-dev-server/-/webpack-dev-server-3.1.1.tgz#dc3ace496ceed1cfba4934d461765089d29af82a"
-  integrity sha512-5Zl0/Mign97scCoVzHk90Z6tk1x7ydZLhmrccgsLGHq0QdvCv5AceIvw6LuEKgj7fW4PDoCXXEAlRVbnDhVi6g==
+"@cypress/webpack-dev-server@^3.1.2":
+  version "3.1.2"
+  resolved "https://registry.yarnpkg.com/@cypress/webpack-dev-server/-/webpack-dev-server-3.1.2.tgz#6cd204a5614c782a9c15b5b28efb6a144a0ece6c"
+  integrity sha512-0EccZXtzA0vIoVBbzWcUrYzDXBwP9EknYEwWPeqO4ss6Pnxgy0aHi/dAL+l0nlsPzoAzylOjYxxUX4TU/t56MA==
   dependencies:
     find-up "6.3.0"
     fs-extra "9.1.0"
