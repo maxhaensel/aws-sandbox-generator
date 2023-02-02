@@ -3,28 +3,28 @@
 # Please see the documentation for all configuration options:
 # https://help.github.com/github/administering-a-repository/configuration-options-for-dependency-updates
 
-version: 2
-updates:
-  - package-ecosystem: "gomod" # See documentation for possible values
-    directory: "/lambda-functions/graph-ql-api/" # Location of package manifests
-    schedule:
-      interval: "daily"
-    labels:
-      - "go"
-      - "dependencies"
-  - package-ecosystem: "npm" # See documentation for possible values
-    directory: "/frontend/" # Location of package manifests
-    schedule:
-      interval: "daily"
-    labels:
-      - "frontend"
-      - "dependencies"
-  - package-ecosystem: "pip" # See documentation for possible values
-    directory: "/infrastrucutre/" # rename typo infrastructure
-    schedule:
-      interval: "daily"
-    labels:
-      - "IaC"
-      - "dependencies"
+#version: 2
+#updates:
+#  - package-ecosystem: "gomod" # See documentation for possible values
+#    directory: "/lambda-functions/graph-ql-api/" # Location of package manifests
+#    schedule:
+#      interval: "daily"
+#    labels:
+#      - "go"
+#      - "dependencies"
+#  - package-ecosystem: "npm" # See documentation for possible values
+#    directory: "/frontend/" # Location of package manifests
+#    schedule:
+#      interval: "daily"
+#    labels:
+#      - "frontend"
+#      - "dependencies"
+#  - package-ecosystem: "pip" # See documentation for possible values
+#    directory: "/infrastrucutre/" # rename typo infrastructure
+#    schedule:
+#      interval: "daily"
+#    labels:
+#      - "IaC"
+#      - "dependencies"
 
 
