@@ -5,7 +5,7 @@
   "dependencies": {
     "@apollo/client": "^3.7.7",
     "@graphql-tools/schema": "^9.0.16",
-    "@heroicons/react": "^2.0.14",
+    "@heroicons/react": "^2.0.15",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^12.1.5",
     "@testing-library/user-event": "^14.4.3",
