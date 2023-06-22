@@ -15,7 +15,7 @@
     "@types/react-dom": "^18.0.3",
     "@typescript-eslint/eslint-plugin": "^5.60.0",
     "craco": "^0.0.3",
-    "graphql": "^16.6.0",
+    "graphql": "^16.7.0",
     "graphql.macro": "^1.4.2",
     "html-webpack-plugin": "^5.5.3",
     "module-replace-webpack-plugin": "^0.0.12",
