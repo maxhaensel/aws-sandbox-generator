@@ -1276,10 +1276,10 @@
   resolved "https://registry.yarnpkg.com/@csstools/normalize.css/-/normalize.css-12.0.0.tgz#a9583a75c3f150667771f30b60d9f059473e62c4"
   integrity sha512-M0qqxAcwCsIVfpFQSlGN5XjXWu8l5JDZN+fPt1LeW5SZexQTgnaEvgXAY+CeygRw0EeppWHi12JxESWiWrB0Sg==
 
-"@cypress/react@^7.0.3":
-  version "7.0.3"
-  resolved "https://registry.yarnpkg.com/@cypress/react/-/react-7.0.3.tgz#e62d67c1344265ee959e99100ce237663f20abb1"
-  integrity sha512-YseqnMugTbdPV9YCYEMXVqIf+P7x+pfjXOdjv4dnDFqNCZeHaZfOZVFZ4XfEHVxMv0aDszxlaLiIp3QDPhr12w==
+"@cypress/react@^8.0.0":
+  version "8.0.0"
+  resolved "https://registry.yarnpkg.com/@cypress/react/-/react-8.0.0.tgz#9ed7a04284d149e65ad7ae9dc35aa2a20c2c4e57"
+  integrity sha512-3fnW1ow+GZVCdVHikSoYBWMZCKpaRIJe76vA7a1qS7MYXSeX/xs+VgIIrZmnM1fnc23w5nHtWh4bjGCyTfWyXA==
 
 "@cypress/request@2.88.12":
   version "2.88.12"
