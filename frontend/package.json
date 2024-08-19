@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "@apollo/client": "^3.11.4",
-    "@graphql-tools/schema": "^10.0.5",
+    "@graphql-tools/schema": "^10.0.6",
     "@heroicons/react": "^2.1.5",
     "@testing-library/jest-dom": "^6.4.8",
     "@testing-library/react": "^12.1.5",
