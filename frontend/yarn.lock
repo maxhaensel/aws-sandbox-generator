@@ -1306,10 +1306,10 @@
     tunnel-agent "^0.6.0"
     uuid "^8.3.2"
 
-"@cypress/webpack-dev-server@^3.11.0":
-  version "3.11.0"
-  resolved "https://registry.yarnpkg.com/@cypress/webpack-dev-server/-/webpack-dev-server-3.11.0.tgz#e94ed209cbda585b226d9b40f567801276558b65"
-  integrity sha512-r2+fy+/yr33HVmg+egjmCfSy4i19oqEixYkqqg9++Y7QpZggTebLN6BWQD/4HVZdvSBuRlVVMF2juTunWbCKIw==
+"@cypress/webpack-dev-server@^4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@cypress/webpack-dev-server/-/webpack-dev-server-4.0.0.tgz#ec39ec3f1fbb37543c82d7bbf41f0b49ce6eaa28"
+  integrity sha512-c4Uf0zPm5vNPhIsRSmYhhfgUejDN4RNEPwjD88bKDFNHFdsNXJPzNCJVck7ttY1M/W+YVfl30B1fWv+wf9FQzw==
   dependencies:
     find-up "6.3.0"
     fs-extra "9.1.0"
@@ -1319,7 +1319,7 @@
     semver "^7.5.3"
     speed-measure-webpack-plugin "1.4.2"
     tslib "^2.3.1"
-    webpack-dev-server "^4.15.2"
+    webpack-dev-server "^5.1.0"
     webpack-merge "^5.4.0"
 
 "@cypress/xvfb@^1.2.4":
@@ -13786,7 +13786,7 @@ webpack-dev-middleware@^7.4.2:
     range-parser "^1.2.1"
     schema-utils "^4.0.0"
 
-webpack-dev-server@^4.15.2, webpack-dev-server@^4.6.0:
+webpack-dev-server@^4.6.0:
   version "4.15.2"
   resolved "https://registry.yarnpkg.com/webpack-dev-server/-/webpack-dev-server-4.15.2.tgz#9e0c70a42a012560860adb186986da1248333173"
   integrity sha512-0XavAZbNJ5sDrCbkpWL8mia0o5WPOd2YGtxrEiZkBK9FjLppIUK2TgxK6qGD2P3hUXTJNNPVibrerKcx5WkR1g==
@@ -13822,7 +13822,7 @@ webpack-dev-server@^4.15.2, webpack-dev-server@^4.6.0:
     webpack-dev-middleware "^5.3.4"
     ws "^8.13.0"
 
-webpack-dev-server@^5.2.0:
+webpack-dev-server@^5.1.0, webpack-dev-server@^5.2.0:
   version "5.2.0"
   resolved "https://registry.yarnpkg.com/webpack-dev-server/-/webpack-dev-server-5.2.0.tgz#68043886edaa3fd875ad20e01589990a79612f9c"
   integrity sha512-90SqqYXA2SK36KcT6o1bvwvZfJFcmoamqeJY7+boioffX9g9C0wjjJRGUrQIuh43pb0ttX7+ssavmj/WN2RHtA==
