@@ -13,7 +13,7 @@
     "@types/node": "^22.15.23",
     "@types/react": "^18.0.9",
     "@types/react-dom": "^18.0.3",
-    "@typescript-eslint/eslint-plugin": "^8.32.1",
+    "@typescript-eslint/eslint-plugin": "^8.33.0",
     "craco": "^0.0.3",
     "graphql": "^16.11.0",
     "graphql.macro": "^1.4.2",
