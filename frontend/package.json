@@ -27,7 +27,7 @@
     "wait-on": "^8.0.3",
     "web-vitals": "^5.0.2",
     "webpack": "^5.99.9",
-    "webpack-dev-server": "^5.2.1"
+    "webpack-dev-server": "^5.2.2"
   },
   "scripts": {
     "start": "REACT_APP_MOCK_API=1 craco start",
