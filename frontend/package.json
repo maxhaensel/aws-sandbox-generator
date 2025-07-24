@@ -24,7 +24,7 @@
     "react-router-dom": "6",
     "react-scripts": "5.0.1",
     "typescript": "^5.8.3",
-    "wait-on": "^8.0.3",
+    "wait-on": "^8.0.4",
     "web-vitals": "^5.0.3",
     "webpack": "^5.100.2",
     "webpack-dev-server": "^5.2.2"
