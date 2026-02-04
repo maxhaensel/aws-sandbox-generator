@@ -3,7 +3,7 @@
   "version": "0.1.3",
   "private": true,
   "dependencies": {
-    "@apollo/client": "^3.13.9",
+    "@apollo/client": "^4.1.3",
     "@graphql-tools/schema": "^10.0.31",
     "@heroicons/react": "^2.2.0",
     "@testing-library/jest-dom": "^6.9.1",
