@@ -71,6 +71,6 @@
     "autoprefixer": "^10.4.27",
     "cypress": "^15.12.0",
     "postcss": "^8.5.8",
-    "tailwindcss": "^4.2.1"
+    "tailwindcss": "^4.2.2"
   }
 }
