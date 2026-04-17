@@ -23,7 +23,7 @@
     "react-dom": "^19.2.5",
     "react-router-dom": "7",
     "react-scripts": "5.0.1",
-    "typescript": "^6.0.2",
+    "typescript": "^6.0.3",
     "wait-on": "^9.0.5",
     "web-vitals": "^5.2.0",
     "webpack": "^5.106.2",
