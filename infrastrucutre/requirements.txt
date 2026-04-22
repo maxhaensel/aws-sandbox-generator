@@ -1,4 +1,4 @@
-aws-cdk.core>=1.133.0
+aws-cdk.core>=1.204.0
 aws-cdk.assertions>=1.133.0
 aws-cdk.assertions>=1.133.0
 aws-cdk.assets>=1.136.0
