@@ -1,6 +1,6 @@
 aws-cdk.core>=1.204.0
-aws-cdk.assertions>=1.133.0
-aws-cdk.assertions>=1.133.0
+aws-cdk.assertions>=1.204.0
+aws-cdk.assertions>=1.204.0
 aws-cdk.assets>=1.204.0
 aws-cdk.aws-acmpca>=1.204.0
 aws-cdk.aws-apigateway>=1.204.0
