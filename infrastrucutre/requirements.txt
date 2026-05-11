@@ -55,4 +55,4 @@ aws-cdk.cloud-assembly-schema>=53.22.0
 aws-cdk.core>=1.136.0
 aws-cdk.custom-resources>=1.204.0
 aws-cdk.cx-api>=2.253.1
-aws-cdk.region-info>=2.253.0
+aws-cdk.region-info>=2.253.1
