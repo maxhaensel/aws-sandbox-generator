@@ -70,7 +70,7 @@
     "apollo-language-server": "1.26.9",
     "autoprefixer": "^10.5.4",
     "cypress": "^15.19.0",
-    "postcss": "^8.5.24",
+    "postcss": "^8.5.25",
     "tailwindcss": "^4.3.3"
   }
 }
