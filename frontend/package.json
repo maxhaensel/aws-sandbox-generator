@@ -11,7 +11,7 @@
     "@testing-library/user-event": "^14.6.3",
     "@types/jest": "^30.0.0",
     "@types/node": "^26.1.2",
-    "@types/react": "^19.2.17",
+    "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.4",
     "@typescript-eslint/eslint-plugin": "^8.66.0",
     "craco": "^0.0.3",
