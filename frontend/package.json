@@ -68,7 +68,7 @@
     "apollo": "2.34.0",
     "apollo-codegen-core": "0.40.9",
     "apollo-language-server": "1.26.9",
-    "autoprefixer": "^10.5.4",
+    "autoprefixer": "^10.5.5",
     "cypress": "^16.0.0",
     "postcss": "^8.5.28",
     "tailwindcss": "^4.3.3"
