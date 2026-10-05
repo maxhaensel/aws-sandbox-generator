@@ -14635,10 +14635,10 @@ w3c-xmlserializer@^2.0.0:
   dependencies:
     xml-name-validator "^3.0.0"
 
-wait-on@^9.4.0:
-  version "9.4.0"
-  resolved "https://registry.yarnpkg.com/wait-on/-/wait-on-9.4.0.tgz#83a7c470c63d0ae5d3304bc3ba00e0713a9caae3"
-  integrity sha512-70vjt46idCEqR3THCRFOVTcEeAhzHTMwDvhZyixUYAGmLbQ05acRTbs9E/Jk1hrL3oiAn09C+uNTopbzgMt3ng==
+wait-on@^9.5.1:
+  version "9.5.1"
+  resolved "https://registry.yarnpkg.com/wait-on/-/wait-on-9.5.1.tgz#6867956a9dbb39e28d35e5db6a779bdbf0f013b8"
+  integrity sha512-bOtj1wRY6u+GPnNskZLcgZNHOaL5NC4+5hRCbEpVoVX6MbMrCLCqIBM2bjsAfrgst3ZC0siIo7vLb4LuYFfIow==
   dependencies:
     axios "^1.20.0"
     joi "^18.2.9"
