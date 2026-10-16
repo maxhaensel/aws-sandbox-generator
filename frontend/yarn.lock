@@ -1515,27 +1515,27 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
-"@graphql-tools/merge@^9.2.6":
-  version "9.2.6"
-  resolved "https://registry.yarnpkg.com/@graphql-tools/merge/-/merge-9.2.6.tgz#2cf3cd419a7ace9be3381873160882d84512c48b"
-  integrity sha512-M7iI/qoCnks6iITkimtdZgI2SrWOInr+QRWuhEsInaumzQGPd0pnWbRAVTRVcFN2Gu9hM2aS5kYzASC93d9epw==
+"@graphql-tools/merge@^9.2.7":
+  version "9.2.8"
+  resolved "https://registry.yarnpkg.com/@graphql-tools/merge/-/merge-9.2.8.tgz#110b2d5ae2bc7fe13ecc7ae3e4cafe365e45ed46"
+  integrity sha512-OsCEmJ9RIMT4LB/1jBbyKHe7pMIlfGhLAQ0FVNaZqteydDUC+rTI9wZ+yaKqxQpPOFFycD+UtMhovg19lPq92Q==
   dependencies:
-    "@graphql-tools/utils" "^12.0.3"
+    "@graphql-tools/utils" "^12.1.0"
     tslib "^2.4.0"
 
-"@graphql-tools/schema@^10.1.3":
-  version "10.1.3"
-  resolved "https://registry.yarnpkg.com/@graphql-tools/schema/-/schema-10.1.3.tgz#1dbbb63e7c82054f62371f9d818bc0d1bb226f3b"
-  integrity sha512-N1ZpzguxzqTy5fpurqWQ5BXyjirlrtvVLeSafsu+SCDNjDeRnVxf9n5PVbdgzwFPAmP/7NK9sq9UB/kyR8oFiw==
+"@graphql-tools/schema@^10.1.4":
+  version "10.1.4"
+  resolved "https://registry.yarnpkg.com/@graphql-tools/schema/-/schema-10.1.4.tgz#33340e04e94c6a15ce4a4c5e6c02d49891bb641d"
+  integrity sha512-talZuSrjeklX7RVYLgF7fxHgywZXSYWzFZf3NG5CNFgkeK3xTocYMvlC3FLAApMWUW59qkyuHN1/HIgaIGfjRA==
   dependencies:
-    "@graphql-tools/merge" "^9.2.6"
-    "@graphql-tools/utils" "^12.0.3"
+    "@graphql-tools/merge" "^9.2.7"
+    "@graphql-tools/utils" "^12.0.4"
     tslib "^2.4.0"
 
-"@graphql-tools/utils@^12.0.3":
-  version "12.0.3"
-  resolved "https://registry.yarnpkg.com/@graphql-tools/utils/-/utils-12.0.3.tgz#8cae349fe99ff6dd142e497485e4a031b6d32248"
-  integrity sha512-M+04bHvI1SKoug7W2EkwfKjig2mdtgIIlFY8p2jLHmxPNVs5bC/3R+58JrD+7ZXWgPILWTwuqJ9AqTjPlahroA==
+"@graphql-tools/utils@^12.0.4", "@graphql-tools/utils@^12.1.0":
+  version "12.1.0"
+  resolved "https://registry.yarnpkg.com/@graphql-tools/utils/-/utils-12.1.0.tgz#49cf4eea2887075d11d4baf6a20f057ea7530130"
+  integrity sha512-+mOuIX7u83/BHG0L9JviMzKid1j35cxOWhLoox47TXHAJ6Tnn30RgrmEQPmk1FhmaQbhJEcwYBDVyieUvZopJw==
   dependencies:
     "@graphql-typed-document-node/core" "^3.1.1"
     "@whatwg-node/promise-helpers" "^2.0.0"
