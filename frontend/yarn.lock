@@ -28,10 +28,10 @@
     jsonpointer "^5.0.0"
     leven "^3.1.0"
 
-"@apollo/client@^4.3.4":
-  version "4.3.4"
-  resolved "https://registry.yarnpkg.com/@apollo/client/-/client-4.3.4.tgz#d9a6f93b98b1fd48e8e85032005e5e75a6b2d525"
-  integrity sha512-knXw5+GtT5zjrpqxG2Pnor34Xmjd5qcpI34slI8GKV88r1vc5LPCve6ImfcpRsBIy1aHBjTRFTHIt2YRDcxfHA==
+"@apollo/client@^4.3.5":
+  version "4.3.5"
+  resolved "https://registry.yarnpkg.com/@apollo/client/-/client-4.3.5.tgz#809d2a05a77c11b92f692e78b0bb58503b1eea14"
+  integrity sha512-phA1B82EisAHIjT6irj9Lm4I5516pASExgACUl8pzcnq5eGmNjBhImDgjSRHRt18u1Hrqw0uP71jKJtEjV/Fag==
   dependencies:
     "@graphql-typed-document-node/core" "^3.1.1"
     "@wry/caches" "^1.0.0"
@@ -1541,12 +1541,7 @@
     "@whatwg-node/promise-helpers" "^2.0.0"
     tslib "^2.4.0"
 
-"@graphql-typed-document-node/core@^3.1.1":
-  version "3.1.1"
-  resolved "https://registry.yarnpkg.com/@graphql-typed-document-node/core/-/core-3.1.1.tgz#076d78ce99822258cf813ecc1e7fa460fa74d052"
-  integrity sha512-NQ17ii0rK1b34VZonlmT2QMJFI70m0TRwbknO/ihlbatXyaktDhN/98vBiUU6kNBPljqGqyIrl2T4nY2RpFANg==
-
-"@graphql-typed-document-node/core@^3.2.0":
+"@graphql-typed-document-node/core@^3.1.1", "@graphql-typed-document-node/core@^3.2.0":
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/@graphql-typed-document-node/core/-/core-3.2.0.tgz#5f3d96ec6b2354ad6d8a28bf216a1d97b5426861"
   integrity sha512-mB9oAsNCm9aM3/SOv4YtBMqZbYj10R7dkq8byBqxGY/ncFwhf2oQzMV+LCRlWoDSEBJ3COiR1yeDvMtsoOsuFQ==
