@@ -1312,10 +1312,10 @@
     tough-cookie "^5.0.0"
     tunnel-agent "^0.6.0"
 
-"@cypress/webpack-dev-server@^6.1.0":
-  version "6.1.0"
-  resolved "https://registry.yarnpkg.com/@cypress/webpack-dev-server/-/webpack-dev-server-6.1.0.tgz#b6d6c7b4c05551c09e7eefa37ae8c8719d369b3f"
-  integrity sha512-vR9/x2B6tFtKarVMOHt9K68h+fFqP5wGc/2WXqiGqh9si37E0wkq4WMaomPj2yWq6iT+F0IIe5noaeOvpD1vnQ==
+"@cypress/webpack-dev-server@^6.1.2":
+  version "6.1.2"
+  resolved "https://registry.yarnpkg.com/@cypress/webpack-dev-server/-/webpack-dev-server-6.1.2.tgz#44d663014e9342f5dfefc34c6525eebce1676f03"
+  integrity sha512-L78I5b1Kgd9T8NrliENj71h96YpwY7NIoCIArXI7Zo62mNA9wCEBkiElfH3LZqEZDnAghSZxO5dnH+RRvCaIsA==
   dependencies:
     find-up "6.3.0"
     fs-extra "9.1.0"
