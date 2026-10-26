@@ -1515,7 +1515,7 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
-"@graphql-tools/merge@^10.0.2":
+"@graphql-tools/merge@^10.0.6":
   version "10.0.6"
   resolved "https://registry.yarnpkg.com/@graphql-tools/merge/-/merge-10.0.6.tgz#65e1b52e6ebe9c03807c09930ea6aeb37a9ca844"
   integrity sha512-lhuHibwpZgP7I9EQ/d65vY/ZjqcSQ0l9dsj4Lk75h9Ex6vkGN4TrOYNitB5/IKdweho2JIOpZIAjif3CgiKbYg==
@@ -1523,16 +1523,16 @@
     "@graphql-tools/utils" "^13.1.3"
     tslib "^2.4.0"
 
-"@graphql-tools/schema@^11.0.2":
-  version "11.0.2"
-  resolved "https://registry.yarnpkg.com/@graphql-tools/schema/-/schema-11.0.2.tgz#9ce83be07805fb335f611eccb190bec860c34ccf"
-  integrity sha512-hURvCmeZxKmuVLd3hnNiRilmBX8F94/fImNP9pqUAfQyYqir6yaUtTiC/qSWFxXdldQtIBtI9RL92ph4r+ScmQ==
+"@graphql-tools/schema@^11.0.6":
+  version "11.0.6"
+  resolved "https://registry.yarnpkg.com/@graphql-tools/schema/-/schema-11.0.6.tgz#0166a011c0dd706c9d42c9b9189d72ac51371ded"
+  integrity sha512-cq+byUzCSKDmbDzwTo91Tqyjm+hYucQpux+B9aK48UPQwXLiCJ16ISVsFU9/Mo71g77ZZivlRyjlsk7BHp5VmA==
   dependencies:
-    "@graphql-tools/merge" "^10.0.2"
-    "@graphql-tools/utils" "^13.0.2"
+    "@graphql-tools/merge" "^10.0.6"
+    "@graphql-tools/utils" "^13.1.3"
     tslib "^2.4.0"
 
-"@graphql-tools/utils@^13.0.2", "@graphql-tools/utils@^13.1.3":
+"@graphql-tools/utils@^13.1.3":
   version "13.1.3"
   resolved "https://registry.yarnpkg.com/@graphql-tools/utils/-/utils-13.1.3.tgz#4da761061d1bd533bebf742b31ea0fa6b46793c8"
   integrity sha512-7enmp5ihGqUFYnyFX1l1NwdJEu0sTvmXIqTAEJtu+9YaUyI0PnihkYT84pz78KIMx8afQ4Vt4F9wBIIANfPXRw==
